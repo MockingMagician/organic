@@ -29,7 +29,6 @@ class File extends Inode
         } catch (\Throwable $e) {
             throw new FileDeleteException($this->getRealPath(), $e);
         }
-        $this->detachFromCollection();
 
         return true;
     }

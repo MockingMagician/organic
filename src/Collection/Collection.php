@@ -24,8 +24,8 @@ abstract class Collection extends HelperCollection
 
     public function equals($a, $b): bool
     {
-        /** @var Inode $a */
-        /** @var Inode $b */
+        /* @var Inode $a */
+        /* @var Inode $b */
         return $a->getRealPath() === $b->getRealPath();
     }
 }

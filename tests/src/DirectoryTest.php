@@ -24,11 +24,11 @@ class DirectoryTest extends TestCase
     public static function setUpBeforeClass(): void
     {
         parent::setUpBeforeClass();
-        echo shell_exec(implode(' && ', [
-           sprintf('cd %s', escapeshellarg(realpath(self::ROOT_TREE))),
-           'cd ..',
-           'rm -Rf root_tree',
-           'cp -rf root_tree_snapshot root_tree',
+        echo \shell_exec(\implode(' && ', [
+            \sprintf('cd %s', \escapeshellarg(\realpath(__DIR__.'/../env'))),
+            'rm -Rf root_tree',
+            'rm -Rf moved_root_tree',
+            'cp -rf root_tree_snapshot root_tree',
         ]));
     }
 
@@ -93,12 +93,19 @@ class DirectoryTest extends TestCase
         static::assertCount(3, $directory->getDirectories());
     }
 
-    public function testMoveDirectory()
+    public function testMoveDirectory(): void
     {
         $directory = new Directory(self::ROOT_TREE);
-        $directory->moveTo($directory->getRealPath().'/../moved_root_tree');
-        static::assertDirectoryExists(realpath(self::ROOT_TREE.'/../moved_root_tree'));
-        $directory = new Directory(self::ROOT_TREE.'/../moved_root_tree');
+        $directory->moveTo(__DIR__.'/../env/moved_root_tree');
+        static::assertDirectoryExists(\realpath(__DIR__.'/../env/moved_root_tree'));
+        $directory = new Directory(__DIR__.'/../env/moved_root_tree');
         $directory->moveTo(self::ROOT_TREE);
+    }
+
+    public function testDelete(): void
+    {
+        $directory = new Directory(self::ROOT_TREE);
+        $directory->delete();
+        static::assertDirectoryNotExists(self::ROOT_TREE);
     }
 }

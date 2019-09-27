@@ -9,6 +9,7 @@
 namespace MockingMagician\Organic;
 
 use MockingMagician\Organic\Collection\Collection;
+use MockingMagician\Organic\Exception\DirectoryMoveException;
 
 abstract class Inode extends \SplFileInfo
 {
@@ -39,9 +40,14 @@ abstract class Inode extends \SplFileInfo
 
     abstract public function delete(): bool;
 
-    // TODO check this out
     public function moveTo(string $path): bool
     {
-        return rename($this->getRealPath(), $path);
+        try {
+            \rename($this->getRealPath(), $path);
+        } catch (\Throwable $e) {
+            throw new DirectoryMoveException($this->getRealPath(), $path, $e);
+        }
+
+        return true;
     }
 }

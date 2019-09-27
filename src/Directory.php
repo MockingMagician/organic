@@ -95,15 +95,18 @@ class Directory extends Inode
     public function delete(): bool
     {
         try {
-            /** @var Inode $inode */
-            foreach ($this->getRecursiveInodes() as $inode) {
-                $inode->delete();
+            /** @var File $file */
+            foreach ($this->getFiles() as $file) {
+                $file->delete();
+            }
+            /** @var Directory $directory */
+            foreach ($this->getDirectories() as $directory) {
+                $directory->delete();
             }
             \rmdir($this->getRealPath());
         } catch (\Throwable $e) {
             throw new DirectoryDeleteException($this->getRealPath(), $e);
         }
-        $this->detachFromCollection();
 
         return true;
     }
