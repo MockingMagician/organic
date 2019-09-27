@@ -21,6 +21,17 @@ class DirectoryTest extends TestCase
 {
     public const ROOT_TREE = __DIR__.'/../env/root_tree';
 
+    public static function setUpBeforeClass(): void
+    {
+        parent::setUpBeforeClass();
+        echo shell_exec(implode(' && ', [
+           sprintf('cd %s', escapeshellarg(realpath(self::ROOT_TREE))),
+           'cd ..',
+           'rm -Rf root_tree',
+           'cp -rf root_tree_snapshot root_tree',
+        ]));
+    }
+
     public function testIterateFile(): void
     {
         $directory = new Directory(self::ROOT_TREE);
@@ -80,5 +91,14 @@ class DirectoryTest extends TestCase
         static::assertCount(4, $directory->getDirectories());
         $freshlyCreatedDirectory->delete();
         static::assertCount(3, $directory->getDirectories());
+    }
+
+    public function testMoveDirectory()
+    {
+        $directory = new Directory(self::ROOT_TREE);
+        $directory->moveTo($directory->getRealPath().'/../moved_root_tree');
+        static::assertDirectoryExists(realpath(self::ROOT_TREE.'/../moved_root_tree'));
+        $directory = new Directory(self::ROOT_TREE.'/../moved_root_tree');
+        $directory->moveTo(self::ROOT_TREE);
     }
 }

@@ -38,4 +38,10 @@ abstract class Inode extends \SplFileInfo
     }
 
     abstract public function delete(): bool;
+
+    // TODO check this out
+    public function moveTo(string $path): bool
+    {
+        return rename($this->getRealPath(), $path);
+    }
 }
