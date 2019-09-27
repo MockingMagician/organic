@@ -11,7 +11,7 @@ namespace MockingMagician\Organic\Collection;
 use MockingMagician\Organic\Helper\Collection as HelperCollection;
 use MockingMagician\Organic\Inode;
 
-class Collection extends HelperCollection
+abstract class Collection extends HelperCollection
 {
     public function __construct(array $values, array $acceptClasses)
     {
@@ -20,5 +20,12 @@ class Collection extends HelperCollection
         foreach ($values as $value) {
             $value->attachTo($this);
         }
+    }
+
+    public function equals($a, $b): bool
+    {
+        /** @var Inode $a */
+        /** @var Inode $b */
+        return $a->getRealPath() === $b->getRealPath();
     }
 }

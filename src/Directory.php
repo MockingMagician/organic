@@ -128,7 +128,7 @@ class Directory extends Inode
     {
         $path = $this->getRealPath().\DIRECTORY_SEPARATOR.$directoryName;
 
-        $directory = static::createDirectory($path);
+        $directory = static::createDirectory($path, $permissions);
 
         if (null !== $this->attachedCollection) {
             $this->attachedCollection->add($directory);

@@ -22,4 +22,6 @@ interface CollectionInterface
     public function clear(): CollectionInterface;
 
     public function isAcceptableValue($value): bool;
+
+    public function equals($a, $b): bool;
 }

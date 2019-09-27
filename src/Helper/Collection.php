@@ -16,7 +16,7 @@ use Traversable;
  *
  * @internal
  */
-class Collection implements CollectionInterface, \Countable, \IteratorAggregate
+abstract class Collection implements CollectionInterface, \Countable, \IteratorAggregate
 {
     /** @var \ArrayIterator */
     protected $iterator;
@@ -51,7 +51,7 @@ class Collection implements CollectionInterface, \Countable, \IteratorAggregate
         }
 
         foreach ($this->iterator as $item) {
-            if ($item == $value) {
+            if ($this->equals($item, $value)) {
                 return $this;
             }
         }
@@ -68,7 +68,7 @@ class Collection implements CollectionInterface, \Countable, \IteratorAggregate
         }
 
         foreach ($this->iterator as $offset => $item) {
-            if ($item == $value) {
+            if ($this->equals($item, $value)) {
                 $this->iterator->offsetUnset($offset);
 
                 return $this;
@@ -116,4 +116,6 @@ class Collection implements CollectionInterface, \Countable, \IteratorAggregate
     {
         return $this->iterator;
     }
+
+    abstract public function equals($a, $b): bool;
 }

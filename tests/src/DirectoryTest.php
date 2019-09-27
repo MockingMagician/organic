@@ -72,4 +72,13 @@ class DirectoryTest extends TestCase
             return $toEcho;
         })($directory->getRecursiveInodes()));
     }
+
+    public function testCreateSubDirectory(): void
+    {
+        $directory = new Directory(self::ROOT_TREE);
+        $freshlyCreatedDirectory = $directory->createSubDirectory('freshly_created');
+        static::assertCount(4, $directory->getDirectories());
+        $freshlyCreatedDirectory->delete();
+        static::assertCount(3, $directory->getDirectories());
+    }
 }
