@@ -1,0 +1,29 @@
+{
+    "name": "MockingMagician/organic",
+    "description": "File manager project",
+    "authors": [
+        {
+            "name": "Marc MOREAU",
+            "email": "moreau.marc.web@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "MockingMagician\\Organic\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "MockingMagician\\Organic\\Tests\\": "tests/src/"
+        }
+    },
+    "require": {
+        "php": ">=7.1"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8",
+        "phpstan/phpstan": "^0.11",
+        "friendsofphp/php-cs-fixer": "^2.13",
+        "phpbench/phpbench": "@dev"
+    }
+}
