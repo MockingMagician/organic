@@ -1,13 +1,18 @@
 <?php
 
-namespace MockingMagician\Organic\Helper;
+/**
+ * @author Marc MOREAU <moreau.marc.web@gmail.com>
+ * @license https://github.com/MockingMagician/organic/blob/master/LICENSE.md CC-BY-SA-4.0
+ * @link https://github.com/MockingMagician/organic/blob/master/README.md
+ */
 
+namespace MockingMagician\Organic\Helper;
 
 use MockingMagician\Organic\Directory;
 
 /**
- * Class FilesystemIteratorFactory
- * @package MockingMagician\Organic\Shortcut
+ * Class FilesystemIteratorFactory.
+ *
  * @internal
  */
 class FilesystemIteratorFactory
@@ -40,6 +45,7 @@ class FilesystemIteratorFactory
                 $path[] = $value;
                 $static = new static(new Directory($value->getRealPath()));
                 $appendIterator->append($static->createRecursiveFileSystemIterator());
+
                 continue;
             }
             if ($value->isFile()) {

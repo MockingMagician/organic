@@ -1,39 +1,50 @@
 <?php
 
+/**
+ * @author Marc MOREAU <moreau.marc.web@gmail.com>
+ * @license https://github.com/MockingMagician/organic/blob/master/LICENSE.md CC-BY-SA-4.0
+ * @link https://github.com/MockingMagician/organic/blob/master/README.md
+ */
+
 namespace MockingMagician\Organic\Tests;
 
+use MockingMagician\Organic\Collection\DirectoryCollection;
+use MockingMagician\Organic\Collection\InodeCollection;
 use MockingMagician\Organic\Directory;
-use MockingMagician\Organic\DirectoryCollection;
-use MockingMagician\Organic\InodeCollection;
+use MockingMagician\Organic\Inode;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ */
 class DirectoryTest extends TestCase
 {
-    public const ROOT_TREE = __DIR__ . '/../env/root_tree';
+    public const ROOT_TREE = __DIR__.'/../env/root_tree';
 
-    public function testIterateFile()
+    public function testIterateFile(): void
     {
         $directory = new Directory(self::ROOT_TREE);
         static::assertCount(3, $directory->getFiles());
     }
 
-    public function testIterateFileRecursively()
+    public function testIterateFileRecursively(): void
     {
         $directory = new Directory(self::ROOT_TREE);
         static::assertCount(39, $directory->getRecursiveFiles());
     }
 
-    public function testIterateDirectories()
+    public function testIterateDirectories(): void
     {
         $directory = new Directory(self::ROOT_TREE);
         static::assertCount(3, $directory->getDirectories());
     }
 
-    public function testIterateDirectoriesRecursively()
+    public function testIterateDirectoriesRecursively(): void
     {
         $directory = new Directory(self::ROOT_TREE);
         static::assertCount(12, $directory->getRecursiveDirectories(), (function (DirectoryCollection $directoryCollection) {
             $toEcho = '';
+            /** @var Directory $value */
             foreach ($directoryCollection as $value) {
                 $toEcho .= $value->getRealPath()."\n";
             }
@@ -42,17 +53,18 @@ class DirectoryTest extends TestCase
         })($directory->getRecursiveDirectories()));
     }
 
-    public function testIterateInode()
+    public function testIterateInode(): void
     {
         $directory = new Directory(self::ROOT_TREE);
         static::assertCount(6, $directory->getInodes());
     }
 
-    public function testIterateInodeRecursively()
+    public function testIterateInodeRecursively(): void
     {
         $directory = new Directory(self::ROOT_TREE);
         static::assertCount(51, $directory->getRecursiveInodes(), (function (InodeCollection $directoryCollection) {
             $toEcho = '';
+            /** @var Inode $value */
             foreach ($directoryCollection as $value) {
                 $toEcho .= $value->getRealPath()."\n";
             }

@@ -10,11 +10,11 @@ namespace MockingMagician\Organic\Exception;
 
 use Throwable;
 
-class CollectionValueException extends \UnexpectedValueException
+class DirectoryCreateException extends \RuntimeException
 {
-    public function __construct(string $collectionClass, string $valueClass, int $code = 0, Throwable $previous = null)
+    public function __construct(string $path, Throwable $exception, int $code = 0, Throwable $previous = null)
     {
-        $message = \sprintf('Collection `%s` can not accept `%s` object', $collectionClass, $valueClass);
+        $message = \sprintf('Create `%s` directory has failed: %s', $path, $exception->getMessage());
         parent::__construct($message, $code, $previous);
     }
 }

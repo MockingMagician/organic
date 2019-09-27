@@ -1,24 +1,33 @@
 <?php
 
-namespace MockingMagician\Organic;
+/**
+ * @author Marc MOREAU <moreau.marc.web@gmail.com>
+ * @license https://github.com/MockingMagician/organic/blob/master/LICENSE.md CC-BY-SA-4.0
+ * @link https://github.com/MockingMagician/organic/blob/master/README.md
+ */
 
+namespace MockingMagician\Organic\Helper;
 
 use MockingMagician\Organic\Exception\CollectionValueException;
 use Traversable;
 
+/**
+ * Class Collection.
+ *
+ * @internal
+ */
 class Collection implements CollectionInterface, \Countable, \IteratorAggregate
 {
     /** @var \ArrayIterator */
     protected $iterator;
-    /** @var string[] */
     private $acceptClasses;
 
-    public function __construct(array $values = [], array $acceptClasses)
+    public function __construct(array $values, array $acceptClasses)
     {
         $this->acceptClasses = $acceptClasses;
         foreach ($values as $value) {
             if (!$this->isAcceptableValue($value)) {
-                throw new CollectionValueException(static::class, get_class($value));
+                throw new CollectionValueException(static::class, \get_class($value));
             }
         }
         $this->iterator = new \ArrayIterator($values);
@@ -38,7 +47,7 @@ class Collection implements CollectionInterface, \Countable, \IteratorAggregate
     public function add($value): CollectionInterface
     {
         if (!$this->isAcceptableValue($value)) {
-            throw new CollectionValueException(static::class, get_class($value));
+            throw new CollectionValueException(static::class, \get_class($value));
         }
 
         foreach ($this->iterator as $item) {
@@ -55,7 +64,7 @@ class Collection implements CollectionInterface, \Countable, \IteratorAggregate
     public function remove($value): CollectionInterface
     {
         if (!$this->isAcceptableValue($value)) {
-            throw new CollectionValueException(static::class, get_class($value));
+            throw new CollectionValueException(static::class, \get_class($value));
         }
 
         foreach ($this->iterator as $offset => $item) {
@@ -77,12 +86,15 @@ class Collection implements CollectionInterface, \Countable, \IteratorAggregate
     }
 
     /**
-     * Count elements of an object
-     * @link http://php.net/manual/en/countable.count.php
+     * Count elements of an object.
+     *
+     * @see http://php.net/manual/en/countable.count.php
+     *
      * @return int The custom count as an integer.
-     * </p>
-     * <p>
-     * The return value is cast to an integer.
+     *             </p>
+     *             <p>
+     *             The return value is cast to an integer.
+     *
      * @since 5.1.0
      */
     public function count()
@@ -91,10 +103,13 @@ class Collection implements CollectionInterface, \Countable, \IteratorAggregate
     }
 
     /**
-     * Retrieve an external iterator
-     * @link http://php.net/manual/en/iteratoraggregate.getiterator.php
+     * Retrieve an external iterator.
+     *
+     * @see http://php.net/manual/en/iteratoraggregate.getiterator.php
+     *
      * @return Traversable An instance of an object implementing <b>Iterator</b> or
-     * <b>Traversable</b>
+     *                     <b>Traversable</b>
+     *
      * @since 5.0.0
      */
     public function getIterator()

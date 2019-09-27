@@ -1,11 +1,18 @@
 <?php
 
-namespace MockingMagician\Organic;
+/**
+ * @author Marc MOREAU <moreau.marc.web@gmail.com>
+ * @license https://github.com/MockingMagician/organic/blob/master/LICENSE.md CC-BY-SA-4.0
+ * @link https://github.com/MockingMagician/organic/blob/master/README.md
+ */
 
+namespace MockingMagician\Organic\Collection;
+
+use MockingMagician\Organic\File;
 
 /**
- * Class InodeCollection
- * @package MockingMagician\Organic
+ * Class InodeCollection.
+ *
  * @method File current()
  * @method File next()
  */
@@ -13,6 +20,7 @@ class FileCollection extends Collection
 {
     /**
      * InodeCollection constructor.
+     *
      * @param Directory[] $Directories
      */
     public function __construct(array $Directories = [])
@@ -22,9 +30,10 @@ class FileCollection extends Collection
 
     /**
      * @param string[] $paths
+     *
      * @return self
      */
-    public static function createFromPaths(array $paths): CollectionInterface
+    public static function createFromPaths(array $paths): FileCollection
     {
         $inodes = [];
         foreach ($paths as $path) {

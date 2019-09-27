@@ -1,14 +1,24 @@
 <?php
 
+/**
+ * @author Marc MOREAU <moreau.marc.web@gmail.com>
+ * @license https://github.com/MockingMagician/organic/blob/master/LICENSE.md CC-BY-SA-4.0
+ * @link https://github.com/MockingMagician/organic/blob/master/README.md
+ */
+
 namespace MockingMagician\Organic;
 
+use MockingMagician\Organic\Collection\DirectoryCollection;
+use MockingMagician\Organic\Collection\FileCollection;
+use MockingMagician\Organic\Collection\InodeCollection;
+use MockingMagician\Organic\Exception\DirectoryCreateException;
 use MockingMagician\Organic\Exception\DirectoryDeleteException;
 use MockingMagician\Organic\Exception\DirectoryPathException;
 use MockingMagician\Organic\Helper\FilesystemIteratorFactory;
 
 class Directory extends Inode
 {
-    /** @var FilesystemIteratorFactory  */
+    /** @var FilesystemIteratorFactory */
     private $filesystemIterator;
 
     public function __construct(string $path)
@@ -82,8 +92,54 @@ class Directory extends Inode
         );
     }
 
+    public function delete(): bool
+    {
+        try {
+            /** @var Inode $inode */
+            foreach ($this->getRecursiveInodes() as $inode) {
+                $inode->delete();
+            }
+            \rmdir($this->getRealPath());
+        } catch (\Throwable $e) {
+            throw new DirectoryDeleteException($this->getRealPath(), $e);
+        }
+        $this->detachFromCollection();
+
+        return true;
+    }
+
+    public static function createDirectory(string $path, $permissions = 0777): Directory
+    {
+        if (\is_dir($path)) {
+            $directory = new Directory($path);
+        } else {
+            try {
+                \mkdir($path, $permissions, true);
+                $directory = new Directory($path);
+            } catch (\Throwable $e) {
+                throw new DirectoryCreateException($path, $e);
+            }
+        }
+
+        return $directory;
+    }
+
+    public function createSubDirectory(string $directoryName, $permissions = 0777): Directory
+    {
+        $path = $this->getRealPath().\DIRECTORY_SEPARATOR.$directoryName;
+
+        $directory = static::createDirectory($path);
+
+        if (null !== $this->attachedCollection) {
+            $this->attachedCollection->add($directory);
+        }
+
+        return $directory;
+    }
+
     /**
      * @param \Iterator $iterator
+     *
      * @return string[]
      */
     private function getPaths(\Iterator $iterator): array
@@ -95,24 +151,9 @@ class Directory extends Inode
             $paths[] = $fileInfo->getRealPath();
         }
 
-        $paths = array_unique($paths);
-        sort($paths);
+        $paths = \array_unique($paths);
+        \sort($paths);
 
         return $paths;
-    }
-
-    public function delete(): bool
-    {
-        try {
-            foreach ($this->getRecursiveInodes() as $inode)
-            {
-                $inode->delete();
-            }
-            rmdir($this->getRealPath());
-        } catch (\Throwable $e) {
-            throw new DirectoryDeleteException($this->getRealPath(), $e);
-        }
-
-        return true;
     }
 }

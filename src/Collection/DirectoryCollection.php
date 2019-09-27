@@ -1,21 +1,29 @@
 <?php
 
-namespace MockingMagician\Organic;
+/**
+ * @author Marc MOREAU <moreau.marc.web@gmail.com>
+ * @license https://github.com/MockingMagician/organic/blob/master/LICENSE.md CC-BY-SA-4.0
+ * @link https://github.com/MockingMagician/organic/blob/master/README.md
+ */
 
-use MockingMagician\Organic\Exception\DirectoryPathException;
-use MockingMagician\Organic\Exception\FilePathException;
-use MockingMagician\Organic\Exception\InodePathException;
+namespace MockingMagician\Organic\Collection;
+
+use MockingMagician\Organic\Directory;
 
 /**
- * Class InodeCollection
- * @package MockingMagician\Organic
+ * Class InodeCollection.
+ *
  * @method Directory current()
  * @method Directory next()
+ * @method int       key()
+ * @method bool      valid()
+ * @method void      rewind()
  */
 class DirectoryCollection extends Collection
 {
     /**
      * InodeCollection constructor.
+     *
      * @param Directory[] $Directories
      */
     public function __construct(array $Directories = [])
@@ -25,6 +33,7 @@ class DirectoryCollection extends Collection
 
     /**
      * @param string[] $paths
+     *
      * @return self
      */
     public static function createFromPaths(array $paths): DirectoryCollection

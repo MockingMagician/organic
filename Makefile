@@ -1,10 +1,5 @@
 tests: phpunit phpcs-check phpstan ## Run tests suite
 
-init: ## Init git after clone
-	rm -Rf .git
-	git init
-	composer --ignore-platform-reqs install
-
 bench: ## Run benchmarks
 	vendor/bin/phpbench run --report='generator: "table", break: ["benchmark", "revs"], cols: ["subject", "mean"]' --bootstrap='vendor/autoload.php' benchmarks
 
