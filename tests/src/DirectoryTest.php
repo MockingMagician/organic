@@ -19,13 +19,13 @@ use PHPUnit\Framework\TestCase;
  */
 class DirectoryTest extends TestCase
 {
-    public const ROOT_TREE = __DIR__.'/../env/root_tree';
+    public const ROOT_TREE = __DIR__.'/../var/root_tree';
 
     public static function setUpBeforeClass(): void
     {
         parent::setUpBeforeClass();
         echo \shell_exec(\implode(' && ', [
-            \sprintf('cd %s', \escapeshellarg(\realpath(__DIR__.'/../env'))),
+            \sprintf('cd %s', \escapeshellarg(\realpath(__DIR__.'/../var'))),
             'rm -Rf root_tree',
             'rm -Rf moved_root_tree',
             'cp -rf root_tree_snapshot root_tree',

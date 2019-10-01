@@ -3,10 +3,12 @@
 namespace MockingMagician\Organic;
 
 
-class ReadWriteFile implements ReadWriteFileInterface
+class IOFile implements IOFileInterface
 {
     /** @var resource */
     private $handler;
+    private $path;
+    private $openMode;
 
     /**
      * ReadWriteFileInterface constructor.
@@ -16,11 +18,9 @@ class ReadWriteFile implements ReadWriteFileInterface
      */
     public function __construct(string $path, string $openMode = "r")
     {
-        $handler = fopen($path, $openMode);
-        if (is_bool($handler)) {
-            throw new \Exception();
-        }
-        $this->handler = $handler;
+        $this->path = $path;
+        $this->openMode = $openMode;
+        $this->handler = $this->openHandler();
     }
 
     /**
@@ -145,5 +145,86 @@ class ReadWriteFile implements ReadWriteFileInterface
     public function write(string $str, int $length = null): int
     {
         return fwrite($this->handler, $str, $length);
+    }
+
+    /**
+     * Reads entire file into a string
+     * It close the internal file handler before calling file_get_contents()
+     * and after operate reopen a new one with the same parameters
+     * @return string
+     * @throws \Exception
+     */
+    public function getContent(): string
+    {
+        $this->closeHandler();
+        $content = file_get_contents($this->path);
+        $this->openHandler();
+
+        return $content;
+    }
+
+    /**
+     * Write data to the file
+     * It close the internal file handler before calling file_put_contents()
+     * and after operate reopen a new one with the same parameters
+     * file_put_contents() is called with LOCK_EX
+     * @param mixed $data
+     * @return int
+     * @throws \Exception
+     */
+    public function putContent($data): int
+    {
+        $this->closeHandler();
+        $bytes = file_put_contents($this->path, $data, LOCK_EX);
+        $this->openHandler();
+
+        if (is_bool($bytes)) {
+            throw new \Exception();
+        }
+
+        return $bytes;
+    }
+
+    /**
+     * Append data to the file
+     * It close the internal file handler before calling file_put_contents()
+     * and after operate reopen a new one with the same parameters
+     * file_put_contents() is called with LOCK_EX | LOCK_APPEND
+     * @param mixed $data
+     * @return int
+     * @throws \Exception
+     */
+    public function addContent($data): int
+    {
+        $this->closeHandler();
+        $bytes = file_put_contents($this->path, $data, LOCK_EX | FILE_APPEND);
+        $this->openHandler();
+
+        if (is_bool($bytes)) {
+            throw new \Exception();
+        }
+
+        return $bytes;
+    }
+
+    /**
+     * @throws \Exception
+     */
+    protected function openHandler()
+    {
+        $handler = fopen($this->path, $this->openMode);
+        if (is_resource($handler)) {
+            $this->handler = $handler;
+            return;
+        }
+
+        throw new \Exception();
+    }
+
+    protected function closeHandler()
+    {
+        if (is_resource($this->handler)) {
+            fclose($this->handler);
+        }
     }
 }

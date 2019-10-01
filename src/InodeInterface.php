@@ -16,4 +16,10 @@ interface InodeInterface extends FileInfoInterface
      * @return InodeInterface
      */
     public static function create(string $path): InodeInterface;
+
+    /**
+     * @param string $path
+     * @return InodeInterface
+     */
+    public function createLink(string $path): InodeInterface;
 }

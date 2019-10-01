@@ -3,7 +3,10 @@
 namespace MockingMagician\Organic;
 
 
+use MockingMagician\Organic\Exception\FileAlreadyExistException;
+use MockingMagician\Organic\Exception\FileCreateException;
 use MockingMagician\Organic\Exception\FileDeleteException;
+use MockingMagician\Organic\Exception\FileLinkCreateException;
 use MockingMagician\Organic\Exception\FilePathException;
 
 class FileObject extends AbstractInode implements FileInterface
@@ -11,8 +14,8 @@ class FileObject extends AbstractInode implements FileInterface
     public function __construct(string $path)
     {
         parent::__construct($path);
-        if (!is_file($path)) {
-            throw new FilePathException($path);
+        if (!is_file($this->path)) {
+            throw new FilePathException($this->path);
         }
     }
 
@@ -45,21 +48,19 @@ class FileObject extends AbstractInode implements FileInterface
     /**
      * @param string $path
      * @param $permissions
-     * @return InodeInterface
+     * @return FileObject|InodeInterface
      * @throws \Exception
      */
     static function create(string $path, $permissions = 0666): InodeInterface
     {
         if (file_exists($path)) {
-            throw new \Exception();
+            throw new FileAlreadyExistException($path);
         }
         try {
-            $handler = fopen($path, 'x');
-            flock($handler, LOCK_EX);
-            fclose($handler);
+            file_put_contents($path, '', LOCK_EX);
             chmod($path, $permissions);
         } catch (\Throwable $e) {
-            throw new \Exception();
+            throw new FileCreateException($path, $e);
         }
         if (!file_exists($path)) {
             throw new \Exception();
@@ -69,13 +70,28 @@ class FileObject extends AbstractInode implements FileInterface
     }
 
     /**
+     * @param string $path
+     * @return InodeInterface
+     */
+    public function createLink(string $path): InodeInterface
+    {
+        try {
+            symlink($this->path, $path);
+        } catch (\Throwable $e) {
+            throw new FileLinkCreateException($this->path, $path, $e);
+        }
+
+        return new static($path);
+    }
+
+    /**
      * Get an interface for read or write in file
      * @param string $openMode
-     * @return ReadWriteFileInterface
+     * @return IOFileInterface
      * @throws \Exception
      */
-    public function getReaderWriter(string $openMode = "r"): ReadWriteFileInterface
+    public function getIO(string $openMode = "r"): IOFileInterface
     {
-        return new ReadWriteFile($this->path, $openMode);
+        return new IOFile($this->path, $openMode);
     }
 }

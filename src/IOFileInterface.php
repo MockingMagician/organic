@@ -3,7 +3,7 @@
 namespace MockingMagician\Organic;
 
 
-interface ReadWriteFileInterface
+interface IOFileInterface
 {
     /**
      * LOCK_* refers to $operations of lock()
@@ -107,4 +107,32 @@ interface ReadWriteFileInterface
      * @return int - the number of bytes written, or 0 on error.
      */
     public function write(string $str, int $length = null): int;
+
+    /**
+     * Reads entire file into a string
+     * It close the internal file handler before calling file_get_contents()
+     * and after operate reopen a new one with the same parameters
+     * @return string
+     */
+    public function getContent(): string;
+
+    /**
+     * Write data to the file
+     * It close the internal file handler before calling file_put_contents()
+     * and after operate reopen a new one with the same parameters
+     * file_put_contents() is called with LOCK_EX
+     * @param mixed $data
+     * @return int
+     */
+    public function putContent($data): int;
+
+    /**
+     * Append data to the file
+     * It close the internal file handler before calling file_put_contents()
+     * and after operate reopen a new one with the same parameters
+     * file_put_contents() is called with LOCK_EX | LOCK_APPEND
+     * @param mixed $data
+     * @return int
+     */
+    public function addContent($data): int;
 }

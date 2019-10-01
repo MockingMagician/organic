@@ -29,6 +29,9 @@
         <testsuite name="Global">
             <directory>tests/src</directory>
         </testsuite>
+        <testsuite name="File behavior">
+            <directory>tests/src/File</directory>
+        </testsuite>
     </testsuites>
 
     <filter>

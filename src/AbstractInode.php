@@ -3,6 +3,7 @@
 namespace MockingMagician\Organic;
 
 
+use MockingMagician\Organic\Exception\FileLinkException;
 use MockingMagician\Organic\Exception\InodePathException;
 
 abstract class AbstractInode implements InodeInterface
@@ -18,6 +19,7 @@ abstract class AbstractInode implements InodeInterface
      */
     public function __construct(string $path)
     {
+        clearstatcache(true, $path);
         if (!file_exists($path)) {
             throw new InodePathException($path);
         }
@@ -115,9 +117,11 @@ abstract class AbstractInode implements InodeInterface
     {
         clearstatcache(true, $this->path);
 
-        $splFile = new \SplFileInfo($this->path);
+        if (!is_link($this->path)) {
+            throw new FileLinkException($this->path);
+        }
 
-        return $splFile->getLinkTarget();
+        return readlink($this->path);
     }
 
     /**
