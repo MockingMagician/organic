@@ -8,6 +8,16 @@ use PHPUnit\Framework\TestCase;
 /**
  * This test class of SplFileInfo is provided for explicitly describe the comportment of SplFileInfo
  *
+ * Abstract:
+ *
+ * To resolve:
+ * - Internal path is recorded as is, an internal realpath function-like but with no symlink resolve
+ * should be implemented for path recording
+ * - getLinkTarget should return link path for symlink and for hardlink
+ * - getRealPath should return realpath for symlink and for hardlink
+ * - php cache some information about files, each time we've got some information clearstatcache function should
+ * be call for be sure to get real time information
+ *
  * Class SplFileInfoTest
  * @package MockingMagician\Organic\Tests\InternalPHP
  */
@@ -22,6 +32,8 @@ class SplFileInfoTest extends TestCase
     private $symlinkPath;
     /** @var string */
     private $hardlinkPath;
+    /** @var string */
+    private $symlinkDirPath;
 
     /** @var SplFileInfo */
     private $file;
@@ -31,11 +43,13 @@ class SplFileInfoTest extends TestCase
     private $symlink;
     /** @var SplFileInfo */
     private $hardlink;
+    /** @var SplFileInfo */
+    private $symlinkDir;
 
     public function setUp(): void
     {
         if ('Linux' !== PHP_OS) {
-            throw new \RuntimeException('This test should be run on Linux only');
+            throw new \RuntimeException('This tests needs OS interaction. For now, they only designed for linux');
         }
 
         shell_exec(implode(' && ', [
@@ -45,6 +59,7 @@ class SplFileInfoTest extends TestCase
             sprintf('echo "%s" > file.txt', str_repeat('0123456789', 50)),
             'ln file.txt hardlink.hl',
             'ln -s file.txt symlink.sl',
+            'ln -s . symlink.directory',
         ]));;
 
         parent::setUp();
@@ -53,11 +68,13 @@ class SplFileInfoTest extends TestCase
         $this->filePath = $this->dirPath.'/file.txt';
         $this->symlinkPath = $this->dirPath.'/symlink.sl';
         $this->hardlinkPath = $this->dirPath.'/hardlink.hl';
+        $this->symlinkDirPath = $this->dirPath.'/symlink.directory';
 
         $this->dir = new SplFileInfo($this->dirPath);
         $this->file = new SplFileInfo($this->filePath);
         $this->symlink = new SplFileInfo($this->symlinkPath);
         $this->hardlink = new SplFileInfo($this->hardlinkPath);
+        $this->symlinkDir = new SplFileInfo($this->symlinkDirPath);
     }
 
     /**
@@ -125,7 +142,7 @@ class SplFileInfoTest extends TestCase
     }
 
     /**
-     * Return the last component like basename() does
+     * Return the last component like basename(path, null) does
      */
     public function testGetFilename()
     {
@@ -203,32 +220,83 @@ class SplFileInfoTest extends TestCase
      */
     public function testGetSize()
     {
-        $fileSize = $this->file->getSize();
-        $symlinkSize = $this->file->getSize();
-        $hardLinkSize = $this->file->getSize();
-        static::assertEquals($fileSize, $symlinkSize);
-        static::assertEquals($fileSize, $hardLinkSize);
+        $originalFileSize = $this->file->getSize();
+        $originalSymlinkSize = $this->file->getSize();
+        $originalHardLinkSize = $this->file->getSize();
+        static::assertEquals($originalFileSize, $originalSymlinkSize);
+        static::assertEquals($originalFileSize, $originalHardLinkSize);
+
         file_put_contents($this->filePath, str_repeat('0123456789', 50), FILE_APPEND);
-        $fileSize2 = $this->file->getSize();
+
+        $fileSizeNotUpdated = $this->file->getSize();
         // We can see than file size is not updated! ...
-        static::assertEquals($fileSize, $fileSize2);
-        static::assertEquals($fileSize2, $symlinkSize);
-        static::assertEquals($fileSize2, $hardLinkSize);
-        // ... But it is the updated size for hardlink and symlink :-/ !
-        $symlinkSize2 = $this->symlink->getSize();
-        $hardLinkSize2 = $this->hardlink->getSize();
-        static::assertNotEquals($fileSize, $symlinkSize2);
-        static::assertNotEquals($fileSize, $hardLinkSize2);
-        // ... But if we clearstatcache it is ...
+        static::assertEquals($originalFileSize, $fileSizeNotUpdated);
+
+        // ... But we've got the updated size for hardlink and symlink :-/ !
+        $symlinkSizeUpdated = $this->symlink->getSize();
+        $hardLinkSizeUpdated = $this->hardlink->getSize();
+        static::assertNotEquals($originalFileSize, $symlinkSizeUpdated);
+        static::assertNotEquals($originalFileSize, $hardLinkSizeUpdated);
+
+        // ... But if we clearstatcache it is now good ...
         clearstatcache(true, $this->filePath);
-        $fileSize3 = $this->file->getSize();
-        static::assertNotEquals($fileSize, $fileSize3);
-        static::assertNotEquals($fileSize3, $symlinkSize);
-        static::assertNotEquals($fileSize3, $hardLinkSize);
+        $fileSizeUpdated = $this->file->getSize();
+        static::assertNotEquals($originalFileSize, $fileSizeUpdated);
+
         // And what about if file disappear ?
         unlink($this->filePath);
         static::expectExceptionMessage(sprintf('SplFileInfo::getSize(): stat failed for %s', $this->filePath));
         $this->file->getSize();
+    }
+
+    /**
+     * Ok let's try to get file size again but let's try with a modification from outside of the script
+     * and check the react
+     * Reaction is similar except if file was delete from outside, in this case we get the last cached size!
+     * Not what we expect!
+     */
+    public function testGetSizeOutsideOfTheBox()
+    {
+        $originalFileSize = $this->file->getSize();
+        $originalSymlinkSize = $this->file->getSize();
+        $originalHardLinkSize = $this->file->getSize();
+        static::assertEquals($originalFileSize, $originalSymlinkSize);
+        static::assertEquals($originalFileSize, $originalHardLinkSize);
+
+        shell_exec(implode(' && ', [
+            sprintf('cd %s', __DIR__),
+            'cd ../../var/internal_php',
+            'echo "0123456789" >> file.txt',
+        ]));
+
+        $fileSizeNotUpdated = $this->file->getSize();
+        // We can see than file size is not updated! ...
+        static::assertEquals($originalFileSize, $fileSizeNotUpdated);
+
+        // ... But we've got the updated size for hardlink and symlink :-/ !
+        $symlinkSizeUpdated = $this->symlink->getSize();
+        $hardLinkSizeUpdated = $this->hardlink->getSize();
+        static::assertNotEquals($originalFileSize, $symlinkSizeUpdated);
+        static::assertNotEquals($originalFileSize, $hardLinkSizeUpdated);
+
+        // ... But if we clearstatcache it is now good ...
+        clearstatcache(true, $this->filePath);
+        $fileSizeUpdated = $this->file->getSize();
+        static::assertNotEquals($originalFileSize, $fileSizeUpdated);
+
+        // And what about if file disappear ?
+        shell_exec(implode(' && ', [
+            sprintf('cd %s', __DIR__),
+            'cd ../../var/internal_php',
+            'unlink file.txt',
+        ]));
+
+        // Whaou! We get a size for a file that does not exist!
+        static::assertIsInt($this->file->getSize());
+
+        // But like expected symlink is resolved and we've got an error
+        static::expectExceptionMessage(sprintf('SplFileInfo::getSize(): stat failed for %s', $this->symlink));
+        $this->symlink->getSize();
     }
 
     /**
@@ -259,9 +327,7 @@ class SplFileInfoTest extends TestCase
     }
 
     /**
-     * Should get the creation time. So it will never change except if a newer
-     * But in reality it return the modification time
-     * Creation time directory never change
+     * Should get the Change time. Change time is about permission change and/or content modification too
      */
     public function testGetCTime()
     {
@@ -297,10 +363,16 @@ class SplFileInfoTest extends TestCase
         static::assertNotEquals($fileCTime, $fileCTime2);
         static::assertNotEquals($symlinkCTime, $symlinkCTime2);
         static::assertNotEquals($hardlinkCTime, $hardlinkCTime2);
+
+        sleep(1);
+
+        chmod($this->filePath, 0622);
+        $fileCTime3 = $this->file->getCTime();
+        static::assertNotEquals($fileCTime2, $fileCTime3);
     }
 
     /**
-     * Should return the modification time
+     * Should return the modification time (Understand modification as content change only)
      */
     public function testGetMTime()
     {
@@ -336,65 +408,205 @@ class SplFileInfoTest extends TestCase
         static::assertNotEquals($fileMTime, $fileMTime2);
         static::assertNotEquals($symlinkMTime, $symlinkMTime2);
         static::assertNotEquals($hardlinkMTime, $hardlinkMTime2);
+
+        sleep(1);
+
+        chmod($this->filePath, 0622);
+        $fileMTime3 = $this->file->getMTime();
+        static::assertEquals($fileMTime2, $fileMTime3);
     }
 
-//    public function testGetPerms()
-//    {
-//
-//    }
-//
-//    public function testGetBasename()
-//    {
-//
-//    }
-//
-//    public function testIsDir()
-//    {
-//
-//    }
-//
-//    public function testGetOwner()
-//    {
-//
-//    }
-//
-//    public function testGetGroup()
-//    {
-//
-//    }
-//
-//    public function testSetInfoClass()
-//    {
-//
-//    }
-//
-//    public function testIsExecutable()
-//    {
-//
-//    }
-//
-//    public function testGetPathInfo()
-//    {
-//
-//    }
-//
-//    public function testGetExtension()
-//    {
-//
-//    }
-//
-//    public function testIsLink()
-//    {
-//
-//    }
-//
-//    public function testIsWritable()
-//    {
-//
-//    }
-//
-//    public function testOpenFile()
-//    {
-//
-//    }
+    /**
+     * Let's try again the time function but with some files modification from the outside ot that script
+     * As result, we see no side effects, it's like stat was not being cached by PHP
+     */
+    public function testGetTimesOutOfTheBox()
+    {
+        $fileATime = $this->file->getATime();
+        $symlinkATime = $this->symlink->getATime();
+        $hardlinkATime = $this->hardlink->getATime();
+
+        sleep(1);
+
+        shell_exec(implode(' && ', [
+            sprintf('cd %s', __DIR__),
+            'cd ../../var/internal_php',
+            'cat file.txt',
+        ]));
+
+        static::assertNotEquals($fileATime, $this->file->getATime());
+        static::assertNotEquals($symlinkATime, $this->symlink->getATime());
+        static::assertNotEquals($hardlinkATime, $this->hardlink->getATime());
+
+        $fileMTime = $this->file->getMTime();
+        $symlinkMTime = $this->symlink->getMTime();
+        $hardlinkMTime = $this->hardlink->getMTime();
+
+        sleep(1);
+
+        shell_exec(implode(' && ', [
+            sprintf('cd %s', __DIR__),
+            'cd ../../var/internal_php',
+            'echo "0123456789" >> file.txt',
+        ]));
+
+        static::assertNotEquals($fileMTime, $this->file->getMTime());
+        static::assertNotEquals($symlinkMTime, $this->symlink->getMTime());
+        static::assertNotEquals($hardlinkMTime, $this->hardlink->getMTime());
+
+        $fileCTime = $this->file->getCTime();
+        $symlinkCTime = $this->symlink->getCTime();
+        $hardlinkCTime = $this->hardlink->getCTime();
+
+        sleep(1);
+
+        shell_exec(implode(' && ', [
+            sprintf('cd %s', __DIR__),
+            'cd ../../var/internal_php',
+            'chmod o-w file.txt',
+        ]));
+
+        static::assertNotEquals($fileCTime, $this->file->getCTime());
+        static::assertNotEquals($symlinkCTime, $this->symlink->getCTime());
+        static::assertNotEquals($hardlinkCTime, $this->hardlink->getCTime());
+    }
+
+    /**
+     * Get Permission integer mode
+     */
+    public function testGetPerms()
+    {
+        $filePerms = $this->file->getPerms();
+        $symlinkPerms = $this->symlink->getPerms();
+        $hardlinkPerms = $this->hardlink->getPerms();
+
+        chmod($this->filePath, 0622);
+
+        $filePermsUpdated = $this->file->getPerms();
+        $symlinkPermsUpdated = $this->symlink->getPerms();
+        $hardlinkPermsUpdated = $this->hardlink->getPerms();
+
+        static::assertNotEquals($filePerms, $filePermsUpdated);
+        static::assertNotEquals($symlinkPerms, $symlinkPermsUpdated);
+        static::assertNotEquals($hardlinkPerms, $hardlinkPermsUpdated);
+    }
+
+    /**
+     * Return the last component like basename(path, endStringToRemove) does
+     */
+    public function testGetBasename()
+    {
+        static::assertEquals(basename($this->dirPath), $this->dir->getBasename());
+        static::assertEquals(basename($this->filePath), $this->file->getBasename());
+        static::assertEquals(basename($this->symlinkPath), $this->symlink->getBasename());
+        static::assertEquals(basename($this->hardlinkPath), $this->hardlink->getBasename());
+    }
+
+    /**
+     * Test if is a directory
+     */
+    public function testIsDir()
+    {
+        static::assertTrue($this->dir->isDir());
+        static::assertFalse($this->file->isDir());
+        static::assertFalse($this->symlink->isDir());
+        static::assertFalse($this->hardlink->isDir());
+        static::assertTrue($this->symlinkDir->isDir());
+    }
+
+    /**
+     * Get the owner id
+     */
+    public function testGetOwner()
+    {
+        static::assertEquals(posix_getuid(), $this->dir->getOwner());
+        static::assertEquals(posix_getuid(), $this->file->getOwner());
+        static::assertEquals(posix_getuid(), $this->symlink->getOwner());
+        static::assertEquals(posix_getuid(), $this->hardlink->getOwner());
+    }
+
+    /**
+     *
+     */
+    public function testGetGroup()
+    {
+        static::assertEquals(posix_getgid(), $this->dir->getGroup());
+        static::assertEquals(posix_getgid(), $this->file->getGroup());
+        static::assertEquals(posix_getgid(), $this->symlink->getGroup());
+        static::assertEquals(posix_getgid(), $this->hardlink->getGroup());
+    }
+
+
+    /**
+     *
+     */
+    public function testIsExecutable()
+    {
+        static::assertTrue($this->dir->isExecutable());
+        static::assertFalse($this->file->isExecutable());
+        static::assertFalse($this->symlink->isExecutable());
+        static::assertFalse($this->hardlink->isExecutable());
+        static::assertTrue($this->symlinkDir->isExecutable());
+
+        chmod($this->filePath, 0777);
+
+        static::assertTrue($this->file->isExecutable());
+        static::assertTrue($this->symlink->isExecutable());
+        static::assertTrue($this->hardlink->isExecutable());
+
+        chmod($this->filePath, 0666);
+
+        static::assertFalse($this->file->isExecutable());
+        static::assertFalse($this->symlink->isExecutable());
+        static::assertFalse($this->hardlink->isExecutable());
+
+        shell_exec(implode(' && ', [
+            sprintf('cd %s', __DIR__),
+            'cd ../../var/internal_php',
+            'chmod a+x file.txt',
+        ]));
+
+        static::assertTrue($this->file->isExecutable());
+        static::assertTrue($this->symlink->isExecutable());
+        static::assertTrue($this->hardlink->isExecutable());
+    }
+
+    public function testIsWritable()
+    {
+        static::assertTrue($this->dir->isWritable());
+        static::assertTrue($this->file->isWritable());
+        static::assertTrue($this->symlink->isWritable());
+        static::assertTrue($this->hardlink->isWritable());
+        static::assertTrue($this->symlinkDir->isWritable());
+
+        chmod($this->filePath, 0555);
+
+        static::assertFalse($this->file->isWritable());
+        static::assertFalse($this->symlink->isWritable());
+        static::assertFalse($this->hardlink->isWritable());
+    }
+
+    /**
+     * return the extension following REGEX: \..+$
+     */
+    public function testGetExtension()
+    {
+        static::assertEquals('', $this->dir->getExtension());
+        static::assertEquals('txt', $this->file->getExtension());
+        static::assertEquals('sl', $this->symlink->getExtension());
+        static::assertEquals('hl', $this->hardlink->getExtension());
+        static::assertEquals('directory', $this->symlinkDir->getExtension());
+    }
+
+    /**
+     * return true for symlink but false for hardlink
+     */
+    public function testIsLink()
+    {
+        static::assertFalse($this->dir->isLink());
+        static::assertFalse($this->file->isLink());
+        static::assertTrue($this->symlink->isLink());
+        static::assertFalse($this->hardlink->isLink());
+        static::assertTrue($this->symlinkDir->isLink());
+    }
 }
