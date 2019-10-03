@@ -89,7 +89,7 @@ class SplFileInfoTest extends TestCase
     }
 
     /**
-     * getPath return dir path that contain the file | So name should be getDirectoryContainerPath
+     * getPath return dir path that contain the file | So name should be getDirectoryContainerPath or a something like
      */
     public function testGetPath()
     {

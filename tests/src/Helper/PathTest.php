@@ -11,22 +11,22 @@ class PathTest extends TestCase
     public function testGetAbsolute()
     {
         echo "\n";
-        echo Path::getAbsolute('/one/two/../two/./three/../../two');
+        echo Path::clean('/one/two/../two/./three/../../two');
         echo "\n";
-        echo Path::getAbsolute('../one/two/../two/./three/../../two');
+        echo Path::clean('../one/two/../two/./three/../../two');
         echo "\n";
-        echo Path::getAbsolute('../.././../one/two/../two/./three/../../two');
+        echo Path::clean('../.././../one/two/../two/./three/../../two');
         echo "\n";
-        echo Path::getAbsolute('../././../one/two/../two/./three/../../two');
+        echo Path::clean('../././../one/two/../two/./three/../../two');
         echo "\n";
-        echo Path::getAbsolute('/../one/two/../two/./three/../../two');
+        echo Path::clean('/../one/two/../two/./three/../../two');
         echo "\n";
-        echo Path::getAbsolute('/../../one/two/../two/./three/../../two');
+        echo Path::clean('/../../one/two/../two/./three/../../two');
         echo "\n";
-        echo Path::getAbsolute('c:\.\..\one\two\..\two\.\three\..\..\two');
+        echo Path::clean('c:\.\..\one\two\..\two\.\three\..\..\two');
         echo "\n";
-        echo Path::getAbsolute(__DIR__);
+        echo Path::clean(__DIR__);
         echo "\n";
-        echo Path::getAbsolute(__DIR__.'/../../one/two/../two/./three/../../two');
+        echo Path::clean(__DIR__.'/../../one/two/../two/./three/../../two');
     }
 }

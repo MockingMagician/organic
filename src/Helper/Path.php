@@ -8,10 +8,11 @@ class Path
     /**
      * There is a method that deal with Sven Arduwie proposal https://www.php.net/manual/en/function.realpath.php#84012
      * And runeimp at gmail dot com proposal https://www.php.net/manual/en/function.realpath.php#112367
+     *
      * @param string $path
      * @return string
      */
-    public static function getAbsolute(string $path): string
+    public static function clean(string $path): string
     {
         // Cleaning path regarding OS
         $path = mb_ereg_replace('\\\\|/', DIRECTORY_SEPARATOR, $path, 'msr');
