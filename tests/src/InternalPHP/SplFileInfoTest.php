@@ -49,7 +49,7 @@ class SplFileInfoTest extends TestCase
     public function setUp(): void
     {
         if ('Linux' !== PHP_OS) {
-            throw new \RuntimeException('This tests needs OS interaction. For now, they only designed for linux');
+            exit('This tests needs OS interaction. For now, they only designed for linux');
         }
 
         shell_exec(implode(' && ', [
@@ -60,7 +60,7 @@ class SplFileInfoTest extends TestCase
             'ln file.txt hardlink.hl',
             'ln -s file.txt symlink.sl',
             'ln -s . symlink.directory',
-        ]));;
+        ]));
 
         parent::setUp();
 
@@ -75,6 +75,22 @@ class SplFileInfoTest extends TestCase
         $this->symlink = new SplFileInfo($this->symlinkPath);
         $this->hardlink = new SplFileInfo($this->hardlinkPath);
         $this->symlinkDir = new SplFileInfo($this->symlinkDirPath);
+    }
+
+    public function tearDown(): void
+    {
+        if ('Linux' !== PHP_OS) {
+            exit('This tests needs OS interaction. For now, they only designed for linux');
+        }
+
+        shell_exec(implode(' && ', [
+            sprintf('cd %s', __DIR__),
+            'cd ../../var/internal_php',
+            'rm -Rf *',
+            'echo "*\n!.gitignore" > .gitignore',
+        ]));
+
+        parent::tearDown();
     }
 
     /**
