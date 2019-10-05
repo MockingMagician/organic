@@ -1,7 +1,12 @@
 <?php
 
-namespace MockingMagician\Organic;
+/**
+ * @author Marc MOREAU <moreau.marc.web@gmail.com>
+ * @license https://github.com/MockingMagician/organic/blob/master/LICENSE.md CC-BY-SA-4.0
+ * @link https://github.com/MockingMagician/organic/blob/master/README.md
+ */
 
+namespace MockingMagician\Organic;
 
 use MockingMagician\Organic\Exception\FilePathException;
 use MockingMagician\Organic\Helper\Path;
@@ -15,13 +20,28 @@ class FileInfo implements \Serializable
     public function __construct(string $path)
     {
         $cleanedPath = Path::clean($path);
-        clearstatcache(true, $cleanedPath);
-        if (!file_exists($cleanedPath)) {
+        \clearstatcache(true, $cleanedPath);
+        if (!\file_exists($cleanedPath)) {
             throw new FilePathException($cleanedPath);
         }
 
         $this->path = $cleanedPath;
         $this->internalSplFileInfo = new \SplFileInfo($this->path);
+    }
+
+    private function __getTime(string $method): \DateTimeImmutable
+    {
+        \clearstatcache(true, $this->path);
+
+        $time = new \DateTime();
+        $time->setTimestamp($this->internalSplFileInfo->{$method}());
+
+        return \DateTimeImmutable::createFromMutable($time);
+    }
+
+    public function __toString()
+    {
+        return $this->path;
     }
 
     public function getPath(): string
@@ -81,7 +101,7 @@ class FileInfo implements \Serializable
 
     public function getSize(): int
     {
-        clearstatcache(true, $this->path);
+        \clearstatcache(true, $this->path);
 
         return $this->internalSplFileInfo->getSize();
     }
@@ -101,44 +121,34 @@ class FileInfo implements \Serializable
         return $this->__getTime('getCTime');
     }
 
-    private function __getTime(string $method): \DateTimeImmutable
-    {
-        clearstatcache(true, $this->path);
-
-        $time = new \DateTime();
-        $time->setTimestamp($this->internalSplFileInfo->$method());
-
-        return \DateTimeImmutable::createFromMutable($time);
-    }
-
-    public function __toString()
-    {
-        return $this->path;
-    }
-
     /**
-     * String representation of object
-     * @link http://php.net/manual/en/serializable.serialize.php
+     * String representation of object.
+     *
+     * @see http://php.net/manual/en/serializable.serialize.php
+     *
      * @return string the string representation of the object or null
+     *
      * @since 5.1.0
      */
     public function serialize()
     {
-        return serialize($this->path);
+        return \serialize($this->path);
     }
 
     /**
-     * Constructs the object
-     * @link http://php.net/manual/en/serializable.unserialize.php
+     * Constructs the object.
+     *
+     * @see http://php.net/manual/en/serializable.unserialize.php
+     *
      * @param string $serialized <p>
-     * The string representation of the object.
-     * </p>
-     * @return void
+     *                           The string representation of the object.
+     *                           </p>
+     *
      * @since 5.1.0
      */
-    public function unserialize($serialized)
+    public function unserialize($serialized): void
     {
-        $path = unserialize($serialized);
+        $path = \unserialize($serialized);
         $this->__construct($path);
     }
 }

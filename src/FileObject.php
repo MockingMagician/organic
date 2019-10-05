@@ -1,7 +1,12 @@
 <?php
 
-namespace MockingMagician\Organic;
+/**
+ * @author Marc MOREAU <moreau.marc.web@gmail.com>
+ * @license https://github.com/MockingMagician/organic/blob/master/LICENSE.md CC-BY-SA-4.0
+ * @link https://github.com/MockingMagician/organic/blob/master/README.md
+ */
 
+namespace MockingMagician\Organic;
 
 use MockingMagician\Organic\Exception\FileAlreadyExistException;
 use MockingMagician\Organic\Exception\FileCreateException;
@@ -14,30 +19,32 @@ class FileObject extends AbstractInode implements FileInterface
     public function __construct(string $path)
     {
         parent::__construct($path);
-        if (!is_file($this->path)) {
+        if (!\is_file($this->path)) {
             throw new FilePathException($this->path);
         }
     }
 
     /**
-     * Returns the files size in bytes
+     * Returns the files size in bytes.
+     *
      * @return int
      */
-    function getSize(): int
+    public function getSize(): int
     {
-        clearstatcache(true, $this->path);
+        \clearstatcache(true, $this->path);
 
-        return filesize($this->path);
+        return \filesize($this->path);
     }
 
     /**
-     * Delete the inode. An inode is a file or a directory
+     * Delete the inode. An inode is a file or a directory.
+     *
      * @return bool in case of success
      */
-    function delete(): bool
+    public function delete(): bool
     {
         try {
-            unlink($this->path);
+            \unlink($this->path);
         } catch (\Throwable $e) {
             throw new FileDeleteException($this->path, $e);
         }
@@ -48,21 +55,24 @@ class FileObject extends AbstractInode implements FileInterface
     /**
      * @param string $path
      * @param $permissions
-     * @return FileObject|InodeInterface
+     *
      * @throws \Exception
+     *
+     * @return FileObject|InodeInterface
      */
-    static function create(string $path, $permissions = 0666): InodeInterface
+    public static function create(string $path, $permissions = 0666): InodeInterface
     {
-        if (file_exists($path)) {
+        if (\file_exists($path)) {
             throw new FileAlreadyExistException($path);
         }
+
         try {
-            file_put_contents($path, '', LOCK_EX);
-            chmod($path, $permissions);
+            \file_put_contents($path, '', LOCK_EX);
+            \chmod($path, $permissions);
         } catch (\Throwable $e) {
             throw new FileCreateException($path, $e);
         }
-        if (!file_exists($path)) {
+        if (!\file_exists($path)) {
             throw new \Exception();
         }
 
@@ -71,12 +81,13 @@ class FileObject extends AbstractInode implements FileInterface
 
     /**
      * @param string $path
+     *
      * @return InodeInterface
      */
     public function createLink(string $path): InodeInterface
     {
         try {
-            symlink($this->path, $path);
+            \symlink($this->path, $path);
         } catch (\Throwable $e) {
             throw new FileLinkCreateException($this->path, $path, $e);
         }
@@ -85,12 +96,15 @@ class FileObject extends AbstractInode implements FileInterface
     }
 
     /**
-     * Get an interface for read or write in file
+     * Get an interface for read or write in file.
+     *
      * @param string $openMode
-     * @return IOFileInterface
+     *
      * @throws \Exception
+     *
+     * @return IOFileInterface
      */
-    public function getIO(string $openMode = "r"): IOFileInterface
+    public function getIO(string $openMode = 'r'): IOFileInterface
     {
         return new IOFile($this->path, $openMode);
     }

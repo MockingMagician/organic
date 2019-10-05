@@ -1,7 +1,12 @@
 <?php
 
-namespace MockingMagician\Organic;
+/**
+ * @author Marc MOREAU <moreau.marc.web@gmail.com>
+ * @license https://github.com/MockingMagician/organic/blob/master/LICENSE.md CC-BY-SA-4.0
+ * @link https://github.com/MockingMagician/organic/blob/master/README.md
+ */
 
+namespace MockingMagician\Organic;
 
 class Permission
 {
@@ -33,6 +38,6 @@ class Permission
 
     public function getMode(): int
     {
-        return octdec(sprintf('0%s%s%s', $this->user->getP(), $this->group->getP(), $this->others->getP()));
+        return \octdec(\sprintf('0%s%s%s', $this->user->getP(), $this->group->getP(), $this->others->getP()));
     }
 }

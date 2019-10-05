@@ -1,146 +1,175 @@
 <?php
 
-namespace MockingMagician\Organic;
+/**
+ * @author Marc MOREAU <moreau.marc.web@gmail.com>
+ * @license https://github.com/MockingMagician/organic/blob/master/LICENSE.md CC-BY-SA-4.0
+ * @link https://github.com/MockingMagician/organic/blob/master/README.md
+ */
 
+namespace MockingMagician\Organic;
 
 interface FileInfoInterface
 {
     /**
-     * Gets the inode change time
+     * Returns the path to the file as a string.
+     *
+     * @return string
+     */
+    public function __toString(): string;
+
+    /**
+     * Gets the inode change time.
+     *
      * @return \DateTimeInterface
      */
     public function getCTime(): \DateTimeInterface;
 
     /**
-     * Gets last access time of the file
+     * Gets last access time of the file.
+     *
      * @return \DateTimeInterface
      */
     public function getATime(): \DateTimeInterface;
 
     /**
-     * Gets the last modified time
+     * Gets the last modified time.
+     *
      * @return \DateTimeInterface
      */
     public function getMTime(): \DateTimeInterface;
 
     /**
-     * Gets the base name of the file
-     * @param string|null $suffix
+     * Gets the base name of the file.
+     *
+     * @param null|string $suffix
+     *
      * @return string
      */
     public function getBasename(string $suffix = null): string;
 
     /**
-     * Gets the file extension
+     * Gets the file extension.
+     *
      * @return string
      */
     public function getExtension(): string;
 
     /**
-     * Gets the filename
+     * Gets the filename.
+     *
      * @return string
      */
     public function getFilename(): string;
 
     /**
-     * Gets the file group
+     * Gets the file group.
+     *
      * @return int
      */
     public function getGroup(): int;
 
     /**
      * Returns the inode number for the filesystem object.
+     *
      * @return int
      */
     public function getInode(): int;
 
     /**
-     * Gets the target of a link
+     * Gets the target of a link.
+     *
      * @return string
      */
     public function getLinkTarget(): string;
 
     /**
-     * Gets the owner of the file
+     * Gets the owner of the file.
+     *
      * @return int
      */
     public function getOwner(): int;
 
     /**
-     * Gets the path without filename
+     * Gets the path without filename.
+     *
      * @return string
      */
     public function getPath(): string;
 
     /**
-     * Gets the path without filename
+     * Gets the path without filename.
+     *
      * @return string
      */
     public function getPathname(): string;
 
     /**
-     * Gets file permissions
+     * Gets file permissions.
+     *
      * @return int
      */
     public function getPerms(): int;
 
     /**
-     * Gets absolute path to file
+     * Gets absolute path to file.
+     *
      * @return string
      */
     public function getRealPath(): string;
 
     /**
-     * Returns the files size in bytes
+     * Returns the files size in bytes.
+     *
      * @return int
      */
     public function getSize(): int;
 
     /**
-     * Gets file type. A string representing the type of the entry. May be one of file, link, or dir
+     * Gets file type. A string representing the type of the entry. May be one of file, link, or dir.
+     *
      * @return string
      */
     public function getType(): string;
 
     /**
-     * Tells if the file is a directory
+     * Tells if the file is a directory.
+     *
      * @return bool
      */
     public function isDir(): bool;
 
     /**
-     * Tells if the file is executable
+     * Tells if the file is executable.
+     *
      * @return bool
      */
     public function isExecutable(): bool;
 
     /**
-     * Tells if the object references a regular file
+     * Tells if the object references a regular file.
+     *
      * @return bool
      */
     public function isFile(): bool;
 
     /**
-     * Tells if the file is a link
+     * Tells if the file is a link.
+     *
      * @return bool
      */
     public function isLink(): bool;
 
     /**
-     * Tells if file is readable
+     * Tells if file is readable.
+     *
      * @return bool
      */
     public function isReadable(): bool;
 
     /**
-     * Tells if the entry is writable
+     * Tells if the entry is writable.
+     *
      * @return bool
      */
     public function isWritable(): bool;
-
-    /**
-     * Returns the path to the file as a string
-     * @return string
-     */
-    public function __toString(): string;
 }
