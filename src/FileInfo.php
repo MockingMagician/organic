@@ -71,31 +71,43 @@ class FileInfo implements \Serializable
 
     public function isFile(): bool
     {
+        \clearstatcache(true, $this->path);
+
         return $this->internalSplFileInfo->isFile();
     }
 
     public function isDirectory(): bool
     {
+        \clearstatcache(true, $this->path);
+
         return $this->internalSplFileInfo->isDir();
     }
 
     public function isLink(): bool
     {
+        \clearstatcache(true, $this->path);
+
         return $this->internalSplFileInfo->isLink();
     }
 
     public function isReadable(): bool
     {
+        \clearstatcache(true, $this->path);
+
         return $this->internalSplFileInfo->isReadable();
     }
 
     public function isWritable(): bool
     {
+        \clearstatcache(true, $this->path);
+
         return $this->internalSplFileInfo->isWritable();
     }
 
     public function isExecutable(): bool
     {
+        \clearstatcache(true, $this->path);
+
         return $this->internalSplFileInfo->isExecutable();
     }
 
@@ -119,6 +131,14 @@ class FileInfo implements \Serializable
     public function getChangeTime(): \DateTimeImmutable
     {
         return $this->__getTime('getCTime');
+    }
+
+    public function getPermissions(): Permission
+    {
+        \clearstatcache(true, $this->path);
+        $octal = \substr(\sprintf('%o', $this->internalSplFileInfo->getPerms()), -4);
+
+        return PermissionFactory::createFromMode(octdec($octal));
     }
 
     /**
