@@ -57,7 +57,7 @@ class PermissionFactory
         return new Permission(
             new PermissionScope(true, true, false),
             new PermissionScope(true, true, false),
-            new PermissionScope(true, true, false)
+            new PermissionScope(true, false, false)
         );
     }
 

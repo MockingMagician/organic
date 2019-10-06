@@ -17,14 +17,14 @@ use PHPUnit\Framework\TestCase;
 /**
  * @internal
  */
-class DirectoryTest extends TestCase
+class DirectoryTest_ extends TestCase
 {
     public const ROOT_TREE = __DIR__.'/../var/root_tree';
 
     public static function setUpBeforeClass(): void
     {
         parent::setUpBeforeClass();
-        echo \shell_exec(\implode(' && ', [
+        \shell_exec(\implode(' && ', [
             \sprintf('cd %s', \escapeshellarg(\realpath(__DIR__.'/../var'))),
             'rm -Rf root_tree',
             'rm -Rf moved_root_tree',

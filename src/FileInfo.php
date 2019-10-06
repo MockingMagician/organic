@@ -138,7 +138,7 @@ class FileInfo implements \Serializable
         \clearstatcache(true, $this->path);
         $octal = \substr(\sprintf('%o', $this->internalSplFileInfo->getPerms()), -4);
 
-        return PermissionFactory::createFromMode(octdec($octal));
+        return PermissionFactory::createFromMode(\octdec($octal));
     }
 
     /**

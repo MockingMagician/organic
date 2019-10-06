@@ -18,23 +18,17 @@ class PathTest extends TestCase
 {
     public function testGetAbsolute(): void
     {
-        echo "\n";
-        echo Path::clean('/one/two/../two/./three/../../two');
-        echo "\n";
-        echo Path::clean('../one/two/../two/./three/../../two');
-        echo "\n";
-        echo Path::clean('../.././../one/two/../two/./three/../../two');
-        echo "\n";
-        echo Path::clean('../././../one/two/../two/./three/../../two');
-        echo "\n";
-        echo Path::clean('/../one/two/../two/./three/../../two');
-        echo "\n";
-        echo Path::clean('/../../one/two/../two/./three/../../two');
-        echo "\n";
-        echo Path::clean('c:\.\..\one\two\..\two\.\three\..\..\two');
-        echo "\n";
-        echo Path::clean(__DIR__);
-        echo "\n";
-        echo Path::clean(__DIR__.'/../../one/two/../two/./three/../../two');
+        static::assertEquals('/one/two', Path::clean('/one/two/../two/./three/../../two'));
+        static::assertEquals('../one/two', Path::clean('../one/two/../two/./three/../../two'));
+        static::assertEquals('../../../one/two', Path::clean('../.././../one/two/../two/./three/../../two'));
+        static::assertEquals('../../one/two', Path::clean('../././../one/two/../two/./three/../../two'));
+        static::assertEquals('/one/two', Path::clean('/../one/two/../two/./three/../../two'));
+        static::assertEquals('/one/two', Path::clean('/../../one/two/../two/./three/../../two'));
+        static::assertEquals('c:/one/two', Path::clean('c:\.\..\one\two\..\two\.\three\..\..\two'));
+        static::assertEquals(__DIR__, Path::clean(__DIR__));
+        static::assertEquals(
+            (new \SplFileInfo((new \SplFileInfo(__DIR__))->getPath()))->getPath().'/one/two',
+            Path::clean(__DIR__.'/../../one/two/../two/./three/../../two')
+        );
     }
 }

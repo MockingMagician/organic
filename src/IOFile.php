@@ -27,7 +27,7 @@ class IOFile implements IOFileInterface
     {
         $this->path = $path;
         $this->openMode = $openMode;
-        $this->handler = $this->openHandler();
+        $this->openHandler();
     }
 
     /**
