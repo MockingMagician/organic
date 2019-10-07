@@ -19,21 +19,6 @@ class FileObject extends AbstractInode implements FileInterface
     public function __construct(string $path)
     {
         parent::__construct($path);
-        if (!\is_file($this->path)) {
-            throw new FilePathException($this->path);
-        }
-    }
-
-    /**
-     * Returns the files size in bytes.
-     *
-     * @return int
-     */
-    public function getSize(): int
-    {
-        \clearstatcache(true, $this->path);
-
-        return \filesize($this->path);
     }
 
     /**
@@ -44,9 +29,9 @@ class FileObject extends AbstractInode implements FileInterface
     public function delete(): bool
     {
         try {
-            \unlink($this->path);
+            \unlink($this->getPath());
         } catch (\Throwable $e) {
-            throw new FileDeleteException($this->path, $e);
+            throw new FileDeleteException($this->getPath(), $e);
         }
 
         return true;
@@ -56,25 +41,22 @@ class FileObject extends AbstractInode implements FileInterface
      * @param string $path
      * @param $permissions
      *
-     * @throws \Exception
+     * @throws FileAlreadyExistException
      *
      * @return FileObject|InodeInterface
      */
-    public static function create(string $path, $permissions = 0666): InodeInterface
+    public static function create(string $path, Permission $permissions = null): InodeInterface
     {
         if (\file_exists($path)) {
             throw new FileAlreadyExistException($path);
         }
 
-        try {
-            \file_put_contents($path, '', LOCK_EX);
-            \chmod($path, $permissions);
-        } catch (\Throwable $e) {
-            throw new FileCreateException($path, $e);
+        if (is_null($permissions)) {
+            $permissions = PermissionFactory::defaultFile();
         }
-        if (!\file_exists($path)) {
-            throw new \Exception();
-        }
+
+        \file_put_contents($path, '', LOCK_EX);
+        \chmod($path, $permissions->getMode());
 
         return new static($path);
     }
@@ -87,9 +69,9 @@ class FileObject extends AbstractInode implements FileInterface
     public function createLink(string $path): InodeInterface
     {
         try {
-            \symlink($this->path, $path);
+            \symlink($this->getPath(), $path);
         } catch (\Throwable $e) {
-            throw new FileLinkCreateException($this->path, $path, $e);
+            throw new FileLinkCreateException($this->getPath(), $path, $e);
         }
 
         return new static($path);
@@ -106,6 +88,6 @@ class FileObject extends AbstractInode implements FileInterface
      */
     public function getIO(string $openMode = 'r'): IOFileInterface
     {
-        return new IOFile($this->path, $openMode);
+        return new IOFile($this->getPath(), $openMode);
     }
 }

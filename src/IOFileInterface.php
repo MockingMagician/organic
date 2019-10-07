@@ -56,12 +56,12 @@ interface IOFileInterface
     /**
      * Locks or unlocks the file in the same portable way as flock().
      *
-     * @param int  $operation
-     * @param bool $wouldBlock
+     * @param int $operation
+     * @param int $wouldBlock takes value `1` if file is locked by another, `0` if not
      *
      * @return bool
      */
-    public function lock(int $operation, bool $wouldBlock = false): bool;
+    public function lock(int $operation, int &$wouldBlock = null): bool;
 
     /**
      * Reads to EOF on the given file pointer from the current position and writes the results to the output buffer.

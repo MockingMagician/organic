@@ -73,12 +73,12 @@ class IOFile implements IOFileInterface
     /**
      * Locks or unlocks the file in the same portable way as flock().
      *
-     * @param int  $operation
-     * @param bool $wouldBlock
+     * @param int $operation
+     * @param int $wouldBlock takes value `1` if file is locked by another, `0` if not
      *
      * @return bool
      */
-    public function lock(int $operation, bool $wouldBlock = false): bool
+    public function lock(int $operation, int &$wouldBlock = null): bool
     {
         return \flock($this->handler, $operation, $wouldBlock);
     }

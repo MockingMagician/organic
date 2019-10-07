@@ -11,6 +11,7 @@ namespace MockingMagician\Organic\Tests;
 use Faker\Factory;
 use Faker\Generator;
 use MockingMagician\Organic\Exception\FileLinkException;
+use MockingMagician\Organic\Exception\FilePathException;
 use MockingMagician\Organic\FileObject;
 use PHPUnit\Framework\TestCase;
 
@@ -73,24 +74,24 @@ class FileObjectTest extends TestCase
     public function testGetTimes(): void
     {
         $file = FileObject::create($this->filePath);
-        $startTime = $file->getCTime()->getTimestamp();
+        $startTime = $file->getChangeTime()->getTimestamp();
         \sleep(1);
         $file->getIO()->addContent('1111');
-        static::assertEquals($startTime + 1, $file->getCTime()->getTimestamp());
-        static::assertEquals($startTime + 1, $file->getMTime()->getTimestamp());
-        static::assertEquals($startTime, $file->getATime()->getTimestamp());
+        static::assertEquals($startTime + 1, $file->getChangeTime()->getTimestamp());
+        static::assertEquals($startTime + 1, $file->getModificationTime()->getTimestamp());
+        static::assertEquals($startTime, $file->getAccessTime()->getTimestamp());
         \sleep(2);
         $file->getIO()->getContent();
-        static::assertEquals($startTime + 1, $file->getCTime()->getTimestamp());
-        static::assertEquals($startTime + 1, $file->getMTime()->getTimestamp());
-        static::assertEquals($startTime + 3, $file->getATime()->getTimestamp());
+        static::assertEquals($startTime + 1, $file->getChangeTime()->getTimestamp());
+        static::assertEquals($startTime + 1, $file->getModificationTime()->getTimestamp());
+        static::assertEquals($startTime + 3, $file->getAccessTime()->getTimestamp());
         $file->delete();
     }
 
     public function testGetBasename(): void
     {
         $file = FileObject::create($this->filePath);
-        static::assertEquals($this->fileName.'.'.$this->fileExtension, $file->getBasename());
+        static::assertEquals($this->fileName.'.'.$this->fileExtension, $file->getName());
     }
 
     public function testGetExtension(): void
@@ -102,54 +103,6 @@ class FileObjectTest extends TestCase
     public function testGetFilename(): void
     {
         $file = FileObject::create($this->filePath);
-        static::assertEquals($this->fileName, $file->getFilename());
-    }
-
-    public function testGetGroup(): void
-    {
-        $file = FileObject::create($this->filePath);
-        static::assertEquals(\getmygid(), $file->getGroup());
-    }
-
-    public function testGetInode(): void
-    {
-        $file = FileObject::create($this->filePath);
-        static::assertIsInt($file->getInode());
-    }
-
-    public function testGetLinkTarget(): void
-    {
-        $file = FileObject::create($this->filePath);
-        static::expectException(FileLinkException::class);
-        $file->getLinkTarget();
-    }
-
-    public function testCreateLink(): void
-    {
-//        $file = FileObject::create($this->filePath);
-//        $linkPath = self::TEMP_DIR.'/'.$this->faker->uuid;
-//        $link = $file->createLink($linkPath);
-//        static::assertEquals($linkPath, $link->getRealPath());
-//        @\unlink($linkPath);
-    }
-
-    public function testGetOwner(): void
-    {
-    }
-
-    public function testGetPath(): void
-    {
-    }
-
-    public function testGetPathname(): void
-    {
-    }
-
-    public function testGetPerms(): void
-    {
-    }
-
-    public function testGetRealPath(): void
-    {
+        static::assertEquals($this->fileName, basename($file->getName(), '.'.$file->getExtension()));
     }
 }
