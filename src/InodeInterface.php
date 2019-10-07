@@ -17,13 +17,6 @@ namespace MockingMagician\Organic;
 interface InodeInterface
 {
     /**
-     * Delete the inode. An inode is a file or a directory.
-     *
-     * @return bool in case of success
-     */
-    public function delete(): bool;
-
-    /**
      * @param string $path
      *
      * @return InodeInterface the created Inode
@@ -36,6 +29,13 @@ interface InodeInterface
      * @return InodeInterface
      */
     public static function moveTo(string $path): InodeInterface;
+
+    /**
+     * Delete the inode. An inode is a file or a directory.
+     *
+     * @return bool in case of success
+     */
+    public function delete(): bool;
 
     /**
      * @param string $path
