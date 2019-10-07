@@ -9,26 +9,24 @@
 namespace MockingMagician\Organic;
 
 /**
- * Interface InodeInterface
- * @package MockingMagician\Organic
- *
- * An inode is something like a file, directory or similars
+ * Interface InodeInterface.
  */
 interface InodeInterface
 {
     /**
-     * @param string $path
+     * @param string     $path
+     * @param Permission $permission
      *
      * @return InodeInterface the created Inode
      */
-    public static function create(string $path): InodeInterface;
+    public static function create(string $path, Permission $permission): InodeInterface;
 
     /**
      * @param string $path
      *
      * @return InodeInterface
      */
-    public static function moveTo(string $path): InodeInterface;
+    public function moveTo(string $path): InodeInterface;
 
     /**
      * Delete the inode. An inode is a file or a directory.

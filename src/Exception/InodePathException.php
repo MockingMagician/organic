@@ -10,7 +10,7 @@ namespace MockingMagician\Organic\Exception;
 
 use Throwable;
 
-class InodePathException extends \UnexpectedValueException
+class InodePathException extends \Exception
 {
     public function __construct(string $path = '', int $code = 0, Throwable $previous = null)
     {

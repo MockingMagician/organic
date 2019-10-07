@@ -17,6 +17,13 @@ class FileInfo implements \Serializable
     /** @var \SplFileInfo */
     private $internalSplFileInfo;
 
+    /**
+     * FileInfo constructor.
+     *
+     * @param string $path
+     *
+     * @throws FilePathException
+     */
     public function __construct(string $path)
     {
         $cleanedPath = Path::clean($path);
@@ -147,8 +154,6 @@ class FileInfo implements \Serializable
      * @see http://php.net/manual/en/serializable.serialize.php
      *
      * @return string the string representation of the object or null
-     *
-     * @since 5.1.0
      */
     public function serialize()
     {
@@ -160,11 +165,9 @@ class FileInfo implements \Serializable
      *
      * @see http://php.net/manual/en/serializable.unserialize.php
      *
-     * @param string $serialized <p>
-     *                           The string representation of the object.
-     *                           </p>
+     * @param string $serialized the string representation of the object
      *
-     * @since 5.1.0
+     * @throws FilePathException
      */
     public function unserialize($serialized): void
     {

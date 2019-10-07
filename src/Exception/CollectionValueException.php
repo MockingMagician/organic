@@ -10,7 +10,7 @@ namespace MockingMagician\Organic\Exception;
 
 use Throwable;
 
-class CollectionValueException extends \UnexpectedValueException
+class CollectionValueException extends \Exception
 {
     public function __construct(string $collectionClass, string $valueClass, int $code = 0, Throwable $previous = null)
     {

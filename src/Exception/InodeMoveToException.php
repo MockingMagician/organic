@@ -10,11 +10,11 @@ namespace MockingMagician\Organic\Exception;
 
 use Throwable;
 
-class FilePathException extends \Exception
+class InodeMoveToException extends \Exception
 {
-    public function __construct(string $path = '', int $code = 0, Throwable $previous = null)
+    public function __construct(string $originPath, string $toPath, string $reason, int $code = 0, Throwable $previous = null)
     {
-        $message = \sprintf('`%s` is not a file', $path);
+        $message = \sprintf('Moving `%s` to `%s` has failed: %s', $originPath, $toPath, $reason);
         parent::__construct($message, $code, $previous);
     }
 }

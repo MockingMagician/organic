@@ -10,7 +10,7 @@ namespace MockingMagician\Organic\Exception;
 
 use Throwable;
 
-class FileLinkCreateException extends \RuntimeException
+class FileLinkCreateException extends \Exception
 {
     public function __construct(string $path, string $linkPath, Throwable $exception, int $code = 0, Throwable $previous = null)
     {

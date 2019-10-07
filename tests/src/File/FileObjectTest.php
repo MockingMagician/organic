@@ -10,8 +10,6 @@ namespace MockingMagician\Organic\Tests;
 
 use Faker\Factory;
 use Faker\Generator;
-use MockingMagician\Organic\Exception\FileLinkException;
-use MockingMagician\Organic\Exception\FilePathException;
 use MockingMagician\Organic\FileObject;
 use PHPUnit\Framework\TestCase;
 
@@ -103,6 +101,6 @@ class FileObjectTest extends TestCase
     public function testGetFilename(): void
     {
         $file = FileObject::create($this->filePath);
-        static::assertEquals($this->fileName, basename($file->getName(), '.'.$file->getExtension()));
+        static::assertEquals($this->fileName, \basename($file->getName(), '.'.$file->getExtension()));
     }
 }

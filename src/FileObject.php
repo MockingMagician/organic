@@ -9,7 +9,6 @@
 namespace MockingMagician\Organic;
 
 use MockingMagician\Organic\Exception\FileAlreadyExistException;
-use MockingMagician\Organic\Exception\FileCreateException;
 use MockingMagician\Organic\Exception\FileDeleteException;
 use MockingMagician\Organic\Exception\FileLinkCreateException;
 use MockingMagician\Organic\Exception\FilePathException;
@@ -23,6 +22,8 @@ class FileObject extends AbstractInode implements FileInterface
 
     /**
      * Delete the inode. An inode is a file or a directory.
+     *
+     * @throws FileDeleteException
      *
      * @return bool in case of success
      */
@@ -42,6 +43,7 @@ class FileObject extends AbstractInode implements FileInterface
      * @param $permissions
      *
      * @throws FileAlreadyExistException
+     * @throws FilePathException
      *
      * @return FileObject|InodeInterface
      */
@@ -51,7 +53,7 @@ class FileObject extends AbstractInode implements FileInterface
             throw new FileAlreadyExistException($path);
         }
 
-        if (is_null($permissions)) {
+        if (null === $permissions) {
             $permissions = PermissionFactory::defaultFile();
         }
 
@@ -63,6 +65,9 @@ class FileObject extends AbstractInode implements FileInterface
 
     /**
      * @param string $path
+     *
+     * @throws FileLinkCreateException
+     * @throws FilePathException
      *
      * @return InodeInterface
      */
@@ -89,5 +94,19 @@ class FileObject extends AbstractInode implements FileInterface
     public function getIO(string $openMode = 'r'): IOFileInterface
     {
         return new IOFile($this->getPath(), $openMode);
+    }
+
+    /**
+     * @param string $path
+     *
+     * @return InodeInterface
+     */
+    public function moveTo(string $path): InodeInterface
+    {
+        \clearstatcache(true, $path);
+        if (\file_exists($path)) {
+        }
+
+        \rename($this->getPath(), $path);
     }
 }

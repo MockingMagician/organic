@@ -13,6 +13,13 @@ use MockingMagician\Organic\Exception\FilePathException;
 
 class File extends Inode
 {
+    /**
+     * File constructor.
+     *
+     * @param string $path
+     *
+     * @throws FilePathException
+     */
     public function __construct(string $path)
     {
         parent::__construct($path);
@@ -22,6 +29,11 @@ class File extends Inode
         }
     }
 
+    /**
+     * @throws FileDeleteException
+     *
+     * @return bool
+     */
     public function delete(): bool
     {
         try {

@@ -10,11 +10,11 @@ namespace MockingMagician\Organic\Exception;
 
 use Throwable;
 
-class FilePathException extends \Exception
+class InodeCreateLinkException extends \Exception
 {
-    public function __construct(string $path = '', int $code = 0, Throwable $previous = null)
+    public function __construct(string $path, string $linkPath, string $reason, int $code = 0, Throwable $previous = null)
     {
-        $message = \sprintf('`%s` is not a file', $path);
+        $message = \sprintf('Create link for `%s` to `%s` link has failed: %s', $path, $linkPath, $reason);
         parent::__construct($message, $code, $previous);
     }
 }

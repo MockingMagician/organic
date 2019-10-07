@@ -10,7 +10,7 @@ namespace MockingMagician\Organic\Exception;
 
 use Throwable;
 
-class DirectoryMoveException extends \RuntimeException
+class DirectoryMoveException extends \Exception
 {
     public function __construct(string $originalPath, string $newPath, Throwable $exception, int $code = 0, Throwable $previous = null)
     {

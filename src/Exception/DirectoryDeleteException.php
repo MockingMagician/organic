@@ -10,7 +10,7 @@ namespace MockingMagician\Organic\Exception;
 
 use Throwable;
 
-class DirectoryDeleteException extends \RuntimeException
+class DirectoryDeleteException extends \Exception
 {
     public function __construct(string $path, Throwable $exception, int $code = 0, Throwable $previous = null)
     {
