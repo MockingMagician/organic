@@ -33,8 +33,9 @@ class FSIteratorFactory
     }
 
     /**
-     * @return \Iterator|\SplFileInfo[]
      * @throws \MockingMagician\Organic\Exception\DirectoryPathException
+     *
+     * @return \Iterator|\SplFileInfo[]
      */
     public function createRecursiveFileSystemIterator()
     {
@@ -67,8 +68,9 @@ class FSIteratorFactory
     }
 
     /**
-     * @return \Iterator|\SplFileInfo[]
      * @throws \MockingMagician\Organic\Exception\DirectoryPathException
+     *
+     * @return \Iterator|\SplFileInfo[]
      */
     public function createRecursiveFileSystemIteratorOnlyDirectories(): \Iterator
     {
@@ -84,8 +86,9 @@ class FSIteratorFactory
     }
 
     /**
-     * @return \Iterator|\SplFileInfo[]
      * @throws \MockingMagician\Organic\Exception\DirectoryPathException
+     *
+     * @return \Iterator|\SplFileInfo[]
      */
     public function createRecursiveFileSystemIteratorOnlyFiles(): \Iterator
     {

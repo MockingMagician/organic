@@ -8,6 +8,7 @@
 
 namespace MockingMagician\Organic\Collection;
 
+use MockingMagician\Organic\Directory;
 use MockingMagician\Organic\File;
 
 /**
@@ -30,6 +31,8 @@ class FileCollection extends Collection
 
     /**
      * @param string[] $paths
+     *
+     * @throws \MockingMagician\Organic\Exception\FilePathException
      *
      * @return self
      */

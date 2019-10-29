@@ -17,7 +17,9 @@ class FSIteratorOnlyFiles implements \IteratorAggregate
 
     /**
      * FSIteratorOnlyFiles constructor.
+     *
      * @param string $path
+     *
      * @throws DirectoryPathException
      */
     public function __construct(string $path)

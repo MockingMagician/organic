@@ -43,6 +43,7 @@ class FileInfo implements \Serializable
         \clearstatcache(true, $this->path);
 
         $time = new \DateTime();
+        $time->setTimezone(new \DateTimeZone('UTC'));
         $time->setTimestamp($this->internalSplFileInfo->{$method}());
 
         return \DateTimeImmutable::createFromMutable($time);
@@ -53,7 +54,7 @@ class FileInfo implements \Serializable
         return $this->path;
     }
 
-    public function getPath(): string
+    public function getObjectPath(): string
     {
         return $this->path;
     }
@@ -63,7 +64,7 @@ class FileInfo implements \Serializable
         return $this->internalSplFileInfo->getRealPath();
     }
 
-    public function getDirectoryPath(): string
+    public function getDirectoryContainerPath(): string
     {
         return $this->internalSplFileInfo->getPath();
     }

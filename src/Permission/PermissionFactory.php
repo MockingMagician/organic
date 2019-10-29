@@ -41,8 +41,10 @@ class PermissionFactory
 
     /**
      * @param int $mode
-     * @return array
+     *
      * @throws \RuntimeException
+     *
+     * @return array
      */
     private static function getUGOFromMode(int $mode)
     {

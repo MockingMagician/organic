@@ -61,7 +61,7 @@ class FileObjectTest extends TestCase
     {
         $fileCreated = FileObject::create($this->filePath);
         static::assertFileExists($fileCreated);
-        unlink($this->filePath);
+        \unlink($this->filePath);
         static::assertFileNotExists($fileCreated);
         static::expectException(FileDeleteException::class);
         $fileCreated->delete();

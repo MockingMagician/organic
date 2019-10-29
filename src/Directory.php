@@ -23,7 +23,9 @@ class Directory extends Inode
 
     /**
      * Directory constructor.
+     *
      * @param string $path
+     *
      * @throws DirectoryPathException
      */
     public function __construct(string $path)
@@ -48,8 +50,9 @@ class Directory extends Inode
     }
 
     /**
-     * @return FileCollection
      * @throws DirectoryPathException
+     *
+     * @return FileCollection
      */
     public function getRecursiveFiles(): FileCollection
     {
@@ -69,8 +72,9 @@ class Directory extends Inode
     }
 
     /**
-     * @return DirectoryCollection
      * @throws DirectoryPathException
+     *
+     * @return DirectoryCollection
      */
     public function getRecursiveDirectories(): DirectoryCollection
     {
@@ -80,8 +84,9 @@ class Directory extends Inode
     }
 
     /**
-     * @return InodeCollection
      * @throws Exception\InodePathException
+     *
+     * @return InodeCollection
      */
     public function getInodes(): InodeCollection
     {
@@ -91,9 +96,10 @@ class Directory extends Inode
     }
 
     /**
-     * @return InodeCollection
      * @throws DirectoryPathException
      * @throws Exception\InodePathException
+     *
+     * @return InodeCollection
      */
     public function getRecursiveInodes(): InodeCollection
     {
@@ -103,8 +109,9 @@ class Directory extends Inode
     }
 
     /**
-     * @return bool
      * @throws DirectoryDeleteException
+     *
+     * @return bool
      */
     public function delete(): bool
     {
@@ -127,10 +134,12 @@ class Directory extends Inode
 
     /**
      * @param string $path
-     * @param int $permissions
-     * @return Directory
+     * @param int    $permissions
+     *
      * @throws DirectoryCreateException
      * @throws DirectoryPathException
+     *
+     * @return Directory
      */
     public static function createDirectory(string $path, $permissions = 0777): Directory
     {
@@ -150,11 +159,13 @@ class Directory extends Inode
 
     /**
      * @param string $directoryName
-     * @param int $permissions
-     * @return Directory
+     * @param int    $permissions
+     *
      * @throws DirectoryCreateException
      * @throws DirectoryPathException
      * @throws Exception\CollectionValueException
+     *
+     * @return Directory
      */
     public function createSubDirectory(string $directoryName, $permissions = 0777): Directory
     {

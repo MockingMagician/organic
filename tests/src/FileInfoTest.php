@@ -58,7 +58,7 @@ class FileInfoTest extends TestCase
         /** @var FileInfo $fileInfo */
         $fileInfoUnserialized = \unserialize(\serialize($this->fileInfo));
         static::assertInstanceOf(FileInfo::class, $fileInfoUnserialized);
-        static::assertEquals($this->fileInfo->getPath(), $fileInfoUnserialized->getPath());
+        static::assertEquals($this->fileInfo->getObjectPath(), $fileInfoUnserialized->getObjectPath());
         static::assertEquals($this->fileInfo->getSize(), $fileInfoUnserialized->getSize());
     }
 
@@ -71,7 +71,7 @@ class FileInfoTest extends TestCase
     {
         static::assertEquals(
             (new \SplFileInfo(__DIR__))->getPath().'/var/temp/'.$this->fileName,
-            $this->fileInfo->getPath()
+            $this->fileInfo->getObjectPath()
         );
     }
 
@@ -109,12 +109,12 @@ class FileInfoTest extends TestCase
         \symlink($this->filePath, static::TEMP_DIR.'/link');
         $fi = new FileInfo(static::TEMP_DIR.'/link');
         static::assertTrue($fi->isLink());
-        \unlink($fi->getPath());
+        \unlink($fi->getObjectPath());
     }
 
     public function testGetDirectoryPath(): void
     {
-        static::assertEquals(\realpath(static::TEMP_DIR), $this->fileInfo->getDirectoryPath());
+        static::assertEquals(\realpath(static::TEMP_DIR), $this->fileInfo->getDirectoryContainerPath());
     }
 
     public function testIsDirectory(): void

@@ -20,7 +20,7 @@ class FileObject extends AbstractInode implements IOFileAwareInterface
     {
         parent::__construct($path);
         if (!$this->isFile()) {
-            throw new FilePathException($this->getPath());
+            throw new FilePathException($this->getObjectPath());
         }
     }
 
@@ -34,9 +34,9 @@ class FileObject extends AbstractInode implements IOFileAwareInterface
     public function delete(): bool
     {
         try {
-            \unlink($this->getPath());
+            \unlink($this->getObjectPath());
         } catch (\Throwable $e) {
-            throw new FileDeleteException($this->getPath(), $e);
+            throw new FileDeleteException($this->getObjectPath(), $e);
         }
 
         return true;
@@ -68,7 +68,7 @@ class FileObject extends AbstractInode implements IOFileAwareInterface
     }
 
     /**
-     * Get an interface for IO on file
+     * Get an interface for IO on file.
      *
      * @param string $openMode
      *
@@ -78,6 +78,6 @@ class FileObject extends AbstractInode implements IOFileAwareInterface
      */
     public function getIO(string $openMode = 'r'): IOFileInterface
     {
-        return new IOFile($this->getPath(), $openMode);
+        return new IOFile($this->getObjectPath(), $openMode);
     }
 }

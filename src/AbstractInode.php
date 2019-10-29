@@ -28,16 +28,16 @@ abstract class AbstractInode extends FileInfo implements InodeInterface
         \clearstatcache(true, $path);
         if (\file_exists($path)) {
             throw new InodeMoveToException(
-                $this->getPath(),
+                $this->getObjectPath(),
                 $path,
                 'A file or directory with same name already exist'
             );
         }
 
         try {
-            \rename($this->getPath(), $path);
+            \rename($this->getObjectPath(), $path);
         } catch (\Throwable $e) {
-            throw new InodeMoveToException($this->getPath(), $path, $e->getMessage());
+            throw new InodeMoveToException($this->getObjectPath(), $path, $e->getMessage());
         }
 
         $this->__construct($path);
@@ -60,16 +60,16 @@ abstract class AbstractInode extends FileInfo implements InodeInterface
         \clearstatcache(true, $path);
         if (\file_exists($path)) {
             throw new InodeCreateLinkException(
-                $this->getPath(),
+                $this->getObjectPath(),
                 $path,
                 'A file or directory with same name already exist'
             );
         }
 
         try {
-            \symlink($this->getPath(), $path);
+            \symlink($this->getObjectPath(), $path);
         } catch (\Throwable $e) {
-            throw new InodeCreateLinkException($this->getPath(), $path, $e->getMessage());
+            throw new InodeCreateLinkException($this->getObjectPath(), $path, $e->getMessage());
         }
 
         return new static($path);
