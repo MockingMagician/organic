@@ -15,6 +15,11 @@ class FSIteratorOnlyDir implements \IteratorAggregate
 {
     private $path;
 
+    /**
+     * FSIteratorOnlyDir constructor.
+     * @param string $path
+     * @throws DirectoryPathException
+     */
     public function __construct(string $path)
     {
         if (!\is_dir($path)) {

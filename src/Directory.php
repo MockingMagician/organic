@@ -14,11 +14,11 @@ use MockingMagician\Organic\Collection\InodeCollection;
 use MockingMagician\Organic\Exception\DirectoryCreateException;
 use MockingMagician\Organic\Exception\DirectoryDeleteException;
 use MockingMagician\Organic\Exception\DirectoryPathException;
-use MockingMagician\Organic\Helper\FilesystemIteratorFactory;
+use MockingMagician\Organic\Helper\FSIteratorFactory;
 
 class Directory extends Inode
 {
-    /** @var FilesystemIteratorFactory */
+    /** @var FSIteratorFactory */
     private $filesystemIterator;
 
     /**
@@ -34,7 +34,7 @@ class Directory extends Inode
             throw new DirectoryPathException($path);
         }
 
-        $this->filesystemIterator = new FilesystemIteratorFactory($this);
+        $this->filesystemIterator = new FSIteratorFactory($this);
     }
 
     /**
@@ -49,6 +49,7 @@ class Directory extends Inode
 
     /**
      * @return FileCollection
+     * @throws DirectoryPathException
      */
     public function getRecursiveFiles(): FileCollection
     {
@@ -69,6 +70,7 @@ class Directory extends Inode
 
     /**
      * @return DirectoryCollection
+     * @throws DirectoryPathException
      */
     public function getRecursiveDirectories(): DirectoryCollection
     {
@@ -90,6 +92,7 @@ class Directory extends Inode
 
     /**
      * @return InodeCollection
+     * @throws DirectoryPathException
      * @throws Exception\InodePathException
      */
     public function getRecursiveInodes(): InodeCollection

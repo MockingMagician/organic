@@ -15,7 +15,7 @@ use MockingMagician\Organic\Directory;
  *
  * @internal
  */
-class FilesystemIteratorFactory
+class FSIteratorFactory
 {
     private $directory;
 
@@ -34,6 +34,7 @@ class FilesystemIteratorFactory
 
     /**
      * @return \Iterator|\SplFileInfo[]
+     * @throws \MockingMagician\Organic\Exception\DirectoryPathException
      */
     public function createRecursiveFileSystemIterator()
     {
@@ -67,6 +68,7 @@ class FilesystemIteratorFactory
 
     /**
      * @return \Iterator|\SplFileInfo[]
+     * @throws \MockingMagician\Organic\Exception\DirectoryPathException
      */
     public function createRecursiveFileSystemIteratorOnlyDirectories(): \Iterator
     {
@@ -83,6 +85,7 @@ class FilesystemIteratorFactory
 
     /**
      * @return \Iterator|\SplFileInfo[]
+     * @throws \MockingMagician\Organic\Exception\DirectoryPathException
      */
     public function createRecursiveFileSystemIteratorOnlyFiles(): \Iterator
     {

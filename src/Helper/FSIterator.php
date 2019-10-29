@@ -15,6 +15,11 @@ class FSIterator implements \IteratorAggregate
 {
     private $path;
 
+    /**
+     * FSIterator constructor.
+     * @param string $path
+     * @throws DirectoryPathException
+     */
     public function __construct(string $path)
     {
         if (!\is_dir($path)) {
