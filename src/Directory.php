@@ -21,6 +21,11 @@ class Directory extends Inode
     /** @var FilesystemIteratorFactory */
     private $filesystemIterator;
 
+    /**
+     * Directory constructor.
+     * @param string $path
+     * @throws DirectoryPathException
+     */
     public function __construct(string $path)
     {
         parent::__construct($path);
@@ -74,6 +79,7 @@ class Directory extends Inode
 
     /**
      * @return InodeCollection
+     * @throws Exception\InodePathException
      */
     public function getInodes(): InodeCollection
     {
@@ -84,6 +90,7 @@ class Directory extends Inode
 
     /**
      * @return InodeCollection
+     * @throws Exception\InodePathException
      */
     public function getRecursiveInodes(): InodeCollection
     {
@@ -92,6 +99,10 @@ class Directory extends Inode
         );
     }
 
+    /**
+     * @return bool
+     * @throws DirectoryDeleteException
+     */
     public function delete(): bool
     {
         try {
@@ -111,6 +122,13 @@ class Directory extends Inode
         return true;
     }
 
+    /**
+     * @param string $path
+     * @param int $permissions
+     * @return Directory
+     * @throws DirectoryCreateException
+     * @throws DirectoryPathException
+     */
     public static function createDirectory(string $path, $permissions = 0777): Directory
     {
         if (\is_dir($path)) {
@@ -127,6 +145,14 @@ class Directory extends Inode
         return $directory;
     }
 
+    /**
+     * @param string $directoryName
+     * @param int $permissions
+     * @return Directory
+     * @throws DirectoryCreateException
+     * @throws DirectoryPathException
+     * @throws Exception\CollectionValueException
+     */
     public function createSubDirectory(string $directoryName, $permissions = 0777): Directory
     {
         $path = $this->getRealPath().\DIRECTORY_SEPARATOR.$directoryName;

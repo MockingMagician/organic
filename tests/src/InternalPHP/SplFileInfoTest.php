@@ -129,6 +129,7 @@ class SplFileInfoTest extends TestCase
         static::assertEquals(\realpath($this->dirPath), $this->dir->getRealPath());
         static::assertEquals(\realpath($this->filePath), $this->file->getRealPath());
         static::assertEquals(\realpath($this->filePath), $this->symlink->getRealPath());
+
         static::assertNotEquals(\realpath($this->filePath), $this->hardlink->getRealPath());
     }
 
@@ -190,6 +191,7 @@ class SplFileInfoTest extends TestCase
     public function testIsFile(): void
     {
         static::assertFalse($this->dir->isFile());
+
         static::assertTrue($this->file->isFile());
         static::assertTrue($this->symlink->isFile());
         static::assertTrue($this->hardlink->isFile());
@@ -204,7 +206,9 @@ class SplFileInfoTest extends TestCase
         static::assertTrue($this->file->isReadable());
         static::assertTrue($this->symlink->isReadable());
         static::assertTrue($this->hardlink->isReadable());
+
         \chmod($this->file, 0000);
+
         static::assertFalse($this->file->isReadable());
         static::assertFalse($this->symlink->isReadable());
         static::assertFalse($this->hardlink->isReadable());

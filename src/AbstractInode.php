@@ -15,31 +15,6 @@ use MockingMagician\Organic\Exception\InodeMoveToException;
 abstract class AbstractInode extends FileInfo implements InodeInterface
 {
     /**
-     * @var string
-     */
-    protected $path;
-
-    /**
-     * AbstractInode constructor.
-     *
-     * @param string $path
-     *
-     * @throws Exception\FilePathException
-     */
-    public function __construct(string $path)
-    {
-        parent::__construct($path);
-    }
-
-    /**
-     * @param string     $path
-     * @param Permission $permission
-     *
-     * @return InodeInterface the created Inode
-     */
-    abstract public static function create(string $path, Permission $permission): InodeInterface;
-
-    /**
      * @param string $path
      *
      * @throws InodeMoveToException
@@ -59,7 +34,7 @@ abstract class AbstractInode extends FileInfo implements InodeInterface
         }
 
         try {
-            \rename($this->path, $path);
+            \rename($this->getPath(), $path);
         } catch (\Throwable $e) {
             throw new InodeMoveToException($this->getPath(), $path, $e->getMessage());
         }
@@ -68,13 +43,6 @@ abstract class AbstractInode extends FileInfo implements InodeInterface
 
         return $this;
     }
-
-    /**
-     * Delete the inode. An inode is a file or a directory.
-     *
-     * @return bool in case of success
-     */
-    abstract public function delete(): bool;
 
     /**
      * Create a symlink.
@@ -98,11 +66,26 @@ abstract class AbstractInode extends FileInfo implements InodeInterface
         }
 
         try {
-            \symlink($this->path, $path);
+            \symlink($this->getPath(), $path);
         } catch (\Throwable $e) {
             throw new InodeCreateLinkException($this->getPath(), $path, $e->getMessage());
         }
 
         return new static($path);
     }
+
+    /**
+     * @param string     $path
+     * @param Permission $permission
+     *
+     * @return InodeInterface the created Inode
+     */
+    abstract public static function create(string $path, Permission $permission): InodeInterface;
+
+    /**
+     * Delete the inode. An inode is a file or a directory.
+     *
+     * @return bool in case of success
+     */
+    abstract public function delete(): bool;
 }

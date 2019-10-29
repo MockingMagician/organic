@@ -10,6 +10,8 @@ namespace MockingMagician\Organic\Tests;
 
 use Faker\Factory;
 use Faker\Generator;
+use MockingMagician\Organic\Exception\FileAlreadyExistException;
+use MockingMagician\Organic\Exception\FileDeleteException;
 use MockingMagician\Organic\FileObject;
 use PHPUnit\Framework\TestCase;
 
@@ -50,6 +52,19 @@ class FileObjectTest extends TestCase
         static::assertFileExists($fileCreated);
         $fileCreated->delete();
         static::assertFileNotExists($fileCreated);
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function testDeleteNotExistingFileThrowAnException(): void
+    {
+        $fileCreated = FileObject::create($this->filePath);
+        static::assertFileExists($fileCreated);
+        unlink($this->filePath);
+        static::assertFileNotExists($fileCreated);
+        static::expectException(FileDeleteException::class);
+        $fileCreated->delete();
     }
 
     public function testGetSize(): void
@@ -102,5 +117,12 @@ class FileObjectTest extends TestCase
     {
         $file = FileObject::create($this->filePath);
         static::assertEquals($this->fileName, \basename($file->getName(), '.'.$file->getExtension()));
+    }
+
+    public function testCreateAnExistingThrowAnException(): void
+    {
+        FileObject::create($this->filePath);
+        static::expectException(FileAlreadyExistException::class);
+        FileObject::create($this->filePath);
     }
 }

@@ -10,14 +10,16 @@ namespace MockingMagician\Organic;
 
 use MockingMagician\Organic\Exception\FileAlreadyExistException;
 use MockingMagician\Organic\Exception\FileDeleteException;
-use MockingMagician\Organic\Exception\FileLinkCreateException;
 use MockingMagician\Organic\Exception\FilePathException;
 
-class FileObject extends AbstractInode implements FileInterface
+class FileObject extends AbstractInode implements IOFileAwareInterface
 {
     public function __construct(string $path)
     {
         parent::__construct($path);
+        if (!$this->isFile()) {
+            throw new FilePathException($this->getPath());
+        }
     }
 
     /**
@@ -64,26 +66,7 @@ class FileObject extends AbstractInode implements FileInterface
     }
 
     /**
-     * @param string $path
-     *
-     * @throws FileLinkCreateException
-     * @throws FilePathException
-     *
-     * @return InodeInterface
-     */
-    public function createLink(string $path): InodeInterface
-    {
-        try {
-            \symlink($this->getPath(), $path);
-        } catch (\Throwable $e) {
-            throw new FileLinkCreateException($this->getPath(), $path, $e);
-        }
-
-        return new static($path);
-    }
-
-    /**
-     * Get an interface for read or write in file.
+     * Get an interface for IO on file
      *
      * @param string $openMode
      *
@@ -94,19 +77,5 @@ class FileObject extends AbstractInode implements FileInterface
     public function getIO(string $openMode = 'r'): IOFileInterface
     {
         return new IOFile($this->getPath(), $openMode);
-    }
-
-    /**
-     * @param string $path
-     *
-     * @return InodeInterface
-     */
-    public function moveTo(string $path): InodeInterface
-    {
-        \clearstatcache(true, $path);
-        if (\file_exists($path)) {
-        }
-
-        \rename($this->getPath(), $path);
     }
 }

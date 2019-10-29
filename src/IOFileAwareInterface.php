@@ -8,7 +8,7 @@
 
 namespace MockingMagician\Organic;
 
-interface FileInterface extends InodeInterface
+interface IOFileAwareInterface
 {
     /**
      * Get an interface for read or write in file.

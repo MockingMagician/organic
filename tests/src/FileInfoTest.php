@@ -29,6 +29,9 @@ class FileInfoTest extends TestCase
     /** @var string */
     private $fileName;
 
+    /**
+     * @throws \MockingMagician\Organic\Exception\FilePathException
+     */
     protected function setUp(): void
     {
         parent::setUp();
@@ -97,6 +100,9 @@ class FileInfoTest extends TestCase
         static::assertEquals(\filemtime($this->filePath), $this->fileInfo->getModificationTime()->getTimestamp());
     }
 
+    /**
+     * @throws \MockingMagician\Organic\Exception\FilePathException
+     */
     public function testIsLink(): void
     {
         static::assertFalse($this->fileInfo->isLink());
