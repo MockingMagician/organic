@@ -3,6 +3,8 @@
 namespace MockingMagician\Organic;
 
 
+use MockingMagician\Organic\Permission\Permission;
+
 class DirectoryObject extends AbstractInode
 {
 

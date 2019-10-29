@@ -10,6 +10,8 @@ namespace MockingMagician\Organic;
 
 use MockingMagician\Organic\Exception\FilePathException;
 use MockingMagician\Organic\Helper\Path;
+use MockingMagician\Organic\Permission\Permission;
+use MockingMagician\Organic\Permission\PermissionFactory;
 
 class FileInfo implements \Serializable
 {
@@ -140,6 +142,9 @@ class FileInfo implements \Serializable
         return $this->__getTime('getCTime');
     }
 
+    /**
+     * @return Permission
+     */
     public function getPermissions(): Permission
     {
         \clearstatcache(true, $this->path);

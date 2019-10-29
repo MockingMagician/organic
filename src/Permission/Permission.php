@@ -6,7 +6,7 @@
  * @link https://github.com/MockingMagician/organic/blob/master/README.md
  */
 
-namespace MockingMagician\Organic;
+namespace MockingMagician\Organic\Permission;
 
 class Permission
 {

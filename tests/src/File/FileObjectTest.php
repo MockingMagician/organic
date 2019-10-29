@@ -67,6 +67,11 @@ class FileObjectTest extends TestCase
         $fileCreated->delete();
     }
 
+    /**
+     * @throws FileAlreadyExistException
+     * @throws \MockingMagician\Organic\Exception\FilePathException
+     * @throws \Exception
+     */
     public function testGetSize(): void
     {
         $file = FileObject::create($this->filePath);
@@ -84,6 +89,11 @@ class FileObjectTest extends TestCase
         $file->delete();
     }
 
+    /**
+     * @throws FileAlreadyExistException
+     * @throws \MockingMagician\Organic\Exception\FilePathException
+     * @throws \Exception
+     */
     public function testGetTimes(): void
     {
         $file = FileObject::create($this->filePath);

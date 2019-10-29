@@ -8,6 +8,8 @@
 
 namespace MockingMagician\Organic;
 
+use MockingMagician\Organic\Permission\Permission;
+
 /**
  * Interface InodeInterface.
  */

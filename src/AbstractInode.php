@@ -11,6 +11,7 @@ namespace MockingMagician\Organic;
 use MockingMagician\Organic\Exception\FilePathException;
 use MockingMagician\Organic\Exception\InodeCreateLinkException;
 use MockingMagician\Organic\Exception\InodeMoveToException;
+use MockingMagician\Organic\Permission\Permission;
 
 abstract class AbstractInode extends FileInfo implements InodeInterface
 {

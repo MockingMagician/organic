@@ -10,8 +10,8 @@ namespace MockingMagician\Organic\Tests;
 
 use Faker\Factory;
 use Faker\Generator;
-use MockingMagician\Organic\Permission;
-use MockingMagician\Organic\PermissionScope;
+use MockingMagician\Organic\Permission\Permission;
+use MockingMagician\Organic\Permission\PermissionScope;
 use PHPUnit\Framework\TestCase;
 
 /**

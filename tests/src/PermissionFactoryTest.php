@@ -8,7 +8,7 @@
 
 namespace MockingMagician\Organic\Tests;
 
-use MockingMagician\Organic\PermissionFactory;
+use MockingMagician\Organic\Permission\PermissionFactory;
 use PHPUnit\Framework\TestCase;
 
 /**

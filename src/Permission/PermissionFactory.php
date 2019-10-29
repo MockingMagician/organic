@@ -6,35 +6,13 @@
  * @link https://github.com/MockingMagician/organic/blob/master/README.md
  */
 
-namespace MockingMagician\Organic;
+namespace MockingMagician\Organic\Permission;
 
 class PermissionFactory
 {
     public static function createFromMode(int $mode): Permission
     {
-        $octal = \decoct($mode);
-
-        if (\mb_strlen($octal) > 3) {
-            throw new \RuntimeException('$mode is not valid');
-        }
-
-        if (1 === \mb_strlen($octal)) {
-            $u = 0;
-            $g = 0;
-            $o = (int) $octal[0];
-        }
-
-        if (2 === \mb_strlen($octal)) {
-            $u = 0;
-            $g = (int) $octal[0];
-            $o = (int) $octal[1];
-        }
-
-        if (3 === \mb_strlen($octal)) {
-            $u = (int) $octal[0];
-            $g = (int) $octal[1];
-            $o = (int) $octal[2];
-        }
+        list($u, $g, $o) = static::getUGOFromMode($mode);
 
         return new Permission(
             static::createPermissionScopeFromInt($u),
@@ -59,6 +37,30 @@ class PermissionFactory
             new PermissionScope(true, true, false),
             new PermissionScope(true, false, false)
         );
+    }
+
+    /**
+     * @param int $mode
+     * @return array
+     * @throws \RuntimeException
+     */
+    private static function getUGOFromMode(int $mode)
+    {
+        $octal = \decoct($mode);
+
+        if (1 === \mb_strlen($octal)) {
+            return [0, 0, (int) $octal[0]];
+        }
+
+        if (2 === \mb_strlen($octal)) {
+            return [0, (int) $octal[0], (int) $octal[1]];
+        }
+
+        if (3 === \mb_strlen($octal)) {
+            return [(int) $octal[0], (int) $octal[1], (int) $octal[2]];
+        }
+
+        throw new \RuntimeException('$mode is not valid');
     }
 
     private static function createPermissionScopeFromInt(int $p)

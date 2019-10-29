@@ -32,24 +32,36 @@ class DirectoryTest_ extends TestCase
         ]));
     }
 
+    /**
+     * @throws \MockingMagician\Organic\Exception\DirectoryPathException
+     */
     public function testIterateFile(): void
     {
         $directory = new Directory(self::ROOT_TREE);
         static::assertCount(3, $directory->getFiles());
     }
 
+    /**
+     * @throws \MockingMagician\Organic\Exception\DirectoryPathException
+     */
     public function testIterateFileRecursively(): void
     {
         $directory = new Directory(self::ROOT_TREE);
         static::assertCount(39, $directory->getRecursiveFiles());
     }
 
+    /**
+     * @throws \MockingMagician\Organic\Exception\DirectoryPathException
+     */
     public function testIterateDirectories(): void
     {
         $directory = new Directory(self::ROOT_TREE);
         static::assertCount(3, $directory->getDirectories());
     }
 
+    /**
+     * @throws \MockingMagician\Organic\Exception\DirectoryPathException
+     */
     public function testIterateDirectoriesRecursively(): void
     {
         $directory = new Directory(self::ROOT_TREE);
@@ -64,12 +76,20 @@ class DirectoryTest_ extends TestCase
         })($directory->getRecursiveDirectories()));
     }
 
+    /**
+     * @throws \MockingMagician\Organic\Exception\DirectoryPathException
+     * @throws \MockingMagician\Organic\Exception\InodePathException
+     */
     public function testIterateInode(): void
     {
         $directory = new Directory(self::ROOT_TREE);
         static::assertCount(6, $directory->getInodes());
     }
 
+    /**
+     * @throws \MockingMagician\Organic\Exception\DirectoryPathException
+     * @throws \MockingMagician\Organic\Exception\InodePathException
+     */
     public function testIterateInodeRecursively(): void
     {
         $directory = new Directory(self::ROOT_TREE);
@@ -84,6 +104,12 @@ class DirectoryTest_ extends TestCase
         })($directory->getRecursiveInodes()));
     }
 
+    /**
+     * @throws \MockingMagician\Organic\Exception\CollectionValueException
+     * @throws \MockingMagician\Organic\Exception\DirectoryCreateException
+     * @throws \MockingMagician\Organic\Exception\DirectoryDeleteException
+     * @throws \MockingMagician\Organic\Exception\DirectoryPathException
+     */
     public function testCreateSubDirectory(): void
     {
         $directory = new Directory(self::ROOT_TREE);
@@ -93,6 +119,10 @@ class DirectoryTest_ extends TestCase
         static::assertCount(3, $directory->getDirectories());
     }
 
+    /**
+     * @throws \MockingMagician\Organic\Exception\DirectoryMoveException
+     * @throws \MockingMagician\Organic\Exception\DirectoryPathException
+     */
     public function testMoveDirectory(): void
     {
         $directory = new Directory(self::ROOT_TREE);
@@ -102,6 +132,10 @@ class DirectoryTest_ extends TestCase
         $directory->moveTo(self::ROOT_TREE);
     }
 
+    /**
+     * @throws \MockingMagician\Organic\Exception\DirectoryDeleteException
+     * @throws \MockingMagician\Organic\Exception\DirectoryPathException
+     */
     public function testDelete(): void
     {
         $directory = new Directory(self::ROOT_TREE);

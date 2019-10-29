@@ -11,7 +11,7 @@ namespace MockingMagician\Organic\Tests;
 use Faker\Factory;
 use Faker\Generator;
 use MockingMagician\Organic\FileInfo;
-use MockingMagician\Organic\PermissionFactory;
+use MockingMagician\Organic\Permission\PermissionFactory;
 use PHPUnit\Framework\TestCase;
 
 /**

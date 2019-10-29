@@ -11,6 +11,8 @@ namespace MockingMagician\Organic;
 use MockingMagician\Organic\Exception\FileAlreadyExistException;
 use MockingMagician\Organic\Exception\FileDeleteException;
 use MockingMagician\Organic\Exception\FilePathException;
+use MockingMagician\Organic\Permission\Permission;
+use MockingMagician\Organic\Permission\PermissionFactory;
 
 class FileObject extends AbstractInode implements IOFileAwareInterface
 {
