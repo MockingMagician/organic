@@ -6,11 +6,13 @@
  * @link https://github.com/MockingMagician/organic/blob/master/README.md
  */
 
-namespace MockingMagician\Organic;
+namespace MockingMagician\Organic\Inode;
 
 use MockingMagician\Organic\Exception\FileAlreadyExistException;
 use MockingMagician\Organic\Exception\FileDeleteException;
 use MockingMagician\Organic\Exception\FilePathException;
+use MockingMagician\Organic\Inode\Base\AbstractInode;
+use MockingMagician\Organic\Inode\Base\InodeInterface;
 use MockingMagician\Organic\IO\IOFile;
 use MockingMagician\Organic\IO\IOFileAwareInterface;
 use MockingMagician\Organic\IO\IOFileInterface;

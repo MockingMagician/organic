@@ -10,7 +10,7 @@ namespace MockingMagician\Organic\Tests;
 
 use Faker\Factory;
 use Faker\Generator;
-use MockingMagician\Organic\FileInfo;
+use MockingMagician\Organic\Inode\Base\FileInfo;
 use MockingMagician\Organic\Permission\PermissionFactory;
 use PHPUnit\Framework\TestCase;
 

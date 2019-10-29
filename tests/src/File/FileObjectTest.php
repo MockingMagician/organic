@@ -12,7 +12,7 @@ use Faker\Factory;
 use Faker\Generator;
 use MockingMagician\Organic\Exception\FileAlreadyExistException;
 use MockingMagician\Organic\Exception\FileDeleteException;
-use MockingMagician\Organic\FileObject;
+use MockingMagician\Organic\Inode\FileObject;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -111,24 +111,40 @@ class FileObjectTest extends TestCase
         $file->delete();
     }
 
+    /**
+     * @throws FileAlreadyExistException
+     * @throws \MockingMagician\Organic\Exception\FilePathException
+     */
     public function testGetBasename(): void
     {
         $file = FileObject::create($this->filePath);
         static::assertEquals($this->fileName.'.'.$this->fileExtension, $file->getName());
     }
 
+    /**
+     * @throws FileAlreadyExistException
+     * @throws \MockingMagician\Organic\Exception\FilePathException
+     */
     public function testGetExtension(): void
     {
         $file = FileObject::create($this->filePath);
         static::assertEquals($this->fileExtension, $file->getExtension());
     }
 
+    /**
+     * @throws FileAlreadyExistException
+     * @throws \MockingMagician\Organic\Exception\FilePathException
+     */
     public function testGetFilename(): void
     {
         $file = FileObject::create($this->filePath);
         static::assertEquals($this->fileName, \basename($file->getName(), '.'.$file->getExtension()));
     }
 
+    /**
+     * @throws FileAlreadyExistException
+     * @throws \MockingMagician\Organic\Exception\FilePathException
+     */
     public function testCreateAnExistingThrowAnException(): void
     {
         FileObject::create($this->filePath);

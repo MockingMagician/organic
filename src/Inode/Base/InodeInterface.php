@@ -6,11 +6,14 @@
  * @link https://github.com/MockingMagician/organic/blob/master/README.md
  */
 
-namespace MockingMagician\Organic;
+namespace MockingMagician\Organic\Inode\Base;
 
 use MockingMagician\Organic\Permission\Permission;
 
-class DirectoryObject extends AbstractInode
+/**
+ * Interface InodeInterface.
+ */
+interface InodeInterface
 {
     /**
      * @param string     $path
@@ -18,18 +21,26 @@ class DirectoryObject extends AbstractInode
      *
      * @return InodeInterface the created Inode
      */
-    public static function create(string $path, Permission $permission): InodeInterface
-    {
-        // TODO: Implement create() method.
-    }
+    public static function create(string $path, Permission $permission): InodeInterface;
+
+    /**
+     * @param string $path
+     *
+     * @return InodeInterface
+     */
+    public function moveTo(string $path): InodeInterface;
 
     /**
      * Delete the inode. An inode is a file or a directory.
      *
      * @return bool in case of success
      */
-    public function delete(): bool
-    {
-        // TODO: Implement delete() method.
-    }
+    public function delete(): bool;
+
+    /**
+     * @param string $path
+     *
+     * @return InodeInterface
+     */
+    public function createLink(string $path): InodeInterface;
 }

@@ -8,6 +8,8 @@
 
 namespace MockingMagician\Organic;
 
+use MockingMagician\Organic\Inode\Base\InodeInterface;
+
 interface DirectoryInterface extends InodeInterface
 {
     public function getInodes();

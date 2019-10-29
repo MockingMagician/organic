@@ -6,7 +6,7 @@
  * @link https://github.com/MockingMagician/organic/blob/master/README.md
  */
 
-namespace MockingMagician\Organic;
+namespace MockingMagician\Organic\Inode\Base;
 
 use MockingMagician\Organic\Exception\FilePathException;
 use MockingMagician\Organic\Helper\Path;
