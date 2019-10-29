@@ -6,7 +6,7 @@
  * @link https://github.com/MockingMagician/organic/blob/master/README.md
  */
 
-namespace MockingMagician\Organic;
+namespace MockingMagician\Organic\IO;
 
 class IOFile implements IOFileInterface
 {
@@ -28,6 +28,11 @@ class IOFile implements IOFileInterface
         $this->path = $path;
         $this->openMode = $openMode;
         $this->openHandler();
+    }
+
+    public function __destruct()
+    {
+        $this->closeHandler();
     }
 
     /**

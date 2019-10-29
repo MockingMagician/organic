@@ -11,11 +11,16 @@ namespace MockingMagician\Organic;
 use MockingMagician\Organic\Exception\FileAlreadyExistException;
 use MockingMagician\Organic\Exception\FileDeleteException;
 use MockingMagician\Organic\Exception\FilePathException;
+use MockingMagician\Organic\IO\IOFile;
+use MockingMagician\Organic\IO\IOFileAwareInterface;
+use MockingMagician\Organic\IO\IOFileInterface;
 use MockingMagician\Organic\Permission\Permission;
 use MockingMagician\Organic\Permission\PermissionFactory;
 
 class FileObject extends AbstractInode implements IOFileAwareInterface
 {
+    private $IO;
+
     public function __construct(string $path)
     {
         parent::__construct($path);
@@ -78,6 +83,10 @@ class FileObject extends AbstractInode implements IOFileAwareInterface
      */
     public function getIO(string $openMode = 'r'): IOFileInterface
     {
-        return new IOFile($this->getObjectPath(), $openMode);
+        if (null === $this->IO || $openMode !== $this->IO[0]) {
+            $this->IO = [$openMode, new IOFile($this->getObjectPath(), $openMode)];
+        }
+
+        return $this->IO[1];
     }
 }
