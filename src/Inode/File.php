@@ -11,6 +11,7 @@ namespace MockingMagician\Organic\Inode;
 use MockingMagician\Organic\Exception\FileAlreadyExistException;
 use MockingMagician\Organic\Exception\FileDeleteException;
 use MockingMagician\Organic\Exception\FilePathException;
+use MockingMagician\Organic\Exception\InodePathException;
 use MockingMagician\Organic\Inode\Base\AbstractInode;
 use MockingMagician\Organic\Inode\Base\InodeInterface;
 use MockingMagician\Organic\IO\IOFile;
@@ -19,10 +20,19 @@ use MockingMagician\Organic\IO\IOFileInterface;
 use MockingMagician\Organic\Permission\Permission;
 use MockingMagician\Organic\Permission\PermissionFactory;
 
-class FileObject extends AbstractInode implements IOFileAwareInterface
+class File extends AbstractInode implements IOFileAwareInterface
 {
     private $IO;
 
+    /**
+     * File constructor.
+     *
+     * @param string $path
+     *
+     * @throws FilePathException
+     * @throws InodePathException
+     * @throws FilePathException
+     */
     public function __construct(string $path)
     {
         parent::__construct($path);
@@ -51,25 +61,24 @@ class FileObject extends AbstractInode implements IOFileAwareInterface
 
     /**
      * @param string $path
-     * @param $permissions
-     *
+     * @param Permission|null $permission
+     * @return File|InodeInterface
      * @throws FileAlreadyExistException
      * @throws FilePathException
-     *
-     * @return FileObject|InodeInterface
+     * @throws InodePathException
      */
-    public static function create(string $path, Permission $permissions = null): InodeInterface
+    public static function create(string $path, Permission $permission = null): InodeInterface
     {
         if (\file_exists($path)) {
             throw new FileAlreadyExistException($path);
         }
 
-        if (null === $permissions) {
-            $permissions = PermissionFactory::defaultFile();
+        if (null === $permission) {
+            $permission = PermissionFactory::defaultFile();
         }
 
         \file_put_contents($path, '', LOCK_EX);
-        \chmod($path, $permissions->getMode());
+        \chmod($path, $permission->getMode());
 
         return new static($path);
     }

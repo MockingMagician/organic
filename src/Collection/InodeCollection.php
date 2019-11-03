@@ -8,25 +8,26 @@
 
 namespace MockingMagician\Organic\Collection;
 
-use MockingMagician\Organic\Directory;
 use MockingMagician\Organic\Exception\DirectoryPathException;
 use MockingMagician\Organic\Exception\FilePathException;
 use MockingMagician\Organic\Exception\InodePathException;
-use MockingMagician\Organic\File;
-use MockingMagician\Organic\Inode;
+use MockingMagician\Organic\Inode\Base\AbstractInode;
+use MockingMagician\Organic\Inode\Directory;
+use MockingMagician\Organic\Inode\File;
 
 /**
  * Class InodeCollection.
  *
- * @method Inode current()
- * @method Inode next()
+ * @method AbstractInode current()
+ * @method AbstractInode next()
  */
-class InodeCollection extends Collection
+class InodeCollection extends AbstractCollection
 {
     /**
      * InodeCollection constructor.
      *
-     * @param Inode[] $inodes
+     * @param AbstractInode[] $inodes
+     * @throws \MockingMagician\Organic\Exception\CollectionValueException
      */
     public function __construct(array $inodes = [])
     {
@@ -37,6 +38,8 @@ class InodeCollection extends Collection
      * @param string[] $paths
      *
      * @return self
+     * @throws InodePathException
+     * @throws \MockingMagician\Organic\Exception\CollectionValueException
      */
     public static function createFromPaths(array $paths): self
     {

@@ -11,24 +11,8 @@ namespace MockingMagician\Organic\Helper;
 use MockingMagician\Organic\Exception\DirectoryPathException;
 use Traversable;
 
-class FSIteratorOnlyFiles implements \IteratorAggregate
+class FSIteratorOnlyDir extends FSIterator
 {
-    private $path;
-
-    /**
-     * FSIteratorOnlyFiles constructor.
-     *
-     * @param string $path
-     *
-     * @throws DirectoryPathException
-     */
-    public function __construct(string $path)
-    {
-        if (!\is_dir($path)) {
-            throw new DirectoryPathException($path);
-        }
-        $this->path = \realpath($path);
-    }
 
     /**
      * Retrieve an external iterator.
@@ -43,18 +27,13 @@ class FSIteratorOnlyFiles implements \IteratorAggregate
     public function getIterator()
     {
         $scanDir = \array_filter($this->scanDir(), function ($value) {
-            if (\is_file($value)) {
+            if (\is_dir($value)) {
                 return true;
             }
 
             return false;
         });
 
-        return new \ArrayIterator($this->path.\DIRECTORY_SEPARATOR.$scanDir);
-    }
-
-    protected function scanDir()
-    {
-        return \array_diff(\scandir($this->path), ['..', '.']);
+        return new \ArrayIterator($scanDir);
     }
 }

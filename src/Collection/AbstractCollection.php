@@ -8,24 +8,33 @@
 
 namespace MockingMagician\Organic\Collection;
 
+use MockingMagician\Organic\Exception\CollectionValueException;
 use MockingMagician\Organic\Helper\Collection as HelperCollection;
-use MockingMagician\Organic\Inode;
+use MockingMagician\Organic\Inode\Base\AbstractInode;
 
-abstract class Collection extends HelperCollection
+abstract class AbstractCollection extends HelperCollection
 {
+    /**
+     * Collection constructor.
+     *
+     * @param array $values
+     * @param array $acceptClasses
+     *
+     * @throws CollectionValueException
+     */
     public function __construct(array $values, array $acceptClasses)
     {
         parent::__construct($values, $acceptClasses);
-        /** @var Inode $value */
-        foreach ($values as $value) {
-            $value->attachTo($this);
-        }
     }
 
+    /**
+     * @param $a AbstractInode
+     * @param $b AbstractInode
+     *
+     * @return bool
+     */
     public function equals($a, $b): bool
     {
-        /* @var Inode $a */
-        /* @var Inode $b */
-        return $a->getRealPath() === $b->getRealPath();
+        return $a->getObjectPath() === $b->getObjectPath();
     }
 }

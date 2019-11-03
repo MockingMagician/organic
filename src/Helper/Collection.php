@@ -22,6 +22,14 @@ abstract class Collection implements CollectionInterface, \Countable, \IteratorA
     protected $iterator;
     private $acceptClasses;
 
+    /**
+     * Collection constructor.
+     *
+     * @param array $values
+     * @param array $acceptClasses
+     *
+     * @throws CollectionValueException
+     */
     public function __construct(array $values, array $acceptClasses)
     {
         $this->acceptClasses = $acceptClasses;
@@ -44,6 +52,13 @@ abstract class Collection implements CollectionInterface, \Countable, \IteratorA
         return false;
     }
 
+    /**
+     * @param $value
+     *
+     * @throws CollectionValueException
+     *
+     * @return CollectionInterface
+     */
     public function add($value): CollectionInterface
     {
         if (!$this->isAcceptableValue($value)) {
@@ -61,6 +76,13 @@ abstract class Collection implements CollectionInterface, \Countable, \IteratorA
         return $this;
     }
 
+    /**
+     * @param $value
+     *
+     * @throws CollectionValueException
+     *
+     * @return CollectionInterface
+     */
     public function remove($value): CollectionInterface
     {
         if (!$this->isAcceptableValue($value)) {

@@ -19,12 +19,13 @@ use MockingMagician\Organic\Directory;
  * @method bool      valid()
  * @method void      rewind()
  */
-class DirectoryCollection extends Collection
+class DirectoryCollection extends AbstractCollection
 {
     /**
      * InodeCollection constructor.
      *
      * @param Directory[] $Directories
+     * @throws \MockingMagician\Organic\Exception\CollectionValueException
      */
     public function __construct(array $Directories = [])
     {
@@ -35,6 +36,8 @@ class DirectoryCollection extends Collection
      * @param string[] $paths
      *
      * @return self
+     * @throws \MockingMagician\Organic\Exception\DirectoryPathException
+     * @throws \MockingMagician\Organic\Exception\CollectionValueException
      */
     public static function createFromPaths(array $paths): DirectoryCollection
     {

@@ -8,7 +8,7 @@
 
 namespace MockingMagician\Organic\Inode\Base;
 
-use MockingMagician\Organic\Exception\FilePathException;
+use MockingMagician\Organic\Exception\InodePathException;
 use MockingMagician\Organic\Helper\Path;
 use MockingMagician\Organic\Permission\Permission;
 use MockingMagician\Organic\Permission\PermissionFactory;
@@ -24,14 +24,14 @@ class FileInfo implements \Serializable
      *
      * @param string $path
      *
-     * @throws FilePathException
+     * @throws InodePathException
      */
     public function __construct(string $path)
     {
         $cleanedPath = Path::clean($path);
         \clearstatcache(true, $cleanedPath);
         if (!\file_exists($cleanedPath)) {
-            throw new FilePathException($cleanedPath);
+            throw new InodePathException($cleanedPath);
         }
 
         $this->path = $cleanedPath;
@@ -173,7 +173,7 @@ class FileInfo implements \Serializable
      *
      * @param string $serialized the string representation of the object
      *
-     * @throws FilePathException
+     * @throws InodePathException
      */
     public function unserialize($serialized): void
     {

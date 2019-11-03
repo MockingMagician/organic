@@ -12,7 +12,7 @@ use Faker\Factory;
 use Faker\Generator;
 use MockingMagician\Organic\Exception\FileAlreadyExistException;
 use MockingMagician\Organic\Exception\FileDeleteException;
-use MockingMagician\Organic\Inode\FileObject;
+use MockingMagician\Organic\Inode\File;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -48,7 +48,7 @@ class FileObjectTest extends TestCase
      */
     public function testCreateThenDelete(): void
     {
-        $fileCreated = FileObject::create($this->filePath);
+        $fileCreated = File::create($this->filePath);
         static::assertFileExists($fileCreated);
         $fileCreated->delete();
         static::assertFileNotExists($fileCreated);
@@ -59,7 +59,7 @@ class FileObjectTest extends TestCase
      */
     public function testDeleteNotExistingFileThrowAnException(): void
     {
-        $fileCreated = FileObject::create($this->filePath);
+        $fileCreated = File::create($this->filePath);
         static::assertFileExists($fileCreated);
         \unlink($this->filePath);
         static::assertFileNotExists($fileCreated);
@@ -74,7 +74,7 @@ class FileObjectTest extends TestCase
      */
     public function testGetSize(): void
     {
-        $file = FileObject::create($this->filePath);
+        $file = File::create($this->filePath);
         static::assertEquals(0, $file->getSize());
         $file->getIO()->addContent('1111');
         static::assertEquals(4, $file->getSize());
@@ -96,7 +96,7 @@ class FileObjectTest extends TestCase
      */
     public function testGetTimes(): void
     {
-        $file = FileObject::create($this->filePath);
+        $file = File::create($this->filePath);
         $startTime = $file->getChangeTime()->getTimestamp();
         \sleep(1);
         $file->getIO()->addContent('1111');
@@ -117,7 +117,7 @@ class FileObjectTest extends TestCase
      */
     public function testGetBasename(): void
     {
-        $file = FileObject::create($this->filePath);
+        $file = File::create($this->filePath);
         static::assertEquals($this->fileName.'.'.$this->fileExtension, $file->getName());
     }
 
@@ -127,7 +127,7 @@ class FileObjectTest extends TestCase
      */
     public function testGetExtension(): void
     {
-        $file = FileObject::create($this->filePath);
+        $file = File::create($this->filePath);
         static::assertEquals($this->fileExtension, $file->getExtension());
     }
 
@@ -137,7 +137,7 @@ class FileObjectTest extends TestCase
      */
     public function testGetFilename(): void
     {
-        $file = FileObject::create($this->filePath);
+        $file = File::create($this->filePath);
         static::assertEquals($this->fileName, \basename($file->getName(), '.'.$file->getExtension()));
     }
 
@@ -147,8 +147,8 @@ class FileObjectTest extends TestCase
      */
     public function testCreateAnExistingThrowAnException(): void
     {
-        FileObject::create($this->filePath);
+        File::create($this->filePath);
         static::expectException(FileAlreadyExistException::class);
-        FileObject::create($this->filePath);
+        File::create($this->filePath);
     }
 }

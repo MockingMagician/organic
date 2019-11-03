@@ -17,12 +17,13 @@ use MockingMagician\Organic\File;
  * @method File current()
  * @method File next()
  */
-class FileCollection extends Collection
+class FileCollection extends AbstractCollection
 {
     /**
      * InodeCollection constructor.
      *
      * @param Directory[] $Directories
+     * @throws \MockingMagician\Organic\Exception\CollectionValueException
      */
     public function __construct(array $Directories = [])
     {
@@ -35,6 +36,7 @@ class FileCollection extends Collection
      * @throws \MockingMagician\Organic\Exception\FilePathException
      *
      * @return self
+     * @throws \MockingMagician\Organic\Exception\CollectionValueException
      */
     public static function createFromPaths(array $paths): FileCollection
     {

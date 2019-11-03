@@ -11,12 +11,12 @@ namespace MockingMagician\Organic\Helper;
 use MockingMagician\Organic\Exception\DirectoryPathException;
 use Traversable;
 
-class FSIteratorOnlyDir implements \IteratorAggregate
+class FSIterator implements \IteratorAggregate
 {
-    private $path;
+    protected $path;
 
     /**
-     * FSIteratorOnlyDir constructor.
+     * FSIterator constructor.
      *
      * @param string $path
      *
@@ -27,7 +27,7 @@ class FSIteratorOnlyDir implements \IteratorAggregate
         if (!\is_dir($path)) {
             throw new DirectoryPathException($path);
         }
-        $this->path = \realpath($path);
+        $this->path;
     }
 
     /**
@@ -42,15 +42,7 @@ class FSIteratorOnlyDir implements \IteratorAggregate
      */
     public function getIterator()
     {
-        $scanDir = \array_filter($this->scanDir(), function ($value) {
-            if (\is_dir($value)) {
-                return true;
-            }
-
-            return false;
-        });
-
-        return new \ArrayIterator($this->path.\DIRECTORY_SEPARATOR.$scanDir);
+        return new \ArrayIterator($this->scanDir());
     }
 
     protected function scanDir()
