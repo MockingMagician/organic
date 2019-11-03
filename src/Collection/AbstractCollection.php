@@ -28,8 +28,8 @@ abstract class AbstractCollection extends HelperCollection
     }
 
     /**
-     * @param $a AbstractInode
-     * @param $b AbstractInode
+     * @param AbstractInode $a
+     * @param AbstractInode $b
      *
      * @return bool
      */

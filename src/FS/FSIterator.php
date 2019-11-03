@@ -6,7 +6,7 @@
  * @link https://github.com/MockingMagician/organic/blob/master/README.md
  */
 
-namespace MockingMagician\Organic\Helper;
+namespace MockingMagician\Organic\FS;
 
 use MockingMagician\Organic\Exception\DirectoryPathException;
 use Traversable;
@@ -47,6 +47,8 @@ class FSIterator implements \IteratorAggregate
 
     protected function scanDir()
     {
-        return \array_diff(\scandir($this->path), ['..', '.']);
+        $scanDir = \scandir($this->path);
+
+        return \array_diff($scanDir ?: [], ['..', '.']);
     }
 }

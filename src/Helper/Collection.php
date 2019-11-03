@@ -53,7 +53,7 @@ abstract class Collection implements CollectionInterface, \Countable, \IteratorA
     }
 
     /**
-     * @param $value
+     * @param mixed $value
      *
      * @throws CollectionValueException
      *
@@ -77,7 +77,7 @@ abstract class Collection implements CollectionInterface, \Countable, \IteratorA
     }
 
     /**
-     * @param $value
+     * @param mixed $value
      *
      * @throws CollectionValueException
      *

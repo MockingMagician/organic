@@ -25,10 +25,12 @@ class Path
         // Check if path start with a separator (UNIX)
         $startWithSeparator = \DIRECTORY_SEPARATOR === $path[0];
         // Check if start with drive letter
-        \preg_match('/^[a-z]:/', $path, $matches);
+        \preg_match('/^[a-z]:/', $path ?: '', $matches);
         $startWithLetterDir = isset($matches[0]) ? $matches[0] : false;
         // Get and filter empty sub paths
-        $subPaths = \array_filter(\explode(\DIRECTORY_SEPARATOR, $path), 'mb_strlen');
+        $subPaths = \array_filter(\explode(\DIRECTORY_SEPARATOR, $path ?: ''), function ($v) {
+            return \mb_strlen($v);
+        });
 
         $absolutes = [];
         foreach ($subPaths as $subPath) {

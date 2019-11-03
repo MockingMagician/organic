@@ -1,0 +1,9 @@
+parameters:
+    inferPrivatePropertyTypeFromConstructor: true
+    ignoreErrors:
+        -
+            message: '#tag @param for parameter \$mixed with type array is not subtype of native type array#'
+            path: src/IO/IOFile.php
+        -
+            message: '#tag @param for parameter \$mixed with type array is not subtype of native type array#'
+            path: src/IO/IOFileInterface.php

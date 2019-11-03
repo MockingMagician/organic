@@ -8,7 +8,6 @@
 
 namespace MockingMagician\Organic\Inode\Base;
 
-use MockingMagician\Organic\Exception\FilePathException;
 use MockingMagician\Organic\Exception\InodeCreateLinkException;
 use MockingMagician\Organic\Exception\InodeMoveToException;
 use MockingMagician\Organic\Exception\InodePathException;
@@ -19,9 +18,10 @@ abstract class AbstractInode extends FileInfo implements InodeInterface
     /**
      * @param string $path
      *
-     * @return InodeInterface the moved file
      * @throws InodeMoveToException
      * @throws InodePathException
+     *
+     * @return InodeInterface the moved file
      */
     public function moveTo(string $path): InodeInterface
     {
@@ -50,9 +50,10 @@ abstract class AbstractInode extends FileInfo implements InodeInterface
      *
      * @param string $path
      *
-     * @return InodeInterface
      * @throws InodeCreateLinkException
      * @throws InodePathException
+     *
+     * @return InodeInterface
      */
     public function createLink(string $path): InodeInterface
     {

@@ -8,6 +8,8 @@
 
 namespace MockingMagician\Organic\IO;
 
+use MockingMagician\Organic\Exception\IOException;
+
 class IOFile implements IOFileInterface
 {
     /** @var resource */
@@ -58,21 +60,35 @@ class IOFile implements IOFileInterface
     /**
      * Gets a character from the file.
      *
+     * @throws IOException
+     *
      * @return string
      */
     public function getChar(): string
     {
-        return \fgetc($this->handler);
+        $char = \fgetc($this->handler);
+        if (false === $char) {
+            throw new IOException('No char to get');
+        }
+
+        return $char;
     }
 
     /**
      * Returns a string containing the next line from the file.
      *
+     * @throws IOException
+     *
      * @return string
      */
     public function getCurrentLine(): string
     {
-        return \fgets($this->handler);
+        $line = \fgets($this->handler);
+        if (false === $line) {
+            throw new IOException('No line to get');
+        }
+
+        return $line;
     }
 
     /**
@@ -103,11 +119,18 @@ class IOFile implements IOFileInterface
      *
      * @param int $length
      *
+     * @throws IOException
+     *
      * @return string
      */
     public function read(int $length): string
     {
-        return \fread($this->handler, $length);
+        $read = \fread($this->handler, $length);
+        if (false === $read) {
+            throw new IOException('Read has failed');
+        }
+
+        return $read;
     }
 
     /**
@@ -117,7 +140,7 @@ class IOFile implements IOFileInterface
      * @param string $format
      * @param array  $mixed
      *
-     * @return mixed
+     * @return array|int
      */
     public function scanFormat(string $format, ...$mixed)
     {
@@ -135,17 +158,22 @@ class IOFile implements IOFileInterface
      */
     public function seek(int $offset, int $whence = SEEK_SET): bool
     {
-        return \fseek($this->handler, $whence);
+        return 0 === \fseek($this->handler, $whence);
     }
 
     /**
      * Return current file position.
      *
+     * @throws IOException
+     *
      * @return int
      */
     public function tell(): int
     {
-        return \ftell($this->handler);
+        $tell = \ftell($this->handler);
+        if (false === $tell) {
+            throw new IOException('tell has failed');
+        }
     }
 
     /**
@@ -170,11 +198,22 @@ class IOFile implements IOFileInterface
      * @param string   $str
      * @param null|int $length
      *
+     * @throws IOException
+     *
      * @return int - the number of bytes written, or 0 on error
      */
     public function write(string $str, int $length = null): int
     {
-        return \fwrite($this->handler, $str, $length);
+        if (\is_int($length)) {
+            $write = \fwrite($this->handler, $str, $length);
+        } else {
+            $write = \fwrite($this->handler, $str);
+        }
+        if (false === $write) {
+            throw new IOException('write has failed');
+        }
+
+        return $write;
     }
 
     /**
@@ -191,6 +230,10 @@ class IOFile implements IOFileInterface
         $this->closeHandler();
         $content = \file_get_contents($this->path);
         $this->openHandler();
+
+        if (false === $content) {
+            throw new IOException('getContent has failed');
+        }
 
         return $content;
     }

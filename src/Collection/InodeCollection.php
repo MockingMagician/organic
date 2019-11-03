@@ -27,6 +27,7 @@ class InodeCollection extends AbstractCollection
      * InodeCollection constructor.
      *
      * @param AbstractInode[] $inodes
+     *
      * @throws \MockingMagician\Organic\Exception\CollectionValueException
      */
     public function __construct(array $inodes = [])
@@ -37,9 +38,10 @@ class InodeCollection extends AbstractCollection
     /**
      * @param string[] $paths
      *
-     * @return self
      * @throws InodePathException
      * @throws \MockingMagician\Organic\Exception\CollectionValueException
+     *
+     * @return self
      */
     public static function createFromPaths(array $paths): self
     {

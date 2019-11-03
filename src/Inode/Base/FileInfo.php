@@ -59,9 +59,21 @@ class FileInfo implements \Serializable
         return $this->path;
     }
 
+    /**
+     * @throws \Exception
+     *
+     * @return string
+     */
     public function getRealPath(): string
     {
-        return $this->internalSplFileInfo->getRealPath();
+        \clearstatcache(true, $this->path);
+        $realPath = $this->internalSplFileInfo->getRealPath();
+
+        if (false === $realPath) {
+            throw new \Exception('Getting realPath has failed');
+        }
+
+        return $realPath;
     }
 
     public function getDirectoryContainerPath(): string

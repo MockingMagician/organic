@@ -6,9 +6,8 @@
  * @link https://github.com/MockingMagician/organic/blob/master/README.md
  */
 
-namespace MockingMagician\Organic\Helper;
+namespace MockingMagician\Organic\FS;
 
-use MockingMagician\Organic\Exception\DirectoryPathException;
 use Traversable;
 
 class FSIteratorOnlyFiles extends FSIterator

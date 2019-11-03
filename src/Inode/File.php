@@ -60,12 +60,14 @@ class File extends AbstractInode implements IOFileAwareInterface
     }
 
     /**
-     * @param string $path
-     * @param Permission|null $permission
-     * @return File|InodeInterface
+     * @param string          $path
+     * @param null|Permission $permission
+     *
      * @throws FileAlreadyExistException
      * @throws FilePathException
      * @throws InodePathException
+     *
+     * @return File
      */
     public static function create(string $path, Permission $permission = null): InodeInterface
     {
