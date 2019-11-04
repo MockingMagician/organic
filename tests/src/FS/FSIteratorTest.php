@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @author Marc MOREAU <moreau.marc.web@gmail.com>
+ * @license https://github.com/MockingMagician/organic/blob/master/LICENSE.md CC-BY-SA-4.0
+ * @link https://github.com/MockingMagician/organic/blob/master/README.md
+ */
+
 namespace MockingMagician\Organic\Tests\FS;
 
 use Faker\Factory;
@@ -7,6 +13,9 @@ use MockingMagician\Organic\Exception\DirectoryPathException;
 use MockingMagician\Organic\FS\FSIterator;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ */
 class FSIteratorTest extends TestCase
 {
     public const TEMP_DIR = __DIR__.'/../../var/temp';
@@ -38,7 +47,7 @@ class FSIteratorTest extends TestCase
     /**
      * @throws \MockingMagician\Organic\Exception\DirectoryPathException
      */
-    public function testGetIterator()
+    public function testGetIterator(): void
     {
         $fs = new FSIterator(static::TEMP_DIR);
         static::assertCount(3, $fs->getIterator());
@@ -47,7 +56,7 @@ class FSIteratorTest extends TestCase
     /**
      * @throws \MockingMagician\Organic\Exception\DirectoryPathException
      */
-    public function testNewFSIteratorFailCauseNotDirectoryPath()
+    public function testNewFSIteratorFailCauseNotDirectoryPath(): void
     {
         static::expectException(DirectoryPathException::class);
         new FSIterator(static::TEMP_DIR.'not-exist');

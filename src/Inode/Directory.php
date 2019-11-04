@@ -14,6 +14,7 @@ use MockingMagician\Organic\Collection\InodeCollection;
 use MockingMagician\Organic\Exception\CollectionValueException;
 use MockingMagician\Organic\Exception\DirectoryCreateException;
 use MockingMagician\Organic\Exception\DirectoryPathException;
+use MockingMagician\Organic\Exception\FilePathException;
 use MockingMagician\Organic\Exception\InodePathException;
 use MockingMagician\Organic\FS\FSIterator;
 use MockingMagician\Organic\FS\FSIteratorOnlyDir;
@@ -64,6 +65,8 @@ class Directory extends AbstractInode
 
         try {
             \mkdir($path, $permission->getMode(), $recursive);
+            // chmod enforce mode that is not fully qualified through mkdir
+            \chmod($path, $permission->getMode());
         } catch (\Throwable $e) {
             throw new DirectoryCreateException($path, $e);
         }
@@ -97,12 +100,13 @@ class Directory extends AbstractInode
             }
         }
 
-        return \rmdir($this->getObjectPath());
+        return @\rmdir($this->getObjectPath());
     }
 
     /**
-     * @throws DirectoryPathException
      * @throws CollectionValueException
+     * @throws DirectoryPathException
+     * @throws InodePathException
      *
      * @return InodeCollection
      */
@@ -110,12 +114,13 @@ class Directory extends AbstractInode
     {
         $fs = new FSIterator($this->getObjectPath());
 
-        return new InodeCollection(\iterator_to_array($fs->getIterator()));
+        return InodeCollection::createFromPaths(\iterator_to_array($fs->getIterator()));
     }
 
     /**
      * @throws CollectionValueException
      * @throws DirectoryPathException
+     * @throws FilePathException
      *
      * @return FileCollection
      */
@@ -123,7 +128,7 @@ class Directory extends AbstractInode
     {
         $fs = new FSIteratorOnlyFiles($this->getObjectPath());
 
-        return new FileCollection(\iterator_to_array($fs->getIterator()));
+        return FileCollection::createFromPaths(\iterator_to_array($fs->getIterator()));
     }
 
     /**
@@ -136,6 +141,6 @@ class Directory extends AbstractInode
     {
         $fs = new FSIteratorOnlyDir($this->getObjectPath());
 
-        return new DirectoryCollection(\iterator_to_array($fs->getIterator()));
+        return DirectoryCollection::createFromPaths(\iterator_to_array($fs->getIterator()));
     }
 }

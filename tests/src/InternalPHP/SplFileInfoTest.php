@@ -335,7 +335,7 @@ class SplFileInfoTest extends TestCase
         $symlinkATime = $this->symlink->getATime();
         $hardlinkATime = $this->hardlink->getATime();
 
-        \sleep(1);
+        \usleep(1250000);
 
         \file_get_contents($this->filePath);
 
@@ -450,7 +450,7 @@ class SplFileInfoTest extends TestCase
         $symlinkATime = $this->symlink->getATime();
         $hardlinkATime = $this->hardlink->getATime();
 
-        \sleep(1);
+        \usleep(1250000);
 
         \shell_exec(\implode(' && ', [
             \sprintf('cd %s', __DIR__),
@@ -466,7 +466,7 @@ class SplFileInfoTest extends TestCase
         $symlinkMTime = $this->symlink->getMTime();
         $hardlinkMTime = $this->hardlink->getMTime();
 
-        \sleep(1);
+        \usleep(1250000);
 
         \shell_exec(\implode(' && ', [
             \sprintf('cd %s', __DIR__),
@@ -482,7 +482,7 @@ class SplFileInfoTest extends TestCase
         $symlinkCTime = $this->symlink->getCTime();
         $hardlinkCTime = $this->hardlink->getCTime();
 
-        \sleep(1);
+        \usleep(1250000);
 
         \shell_exec(\implode(' && ', [
             \sprintf('cd %s', __DIR__),

@@ -6,7 +6,7 @@
  * @link https://github.com/MockingMagician/organic/blob/master/README.md
  */
 
-namespace MockingMagician\Organic\Tests;
+namespace MockingMagician\Organic\Tests\Inode;
 
 use Faker\Factory;
 use Faker\Generator;
@@ -35,7 +35,7 @@ class FileTest extends TestCase
         $this->faker = Factory::create();
         $this->fileName = $this->faker->uuid;
         $this->fileExtension = $this->faker->fileExtension;
-        $this->filePath = self::TEMP_DIR.'/'.$this->fileName.'.'.$this->fileExtension;
+        $this->filePath = self::TEMP_DIR.\DIRECTORY_SEPARATOR.$this->fileName.'.'.$this->fileExtension;
         parent::setUp();
         @\unlink($this->filePath);
     }

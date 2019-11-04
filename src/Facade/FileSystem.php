@@ -12,7 +12,6 @@ use MockingMagician\Organic\Exception\DirectoryCreateException;
 use MockingMagician\Organic\Exception\DirectoryPathException;
 use MockingMagician\Organic\Exception\FileAlreadyExistException;
 use MockingMagician\Organic\Exception\FilePathException;
-use MockingMagician\Organic\Exception\InodePathException;
 use MockingMagician\Organic\Inode\Directory;
 use MockingMagician\Organic\Inode\File;
 use MockingMagician\Organic\Permission\Permission;
@@ -28,8 +27,9 @@ class FileSystem
     /**
      * @param string $path
      *
-     * @return File
      * @throws FilePathException
+     *
+     * @return File
      */
     public static function getFile(string $path): File
     {
@@ -37,17 +37,18 @@ class FileSystem
     }
 
     /**
-     * @param string $path
+     * @param string          $path
+     * @param null|Permission $permission
      *
-     * @param Permission|null $permission
-     * @return File
      * @throws FileAlreadyExistException
      * @throws FilePathException
+     *
+     * @return File
      */
     public static function newFile(string $path, Permission $permission = null): File
     {
         $args = [$path];
-        is_null($permission) ?: ($args[] = $permission);
+        null === $permission ?: ($args[] = $permission);
 
         return File::create(...$args);
     }
@@ -65,18 +66,19 @@ class FileSystem
     }
 
     /**
-     * @param string $path
+     * @param string          $path
+     * @param null|Permission $permission
+     * @param bool            $recursive
      *
-     * @param Permission|null $permission
-     * @param bool $recursive
-     * @return Directory
      * @throws DirectoryCreateException
      * @throws DirectoryPathException
+     *
+     * @return Directory
      */
     public static function newDirectory(string $path, Permission $permission = null, bool $recursive = true): Directory
     {
         $args = [$path];
-        is_null($permission) ?: ($args[] = $permission && $args[] = $recursive);
+        null === $permission ?: ($args[] = $permission && $args[] = $recursive);
 
         return Directory::create(...$args);
     }

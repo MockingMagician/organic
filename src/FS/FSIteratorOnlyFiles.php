@@ -25,7 +25,7 @@ class FSIteratorOnlyFiles extends FSIterator
     public function getIterator()
     {
         $scanDir = \array_filter($this->scanDir(), function ($value) {
-            if (\is_file($this->path . DIRECTORY_SEPARATOR . $value)) {
+            if (\is_file($value)) {
                 return true;
             }
 

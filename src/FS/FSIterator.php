@@ -49,6 +49,13 @@ class FSIterator implements \IteratorAggregate
     {
         $scanDir = \scandir($this->path);
 
-        return \array_diff($scanDir ?: [], ['..', '.']);
+        $cleanedScanDir = \array_diff($scanDir ?: [], ['..', '.']);
+
+        foreach ($cleanedScanDir as $k => $path)
+        {
+            $cleanedScanDir[$k] = $this->path.DIRECTORY_SEPARATOR.$path;
+        }
+
+        return $cleanedScanDir;
     }
 }

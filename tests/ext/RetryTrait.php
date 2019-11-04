@@ -10,6 +10,9 @@ namespace MockingMagician\Organic\PHPUnitExt;
 
 trait RetryTrait
 {
+    /**
+     * @throws \Throwable
+     */
     public function runBare(): void
     {
         $e = null;
@@ -33,7 +36,7 @@ trait RetryTrait
             } catch (\PHPUnit\Framework\SkippedTestError $e) {
                 throw $e;
             } catch (\Throwable $e) {
-                // last one thrown below
+                // last one will be thrown after retries
             }
         }
 
