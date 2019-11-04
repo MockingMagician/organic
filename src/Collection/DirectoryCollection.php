@@ -10,7 +10,6 @@ namespace MockingMagician\Organic\Collection;
 
 use MockingMagician\Organic\Exception\CollectionValueException;
 use MockingMagician\Organic\Exception\DirectoryPathException;
-use MockingMagician\Organic\Exception\InodePathException;
 use MockingMagician\Organic\Inode\Directory;
 
 /**
@@ -29,7 +28,7 @@ class DirectoryCollection extends AbstractCollection
      *
      * @param Directory[] $Directories
      *
-     * @throws \MockingMagician\Organic\Exception\CollectionValueException
+     * @throws CollectionValueException
      */
     public function __construct(array $Directories = [])
     {
@@ -41,7 +40,6 @@ class DirectoryCollection extends AbstractCollection
      *
      * @throws CollectionValueException
      * @throws DirectoryPathException
-     * @throws InodePathException
      *
      * @return self
      */

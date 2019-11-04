@@ -6,7 +6,7 @@
  * @link https://github.com/MockingMagician/organic/blob/master/README.md
  */
 
-namespace MockingMagician\Organic\Tests;
+namespace MockingMagician\Organic\Tests\Permission;
 
 use MockingMagician\Organic\Permission\PermissionFactory;
 use PHPUnit\Framework\TestCase;
@@ -16,6 +16,14 @@ use PHPUnit\Framework\TestCase;
  */
 class PermissionFactoryTest extends TestCase
 {
+    public function testDefaultDirectoryReturn(): void
+    {
+        $permission = PermissionFactory::defaultDirectory();
+        static::assertEquals(7, $permission->getUser()->getP());
+        static::assertEquals(7, $permission->getGroup()->getP());
+        static::assertEquals(7, $permission->getOthers()->getP());
+    }
+
     public function testCreateFromMode(): void
     {
         $permission = PermissionFactory::createFromMode(0777);
@@ -26,6 +34,11 @@ class PermissionFactoryTest extends TestCase
         $permission = PermissionFactory::createFromMode(0000);
         static::assertEquals(0, $permission->getUser()->getP());
         static::assertEquals(0, $permission->getGroup()->getP());
+        static::assertEquals(0, $permission->getOthers()->getP());
+
+        $permission = PermissionFactory::createFromMode(0020);
+        static::assertEquals(0, $permission->getUser()->getP());
+        static::assertEquals(2, $permission->getGroup()->getP());
         static::assertEquals(0, $permission->getOthers()->getP());
 
         $permission = PermissionFactory::createFromMode(0111);
@@ -47,5 +60,14 @@ class PermissionFactoryTest extends TestCase
         static::assertEquals(7, $permission->getUser()->getP());
         static::assertEquals(4, $permission->getGroup()->getP());
         static::assertEquals(1, $permission->getOthers()->getP());
+
+        static::expectException(\RuntimeException::class);
+        PermissionFactory::createFromMode(9999);
+    }
+
+    public function testCreatePermissionScopeFromInt(): void
+    {
+        static::expectException(\RuntimeException::class);
+        PermissionFactory::createFromMode(789);
     }
 }

@@ -15,18 +15,23 @@ use MockingMagician\Organic\Exception\FilePathException;
 use MockingMagician\Organic\Exception\InodePathException;
 use MockingMagician\Organic\Inode\Directory;
 use MockingMagician\Organic\Inode\File;
+use MockingMagician\Organic\Permission\Permission;
+use MockingMagician\Organic\Permission\PermissionFactory;
 
 class FileSystem
 {
+    public static function Permission(int $mode): Permission
+    {
+        return PermissionFactory::createFromMode($mode);
+    }
+
     /**
      * @param string $path
      *
-     * @throws FilePathException
-     * @throws InodePathException
-     *
      * @return File
+     * @throws FilePathException
      */
-    public static function file(string $path): File
+    public static function getFile(string $path): File
     {
         return new File($path);
     }
@@ -34,26 +39,27 @@ class FileSystem
     /**
      * @param string $path
      *
-     * @throws FilePathException
-     * @throws InodePathException
-     * @throws FileAlreadyExistException
-     *
+     * @param Permission|null $permission
      * @return File
+     * @throws FileAlreadyExistException
+     * @throws FilePathException
      */
-    public static function newFile(string $path): File
+    public static function newFile(string $path, Permission $permission = null): File
     {
-        return File::create($path);
+        $args = [$path];
+        is_null($permission) ?: ($args[] = $permission);
+
+        return File::create(...$args);
     }
 
     /**
      * @param string $path
      *
      * @throws DirectoryPathException
-     * @throws InodePathException
      *
      * @return Directory
      */
-    public static function directory(string $path): Directory
+    public static function getDirectory(string $path): Directory
     {
         return new Directory($path);
     }
@@ -61,14 +67,17 @@ class FileSystem
     /**
      * @param string $path
      *
-     * @throws DirectoryPathException
-     * @throws InodePathException
-     * @throws DirectoryCreateException
-     *
+     * @param Permission|null $permission
+     * @param bool $recursive
      * @return Directory
+     * @throws DirectoryCreateException
+     * @throws DirectoryPathException
      */
-    public static function createDirectory(string $path): Directory
+    public static function newDirectory(string $path, Permission $permission = null, bool $recursive = true): Directory
     {
-        return Directory::create($path);
+        $args = [$path];
+        is_null($permission) ?: ($args[] = $permission && $args[] = $recursive);
+
+        return Directory::create(...$args);
     }
 }

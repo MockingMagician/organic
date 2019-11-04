@@ -10,7 +10,6 @@ namespace MockingMagician\Organic\Collection;
 
 use MockingMagician\Organic\Exception\CollectionValueException;
 use MockingMagician\Organic\Exception\FilePathException;
-use MockingMagician\Organic\Exception\InodePathException;
 use MockingMagician\Organic\Inode\Directory;
 use MockingMagician\Organic\Inode\File;
 
@@ -19,6 +18,9 @@ use MockingMagician\Organic\Inode\File;
  *
  * @method File current()
  * @method File next()
+ * @method int  key()
+ * @method bool valid()
+ * @method void rewind()
  */
 class FileCollection extends AbstractCollection
 {
@@ -27,7 +29,7 @@ class FileCollection extends AbstractCollection
      *
      * @param Directory[] $Directories
      *
-     * @throws \MockingMagician\Organic\Exception\CollectionValueException
+     * @throws CollectionValueException
      */
     public function __construct(array $Directories = [])
     {
@@ -39,7 +41,6 @@ class FileCollection extends AbstractCollection
      *
      * @throws CollectionValueException
      * @throws FilePathException
-     * @throws InodePathException
      *
      * @return self
      */

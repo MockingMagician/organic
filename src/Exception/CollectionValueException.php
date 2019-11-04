@@ -12,9 +12,10 @@ use Throwable;
 
 class CollectionValueException extends \Exception
 {
-    public function __construct(string $collectionClass, string $valueClass, int $code = 0, Throwable $previous = null)
+    public function __construct(string $collectionClass, string $value, int $code = 0, Throwable $previous = null)
     {
-        $message = \sprintf('Collection `%s` can not accept `%s` object', $collectionClass, $valueClass);
+        $valueClassOrType = 'object' === ($type = \gettype($value)) ? \get_class($value) : $type;
+        $message = \sprintf('Collection `%s` can not accept `%s` object', $collectionClass, $valueClassOrType);
         parent::__construct($message, $code, $previous);
     }
 }

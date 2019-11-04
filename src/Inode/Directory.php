@@ -33,11 +33,14 @@ class Directory extends AbstractInode
      * @param string $path
      *
      * @throws DirectoryPathException
-     * @throws InodePathException
      */
     public function __construct(string $path)
     {
-        parent::__construct($path);
+        try {
+            parent::__construct($path);
+        } catch (InodePathException $e) {
+            throw new DirectoryPathException($path, 0, $e);
+        }
         if (!$this->isDirectory()) {
             throw new DirectoryPathException($this->getObjectPath());
         }
@@ -50,7 +53,6 @@ class Directory extends AbstractInode
      *
      * @throws DirectoryCreateException
      * @throws DirectoryPathException
-     * @throws InodePathException
      *
      * @return Directory
      */

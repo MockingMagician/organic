@@ -13,13 +13,16 @@ use Faker\Generator;
 use MockingMagician\Organic\Exception\FileAlreadyExistException;
 use MockingMagician\Organic\Exception\FileDeleteException;
 use MockingMagician\Organic\Inode\File;
+use MockingMagician\Organic\PHPUnitExt\RetryTrait;
 use PHPUnit\Framework\TestCase;
 
 /**
  * @internal
  */
-class FileObjectTest extends TestCase
+class FileTest extends TestCase
 {
+    use RetryTrait;
+
     public const TEMP_DIR = __DIR__.'/../../var/temp';
     private $filePath;
     private $fileName;
@@ -90,6 +93,8 @@ class FileObjectTest extends TestCase
     }
 
     /**
+     * @retry 5
+     *
      * @throws FileAlreadyExistException
      * @throws \MockingMagician\Organic\Exception\FilePathException
      * @throws \Exception
@@ -98,12 +103,12 @@ class FileObjectTest extends TestCase
     {
         $file = File::create($this->filePath);
         $startTime = $file->getChangeTime()->getTimestamp();
-        \sleep(1);
+        \usleep(1000000);
         $file->getIO()->addContent('1111');
         static::assertEquals($startTime + 1, $file->getChangeTime()->getTimestamp());
         static::assertEquals($startTime + 1, $file->getModificationTime()->getTimestamp());
         static::assertEquals($startTime, $file->getAccessTime()->getTimestamp());
-        \sleep(2);
+        \usleep(2000000);
         $file->getIO()->getContent();
         static::assertEquals($startTime + 1, $file->getChangeTime()->getTimestamp());
         static::assertEquals($startTime + 1, $file->getModificationTime()->getTimestamp());

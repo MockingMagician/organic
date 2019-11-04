@@ -35,7 +35,7 @@ abstract class Collection implements CollectionInterface, \Countable, \IteratorA
         $this->acceptClasses = $acceptClasses;
         foreach ($values as $value) {
             if (!$this->isAcceptableValue($value)) {
-                throw new CollectionValueException(static::class, \get_class($value));
+                throw new CollectionValueException(static::class, $value);
             }
         }
         $this->iterator = new \ArrayIterator($values);
@@ -62,7 +62,7 @@ abstract class Collection implements CollectionInterface, \Countable, \IteratorA
     public function add($value): CollectionInterface
     {
         if (!$this->isAcceptableValue($value)) {
-            throw new CollectionValueException(static::class, \get_class($value));
+            throw new CollectionValueException(static::class, $value);
         }
 
         foreach ($this->iterator as $item) {
@@ -86,7 +86,7 @@ abstract class Collection implements CollectionInterface, \Countable, \IteratorA
     public function remove($value): CollectionInterface
     {
         if (!$this->isAcceptableValue($value)) {
-            throw new CollectionValueException(static::class, \get_class($value));
+            throw new CollectionValueException(static::class, $value);
         }
 
         foreach ($this->iterator as $offset => $item) {

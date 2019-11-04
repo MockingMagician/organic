@@ -30,12 +30,14 @@ class File extends AbstractInode implements IOFileAwareInterface
      * @param string $path
      *
      * @throws FilePathException
-     * @throws InodePathException
-     * @throws FilePathException
      */
     public function __construct(string $path)
     {
-        parent::__construct($path);
+        try {
+            parent::__construct($path);
+        } catch (InodePathException $e) {
+            throw new FilePathException($path, 0, $e);
+        }
         if (!$this->isFile()) {
             throw new FilePathException($this->getObjectPath());
         }
@@ -65,7 +67,6 @@ class File extends AbstractInode implements IOFileAwareInterface
      *
      * @throws FileAlreadyExistException
      * @throws FilePathException
-     * @throws InodePathException
      *
      * @return File
      */

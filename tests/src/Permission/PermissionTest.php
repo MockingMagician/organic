@@ -6,7 +6,7 @@
  * @link https://github.com/MockingMagician/organic/blob/master/README.md
  */
 
-namespace MockingMagician\Organic\Tests;
+namespace MockingMagician\Organic\Tests\Permission;
 
 use Faker\Factory;
 use Faker\Generator;
@@ -19,7 +19,7 @@ use PHPUnit\Framework\TestCase;
  */
 class PermissionTest extends TestCase
 {
-    public const TEST_TEMP_DIR = __DIR__.'/../var/temp';
+    public const TEST_TEMP_DIR = __DIR__.'/../../var/temp';
 
     /** @var Generator */
     private $faker;

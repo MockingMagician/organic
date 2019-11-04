@@ -88,10 +88,7 @@ class PermissionFactory
         if (6 === $p) {
             return new PermissionScope(true, true, false);
         }
-        if (7 === $p) {
-            return new PermissionScope(true, true, true);
-        }
 
-        throw new \RuntimeException('$p value can be 0 to 7 only');
+        return new PermissionScope(true, true, true);
     }
 }

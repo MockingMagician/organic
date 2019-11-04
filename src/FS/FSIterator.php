@@ -27,7 +27,7 @@ class FSIterator implements \IteratorAggregate
         if (!\is_dir($path)) {
             throw new DirectoryPathException($path);
         }
-        $this->path;
+        $this->path = $path;
     }
 
     /**
