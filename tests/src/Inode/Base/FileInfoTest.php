@@ -10,6 +10,7 @@ namespace MockingMagician\Organic\Tests;
 
 use Faker\Factory;
 use Faker\Generator;
+use MockingMagician\Organic\Exception\InodePathException;
 use MockingMagician\Organic\Inode\Base\FileInfo;
 use MockingMagician\Organic\Permission\PermissionFactory;
 use PHPUnit\Framework\TestCase;
@@ -19,7 +20,7 @@ use PHPUnit\Framework\TestCase;
  */
 class FileInfoTest extends TestCase
 {
-    public const TEMP_DIR = __DIR__.'/../var/temp';
+    public const TEMP_DIR = __DIR__.'/../../../var/temp';
     /** @var Generator */
     private $faker;
     /** @var string */
@@ -30,7 +31,7 @@ class FileInfoTest extends TestCase
     private $fileName;
 
     /**
-     * @throws \MockingMagician\Organic\Exception\FilePathException
+     * @throws InodePathException
      */
     protected function setUp(): void
     {
@@ -45,7 +46,7 @@ class FileInfoTest extends TestCase
     protected function tearDown(): void
     {
         parent::tearDown();
-        \unlink($this->filePath);
+        @\unlink($this->filePath);
     }
 
     public function testUnserialize(): void
@@ -70,7 +71,7 @@ class FileInfoTest extends TestCase
     public function testGetPath(): void
     {
         static::assertEquals(
-            (new \SplFileInfo(__DIR__))->getPath().'/var/temp/'.$this->fileName,
+            (new \SplFileInfo((new \SplFileInfo((new \SplFileInfo(__DIR__))->getPath()))->getPath()))->getPath().'/var/temp/'.$this->fileName,
             $this->fileInfo->getObjectPath()
         );
     }
@@ -80,9 +81,28 @@ class FileInfoTest extends TestCase
         static::assertEquals(\filesize($this->filePath), $this->fileInfo->getSize());
     }
 
+    /**
+     * @throws \Exception
+     */
     public function testGetRealPath(): void
     {
         static::assertEquals(\realpath($this->filePath), $this->fileInfo->getRealPath());
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function testGetRealPathHasFailedCauseFileNotExistAnymore(): void
+    {
+        \unlink($this->filePath);
+        $e = null;
+
+        try {
+            $this->fileInfo->getRealPath();
+        } catch (\Throwable $e) {
+        }
+        static::assertInstanceOf(\Exception::class, $e);
+        \file_put_contents($this->filePath, $this->faker->paragraph);
     }
 
     public function testGetChangeTime(): void
@@ -101,7 +121,7 @@ class FileInfoTest extends TestCase
     }
 
     /**
-     * @throws \MockingMagician\Organic\Exception\FilePathException
+     * @throws InodePathException
      */
     public function testIsLink(): void
     {

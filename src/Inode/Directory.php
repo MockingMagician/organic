@@ -12,7 +12,9 @@ use MockingMagician\Organic\Collection\DirectoryCollection;
 use MockingMagician\Organic\Collection\FileCollection;
 use MockingMagician\Organic\Collection\InodeCollection;
 use MockingMagician\Organic\Exception\CollectionValueException;
+use MockingMagician\Organic\Exception\DirectoryAlreadyExistException;
 use MockingMagician\Organic\Exception\DirectoryCreateException;
+use MockingMagician\Organic\Exception\DirectoryDeleteException;
 use MockingMagician\Organic\Exception\DirectoryPathException;
 use MockingMagician\Organic\Exception\FilePathException;
 use MockingMagician\Organic\Exception\InodePathException;
@@ -52,6 +54,7 @@ class Directory extends AbstractInode
      * @param Permission $permission
      * @param bool       $recursive
      *
+     * @throws DirectoryAlreadyExistException
      * @throws DirectoryCreateException
      * @throws DirectoryPathException
      *
@@ -59,6 +62,11 @@ class Directory extends AbstractInode
      */
     public static function create(string $path, Permission $permission = null, bool $recursive = true): InodeInterface
     {
+        \clearstatcache(true, $path);
+        if (\file_exists($path)) {
+            throw new DirectoryAlreadyExistException($path);
+        }
+
         if (null === $permission) {
             $permission = PermissionFactory::defaultDirectory();
         }
@@ -79,28 +87,36 @@ class Directory extends AbstractInode
      *
      * @param bool $recursive
      *
+     * @throws DirectoryDeleteException
+     *
      * @return bool in case of success
      */
     public function delete(bool $recursive = false): bool
     {
-        if ($recursive) {
-            $inodes = new RecursiveIteratorIterator(
-                new RecursiveDirectoryIterator($this->getObjectPath(), RecursiveDirectoryIterator::SKIP_DOTS),
-                RecursiveIteratorIterator::CHILD_FIRST
-            );
+        try {
+            if ($recursive) {
+                $inodes = new RecursiveIteratorIterator(
+                    new RecursiveDirectoryIterator($this->getObjectPath(), RecursiveDirectoryIterator::SKIP_DOTS),
+                    RecursiveIteratorIterator::CHILD_FIRST
+                );
 
-            /** @var \SplFileInfo $fileInfo */
-            foreach ($inodes as $fileInfo) {
-                if ($fileInfo->isDir()) {
-                    \rmdir($fileInfo->getPathname());
+                /** @var \SplFileInfo $fileInfo */
+                foreach ($inodes as $fileInfo) {
+                    if ($fileInfo->isDir()) {
+                        \rmdir($fileInfo->getPathname());
 
-                    continue;
+                        continue;
+                    }
+                    \unlink($fileInfo->getPathname());
                 }
-                \unlink($fileInfo->getPathname());
             }
+
+            $toReturn = \rmdir($this->getObjectPath());
+        } catch (\Throwable $e) {
+            throw new DirectoryDeleteException($this->getObjectPath(), $e);
         }
 
-        return @\rmdir($this->getObjectPath());
+        return $toReturn;
     }
 
     /**

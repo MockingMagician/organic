@@ -17,9 +17,14 @@ use MockingMagician\Organic\Inode\File;
 use MockingMagician\Organic\Permission\Permission;
 use MockingMagician\Organic\Permission\PermissionFactory;
 
+/**
+ * Class FileSystem.
+ *
+ * @codeCoverageIgnore
+ */
 class FileSystem
 {
-    public static function Permission(int $mode): Permission
+    public static function createPermissionFromMode(int $mode): Permission
     {
         return PermissionFactory::createFromMode($mode);
     }

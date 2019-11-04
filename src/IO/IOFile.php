@@ -10,6 +10,11 @@ namespace MockingMagician\Organic\IO;
 
 use MockingMagician\Organic\Exception\IOException;
 
+/**
+ * Class IOFile.
+ *
+ * @codeCoverageIgnore
+ */
 class IOFile implements IOFileInterface
 {
     /** @var resource */

@@ -10,11 +10,11 @@ namespace MockingMagician\Organic\Exception;
 
 use Throwable;
 
-class FileLinkException extends \Exception
+class DirectoryAlreadyExistException extends \Exception
 {
-    public function __construct(string $path, int $code = 0, Throwable $previous = null)
+    public function __construct(string $path = '', int $code = 0, Throwable $previous = null)
     {
-        $message = \sprintf('File `%s` is not a link', $path);
+        $message = \sprintf('`%s` is already exist', $path);
         parent::__construct($message, $code, $previous);
     }
 }

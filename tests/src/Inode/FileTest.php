@@ -11,7 +11,9 @@ namespace MockingMagician\Organic\Tests\Inode;
 use Faker\Factory;
 use Faker\Generator;
 use MockingMagician\Organic\Exception\FileAlreadyExistException;
+use MockingMagician\Organic\Exception\FileCreateException;
 use MockingMagician\Organic\Exception\FileDeleteException;
+use MockingMagician\Organic\Exception\FilePathException;
 use MockingMagician\Organic\Inode\File;
 use MockingMagician\Organic\PHPUnitExt\RetryTrait;
 use PHPUnit\Framework\TestCase;
@@ -118,7 +120,8 @@ class FileTest extends TestCase
 
     /**
      * @throws FileAlreadyExistException
-     * @throws \MockingMagician\Organic\Exception\FilePathException
+     * @throws FileCreateException
+     * @throws FilePathException
      */
     public function testGetBasename(): void
     {
@@ -128,7 +131,8 @@ class FileTest extends TestCase
 
     /**
      * @throws FileAlreadyExistException
-     * @throws \MockingMagician\Organic\Exception\FilePathException
+     * @throws FileCreateException
+     * @throws FilePathException
      */
     public function testGetExtension(): void
     {
@@ -138,7 +142,8 @@ class FileTest extends TestCase
 
     /**
      * @throws FileAlreadyExistException
-     * @throws \MockingMagician\Organic\Exception\FilePathException
+     * @throws FileCreateException
+     * @throws FilePathException
      */
     public function testGetFilename(): void
     {
@@ -148,7 +153,8 @@ class FileTest extends TestCase
 
     /**
      * @throws FileAlreadyExistException
-     * @throws \MockingMagician\Organic\Exception\FilePathException
+     * @throws FileCreateException
+     * @throws FilePathException
      */
     public function testCreateAnExistingThrowAnException(): void
     {

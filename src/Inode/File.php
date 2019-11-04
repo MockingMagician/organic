@@ -9,6 +9,7 @@
 namespace MockingMagician\Organic\Inode;
 
 use MockingMagician\Organic\Exception\FileAlreadyExistException;
+use MockingMagician\Organic\Exception\FileCreateException;
 use MockingMagician\Organic\Exception\FileDeleteException;
 use MockingMagician\Organic\Exception\FilePathException;
 use MockingMagician\Organic\Exception\InodePathException;
@@ -66,12 +67,14 @@ class File extends AbstractInode implements IOFileAwareInterface
      * @param null|Permission $permission
      *
      * @throws FileAlreadyExistException
+     * @throws FileCreateException
      * @throws FilePathException
      *
      * @return File
      */
     public static function create(string $path, Permission $permission = null): InodeInterface
     {
+        \clearstatcache(true, $path);
         if (\file_exists($path)) {
             throw new FileAlreadyExistException($path);
         }
@@ -80,8 +83,12 @@ class File extends AbstractInode implements IOFileAwareInterface
             $permission = PermissionFactory::defaultFile();
         }
 
-        \file_put_contents($path, '', LOCK_EX);
-        \chmod($path, $permission->getMode());
+        try {
+            \file_put_contents($path, '', LOCK_EX);
+            \chmod($path, $permission->getMode());
+        } catch (\Throwable $e) {
+            throw new FileCreateException($path, $e);
+        }
 
         return new static($path);
     }
