@@ -12,15 +12,13 @@ use Faker\Factory;
 use Faker\Generator;
 use MockingMagician\Organic\Permission\Permission;
 use MockingMagician\Organic\Permission\PermissionScope;
-use PHPUnit\Framework\TestCase;
+use MockingMagician\Organic\PHPUnitExt\TestCase;
 
 /**
  * @internal
  */
 class PermissionTest extends TestCase
 {
-    public const TEST_TEMP_DIR = __DIR__.'/../../var/temp';
-
     /** @var Generator */
     private $faker;
     /** @var string */
@@ -30,13 +28,8 @@ class PermissionTest extends TestCase
     {
         parent::setUp();
         $this->faker = Factory::create();
-        $this->filePath = static::TEST_TEMP_DIR.\DIRECTORY_SEPARATOR.$this->faker->uuid;
+        $this->filePath = static::TEMP_DIR.\DIRECTORY_SEPARATOR.$this->faker->uuid;
         \file_put_contents($this->filePath, $this->faker->paragraph());
-    }
-
-    protected function tearDown(): void
-    {
-        \unlink($this->filePath);
     }
 
     public function testGetMode(): void

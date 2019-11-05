@@ -10,34 +10,25 @@ namespace MockingMagician\Organic\Tests\Collection;
 
 use Faker\Factory;
 use MockingMagician\Organic\Collection\FileCollection;
-use PHPUnit\Framework\TestCase;
+use MockingMagician\Organic\PHPUnitExt\TestCase;
 
 /**
  * @internal
  */
 class FileCollectionTest extends TestCase
 {
-    public const TEMP_DIR = __DIR__.'/../../var/temp';
-
     private $faker;
     private $filePath;
     private $filePath2;
 
     protected function setUp(): void
     {
+        parent::setUp();
         $this->faker = Factory::create();
         $this->filePath = self::TEMP_DIR.'/'.$this->faker->uuid.'.'.$this->faker->fileExtension;
         $this->filePath2 = self::TEMP_DIR.'/'.$this->faker->uuid.'.'.$this->faker->fileExtension;
-        parent::setUp();
         @\file_put_contents($this->filePath, '');
         @\file_put_contents($this->filePath2, '');
-    }
-
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-        @\unlink($this->filePath);
-        @\unlink($this->filePath2);
     }
 
     /**

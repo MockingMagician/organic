@@ -8,9 +8,7 @@
 
 namespace MockingMagician\Organic\Tests\InternalPHP;
 
-use PHPUnit\Framework\TestCase;
-use RecursiveDirectoryIterator;
-use RecursiveIteratorIterator;
+use MockingMagician\Organic\PHPUnitExt\TestCase;
 
 /**
  * This class test is only provided for explicitly describe rename function.
@@ -19,19 +17,11 @@ use RecursiveIteratorIterator;
  */
 class RenameTest extends TestCase
 {
-    public const TEMP_DIR = __DIR__.'/../../var/temp';
-
     protected function setUp(): void
     {
         parent::setUp();
         \mkdir(static::TEMP_DIR.'/dir_one/dir_two/dir_three/dir_four/dir_five', 0777, true);
         \file_put_contents(static::TEMP_DIR.'/dir_one/dir_two/dir_three/dir_four/dir_five/file.txt', '');
-    }
-
-    protected function tearDown(): void
-    {
-        parent::setUp();
-        $this->rmDirContent(static::TEMP_DIR);
     }
 
     public function testRenameDir(): void
@@ -52,19 +42,5 @@ class RenameTest extends TestCase
         );
 
         static::assertFileExists(static::TEMP_DIR.'/dir_one/file.txt');
-    }
-
-    private function rmDirContent($dir): void
-    {
-        $files = new RecursiveIteratorIterator(
-            new RecursiveDirectoryIterator($dir, RecursiveDirectoryIterator::SKIP_DOTS),
-            RecursiveIteratorIterator::CHILD_FIRST
-        );
-
-        /** @var \SplFileInfo $fileInfo */
-        foreach ($files as $fileInfo) {
-            $todo = ($fileInfo->isDir() ? 'rmdir' : 'unlink');
-            $todo($fileInfo->getPathname());
-        }
     }
 }

@@ -87,7 +87,10 @@ class FileSystem
     public static function newDirectory(string $path, Permission $permission = null, bool $recursive = true): Directory
     {
         $args = [$path];
-        null === $permission ?: ($args[] = $permission && $args[] = $recursive);
+        if (null !== $permission) {
+            $args[] = $permission;
+            $args[] = $recursive;
+        }
 
         return Directory::create(...$args);
     }

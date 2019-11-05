@@ -10,34 +10,25 @@ namespace MockingMagician\Organic\Tests\Collection;
 
 use Faker\Factory;
 use MockingMagician\Organic\Collection\DirectoryCollection;
-use PHPUnit\Framework\TestCase;
+use MockingMagician\Organic\PHPUnitExt\TestCase;
 
 /**
  * @internal
  */
 class DirectoryCollectionTest extends TestCase
 {
-    public const TEMP_DIR = __DIR__.'/../../var/temp';
-
     private $faker;
     private $dirPath;
     private $dirPath2;
 
     protected function setUp(): void
     {
+        parent::setUp();
         $this->faker = Factory::create();
         $this->dirPath = self::TEMP_DIR.'/'.$this->faker->uuid;
         $this->dirPath2 = self::TEMP_DIR.'/'.$this->faker->uuid;
-        parent::setUp();
         @\mkdir($this->dirPath);
         @\mkdir($this->dirPath2);
-    }
-
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-        @\rmdir($this->dirPath);
-        @\rmdir($this->dirPath2);
     }
 
     /**

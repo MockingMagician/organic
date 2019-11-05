@@ -8,7 +8,7 @@
 
 namespace MockingMagician\Organic\Tests\InternalPHP;
 
-use PHPUnit\Framework\TestCase;
+use MockingMagician\Organic\PHPUnitExt\TestCase;
 use SplFileInfo;
 
 /**
@@ -54,13 +54,14 @@ class SplFileInfoTest extends TestCase
 
     protected function setUp(): void
     {
+        parent::setUp();
+
         if ('Linux' !== PHP_OS) {
             exit('This tests needs OS interaction. For now, they only designed for linux');
         }
 
         \shell_exec(\implode(' && ', [
-            \sprintf('cd %s', __DIR__),
-            'cd ../../var/internal_php',
+            \sprintf('cd %s', self::TEMP_DIR),
             'rm -Rf *',
             \sprintf('echo "%s" > file.txt', \str_repeat('0123456789', 50)),
             'ln file.txt hardlink.hl',
@@ -68,9 +69,7 @@ class SplFileInfoTest extends TestCase
             'ln -s . symlink.directory',
         ]));
 
-        parent::setUp();
-
-        $this->dirPath = __DIR__.'/../../var/../var/internal_php';
+        $this->dirPath = self::TEMP_DIR;
         $this->filePath = $this->dirPath.'/file.txt';
         $this->symlinkPath = $this->dirPath.'/symlink.sl';
         $this->hardlinkPath = $this->dirPath.'/hardlink.hl';
@@ -85,18 +84,10 @@ class SplFileInfoTest extends TestCase
 
     protected function tearDown(): void
     {
-        if ('Linux' !== PHP_OS) {
-            exit('This tests needs OS interaction. For now, they only designed for linux');
-        }
-
         \shell_exec(\implode(' && ', [
-            \sprintf('cd %s', __DIR__),
-            'cd ../../var/internal_php',
+            \sprintf('cd %s', self::TEMP_DIR),
             'rm -Rf *',
-            'echo "*\n!.gitignore" > .gitignore',
         ]));
-
-        parent::tearDown();
     }
 
     /**
@@ -289,8 +280,7 @@ class SplFileInfoTest extends TestCase
         static::assertEquals($originalFileSize, $originalHardLinkSize);
 
         \shell_exec(\implode(' && ', [
-            \sprintf('cd %s', __DIR__),
-            'cd ../../var/internal_php',
+            \sprintf('cd %s', self::TEMP_DIR),
             'echo "0123456789" >> file.txt',
         ]));
 
@@ -311,8 +301,7 @@ class SplFileInfoTest extends TestCase
 
         // And what about if file disappear ?
         \shell_exec(\implode(' && ', [
-            \sprintf('cd %s', __DIR__),
-            'cd ../../var/internal_php',
+            \sprintf('cd %s', self::TEMP_DIR),
             'unlink file.txt',
         ]));
 
@@ -335,7 +324,7 @@ class SplFileInfoTest extends TestCase
         $symlinkATime = $this->symlink->getATime();
         $hardlinkATime = $this->hardlink->getATime();
 
-        \usleep(1250000);
+        \usleep(2500000);
 
         \file_get_contents($this->filePath);
 
@@ -453,8 +442,7 @@ class SplFileInfoTest extends TestCase
         \usleep(1250000);
 
         \shell_exec(\implode(' && ', [
-            \sprintf('cd %s', __DIR__),
-            'cd ../../var/internal_php',
+            \sprintf('cd %s', self::TEMP_DIR),
             'cat file.txt',
         ]));
 
@@ -469,8 +457,7 @@ class SplFileInfoTest extends TestCase
         \usleep(1250000);
 
         \shell_exec(\implode(' && ', [
-            \sprintf('cd %s', __DIR__),
-            'cd ../../var/internal_php',
+            \sprintf('cd %s', self::TEMP_DIR),
             'echo "0123456789" >> file.txt',
         ]));
 
@@ -485,8 +472,7 @@ class SplFileInfoTest extends TestCase
         \usleep(1250000);
 
         \shell_exec(\implode(' && ', [
-            \sprintf('cd %s', __DIR__),
-            'cd ../../var/internal_php',
+            \sprintf('cd %s', self::TEMP_DIR),
             'chmod o-w file.txt',
         ]));
 
@@ -578,8 +564,7 @@ class SplFileInfoTest extends TestCase
         static::assertFalse($this->hardlink->isExecutable());
 
         \shell_exec(\implode(' && ', [
-            \sprintf('cd %s', __DIR__),
-            'cd ../../var/internal_php',
+            \sprintf('cd %s', self::TEMP_DIR),
             'chmod a+x file.txt',
         ]));
 

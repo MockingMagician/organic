@@ -14,14 +14,13 @@ use MockingMagician\Organic\Exception\CollectionValueException;
 use MockingMagician\Organic\Exception\InodePathException;
 use MockingMagician\Organic\Inode\Directory;
 use MockingMagician\Organic\Inode\File;
-use PHPUnit\Framework\TestCase;
+use MockingMagician\Organic\PHPUnitExt\TestCase;
 
 /**
  * @internal
  */
 class InodeCollectionTest extends TestCase
 {
-    public const TEMP_DIR = __DIR__.'/../../var/temp';
     private $faker;
     private $filePath;
     private $dirPath;
@@ -29,22 +28,14 @@ class InodeCollectionTest extends TestCase
 
     protected function setUp(): void
     {
+        parent::setUp();
         $this->faker = Factory::create();
         $this->filePath = self::TEMP_DIR.'/'.$this->faker->uuid.'.'.$this->faker->fileExtension;
         $this->filePath2 = self::TEMP_DIR.'/'.$this->faker->uuid.'.'.$this->faker->fileExtension;
         $this->dirPath = self::TEMP_DIR.'/'.$this->faker->uuid;
-        parent::setUp();
         @\file_put_contents($this->filePath, '');
         @\file_put_contents($this->filePath2, '');
         @\mkdir($this->dirPath);
-    }
-
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-        @\unlink($this->filePath);
-        @\unlink($this->filePath2);
-        @\rmdir($this->dirPath);
     }
 
     /**

@@ -15,17 +15,13 @@ use MockingMagician\Organic\Exception\FileCreateException;
 use MockingMagician\Organic\Exception\FileDeleteException;
 use MockingMagician\Organic\Exception\FilePathException;
 use MockingMagician\Organic\Inode\File;
-use MockingMagician\Organic\PHPUnitExt\RetryTrait;
-use PHPUnit\Framework\TestCase;
+use MockingMagician\Organic\PHPUnitExt\TestCase;
 
 /**
  * @internal
  */
 class FileTest extends TestCase
 {
-    use RetryTrait;
-
-    public const TEMP_DIR = __DIR__.'/../../var/temp';
     private $filePath;
     private $fileName;
     private $fileExtension;
@@ -34,17 +30,11 @@ class FileTest extends TestCase
 
     protected function setUp(): void
     {
+        parent::setUp();
         $this->faker = Factory::create();
         $this->fileName = $this->faker->uuid;
         $this->fileExtension = $this->faker->fileExtension;
         $this->filePath = self::TEMP_DIR.\DIRECTORY_SEPARATOR.$this->fileName.'.'.$this->fileExtension;
-        parent::setUp();
-        @\unlink($this->filePath);
-    }
-
-    protected function tearDown(): void
-    {
-        parent::tearDown();
         @\unlink($this->filePath);
     }
 

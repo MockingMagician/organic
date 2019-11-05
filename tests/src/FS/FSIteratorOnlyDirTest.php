@@ -20,7 +20,7 @@ class FSIteratorOnlyDirTest extends FSIteratorTest
      */
     public function testGetIterator(): void
     {
-        $fs = new FSIteratorOnlyDir(static::TEMP_DIR);
+        $fs = new FSIteratorOnlyDir(self::TEMP_DIR);
         static::assertCount(1, $fs->getIterator());
     }
 }

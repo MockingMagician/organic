@@ -10,6 +10,7 @@ namespace MockingMagician\Organic\Tests\Inode;
 
 use Faker\Factory;
 use MockingMagician\Organic\Exception\CollectionValueException;
+use MockingMagician\Organic\Exception\DirectoryAlreadyExistException;
 use MockingMagician\Organic\Exception\DirectoryCreateException;
 use MockingMagician\Organic\Exception\DirectoryDeleteException;
 use MockingMagician\Organic\Exception\DirectoryPathException;
@@ -20,14 +21,13 @@ use MockingMagician\Organic\Exception\InodePathException;
 use MockingMagician\Organic\Helper\Path;
 use MockingMagician\Organic\Inode\Directory;
 use MockingMagician\Organic\Permission\PermissionFactory;
-use PHPUnit\Framework\TestCase;
+use MockingMagician\Organic\PHPUnitExt\TestCase;
 
 /**
  * @internal
  */
 class DirectoryTest extends TestCase
 {
-    public const TEMP_DIR = __DIR__.'/../../var/temp';
     private $faker;
     private $filePath;
     private $dirPath;
@@ -43,14 +43,6 @@ class DirectoryTest extends TestCase
         @\file_put_contents($this->filePath, '');
         @\file_put_contents($this->filePath2, '');
         @\mkdir($this->dirPath);
-    }
-
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-        @\unlink($this->filePath);
-        @\unlink($this->filePath2);
-        @\rmdir($this->dirPath);
     }
 
     /**
@@ -95,8 +87,9 @@ class DirectoryTest extends TestCase
     }
 
     /**
-     * @throws DirectoryPathException
+     * @throws DirectoryAlreadyExistException
      * @throws DirectoryCreateException
+     * @throws DirectoryPathException
      */
     public function testCreateDirectory(): void
     {
@@ -111,8 +104,9 @@ class DirectoryTest extends TestCase
     }
 
     /**
-     * @throws DirectoryPathException
+     * @throws DirectoryAlreadyExistException
      * @throws DirectoryCreateException
+     * @throws DirectoryPathException
      */
     public function testCreateDirectoryFailCauseInvalidPath(): void
     {
@@ -125,8 +119,9 @@ class DirectoryTest extends TestCase
     }
 
     /**
-     * @throws DirectoryPathException
      * @throws DirectoryCreateException
+     * @throws DirectoryPathException
+     * @throws DirectoryAlreadyExistException
      */
     public function testDeleteDirectory(): void
     {
@@ -199,7 +194,6 @@ class DirectoryTest extends TestCase
      */
     public function testMoveToFailedCauseFileWithSameNameAlreadyExist(): void
     {
-        $this->dirPath = static::TEMP_DIR.\DIRECTORY_SEPARATOR.'moved_dir';
         \file_put_contents($this->dirPath.'/../same-name', '');
         $directory = new Directory($this->dirPath);
         static::expectException(InodeMoveToException::class);
@@ -213,7 +207,6 @@ class DirectoryTest extends TestCase
      */
     public function testMoveToFailedCauseCanNotMoveToPath(): void
     {
-        $this->dirPath = static::TEMP_DIR.\DIRECTORY_SEPARATOR.'moved_dir';
         $directory = new Directory($this->dirPath);
         static::expectException(InodeMoveToException::class);
         $directory->moveTo($this->dirPath.'/../another/that-not-exist/with-long-path');
@@ -227,7 +220,6 @@ class DirectoryTest extends TestCase
      */
     public function testCreateLink(): void
     {
-        $this->dirPath = static::TEMP_DIR.\DIRECTORY_SEPARATOR.'moved_dir';
         $directory = new Directory($this->dirPath);
         /** @var Directory $link */
         $link = $directory->createLink($this->dirPath.'/../dir-link');
@@ -242,11 +234,11 @@ class DirectoryTest extends TestCase
      */
     public function testCreateLinkFailedCauseFileWithSameNameAlreadyExist(): void
     {
-        $this->dirPath = static::TEMP_DIR.\DIRECTORY_SEPARATOR.'moved_dir';
+        \file_put_contents($this->dirPath.'/../same-name', '');
         $directory = new Directory($this->dirPath);
         static::expectException(InodeCreateLinkException::class);
         /* @var Directory $link */
-        $directory->createLink($this->dirPath.'/../dir-link');
+        $directory->createLink($this->dirPath.'/../same-name');
     }
 
     /**
@@ -257,7 +249,6 @@ class DirectoryTest extends TestCase
      */
     public function testCreateLinkFailedCauseCanNotMoveToPath(): void
     {
-        $this->dirPath = static::TEMP_DIR.\DIRECTORY_SEPARATOR.'moved_dir';
         $directory = new Directory($this->dirPath);
         static::expectException(InodeCreateLinkException::class);
         /* @var Directory $link */

@@ -11,14 +11,13 @@ namespace MockingMagician\Organic\Tests\FS;
 use Faker\Factory;
 use MockingMagician\Organic\Exception\DirectoryPathException;
 use MockingMagician\Organic\FS\FSIterator;
-use PHPUnit\Framework\TestCase;
+use MockingMagician\Organic\PHPUnitExt\TestCase;
 
 /**
  * @internal
  */
 class FSIteratorTest extends TestCase
 {
-    public const TEMP_DIR = __DIR__.'/../../var/temp';
     private $faker;
     private $filePath;
     private $dirPath;
@@ -26,22 +25,14 @@ class FSIteratorTest extends TestCase
 
     protected function setUp(): void
     {
+        parent::setUp();
         $this->faker = Factory::create();
         $this->filePath = self::TEMP_DIR.'/'.$this->faker->uuid.'.'.$this->faker->fileExtension;
         $this->filePath2 = self::TEMP_DIR.'/'.$this->faker->uuid.'.'.$this->faker->fileExtension;
         $this->dirPath = self::TEMP_DIR.'/'.$this->faker->uuid;
-        parent::setUp();
         @\file_put_contents($this->filePath, '');
         @\file_put_contents($this->filePath2, '');
         @\mkdir($this->dirPath);
-    }
-
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-        @\unlink($this->filePath);
-        @\unlink($this->filePath2);
-        @\rmdir($this->dirPath);
     }
 
     /**

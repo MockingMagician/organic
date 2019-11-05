@@ -13,14 +13,13 @@ use Faker\Generator;
 use MockingMagician\Organic\Exception\InodePathException;
 use MockingMagician\Organic\Inode\Base\FileInfo;
 use MockingMagician\Organic\Permission\PermissionFactory;
-use PHPUnit\Framework\TestCase;
+use MockingMagician\Organic\PHPUnitExt\TestCase;
 
 /**
  * @internal
  */
 class FileInfoTest extends TestCase
 {
-    public const TEMP_DIR = __DIR__.'/../../../var/temp';
     /** @var Generator */
     private $faker;
     /** @var string */
@@ -41,12 +40,6 @@ class FileInfoTest extends TestCase
         $this->filePath = static::TEMP_DIR.\DIRECTORY_SEPARATOR.$this->fileName;
         \file_put_contents($this->filePath, $this->faker->paragraph);
         $this->fileInfo = new FileInfo($this->filePath);
-    }
-
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-        @\unlink($this->filePath);
     }
 
     public function testUnserialize(): void
@@ -71,7 +64,7 @@ class FileInfoTest extends TestCase
     public function testGetPath(): void
     {
         static::assertEquals(
-            (new \SplFileInfo((new \SplFileInfo((new \SplFileInfo(__DIR__))->getPath()))->getPath()))->getPath().'/var/temp/'.$this->fileName,
+            (new \SplFileInfo(self::TEMP_DIR))->getRealPath().\DIRECTORY_SEPARATOR.$this->fileName,
             $this->fileInfo->getObjectPath()
         );
     }
