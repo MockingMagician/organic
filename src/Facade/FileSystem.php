@@ -8,9 +8,11 @@
 
 namespace MockingMagician\Organic\Facade;
 
+use MockingMagician\Organic\Exception\DirectoryAlreadyExistException;
 use MockingMagician\Organic\Exception\DirectoryCreateException;
 use MockingMagician\Organic\Exception\DirectoryPathException;
 use MockingMagician\Organic\Exception\FileAlreadyExistException;
+use MockingMagician\Organic\Exception\FileCreateException;
 use MockingMagician\Organic\Exception\FilePathException;
 use MockingMagician\Organic\Inode\Directory;
 use MockingMagician\Organic\Inode\File;
@@ -47,6 +49,7 @@ class FileSystem
      *
      * @throws FileAlreadyExistException
      * @throws FilePathException
+     * @throws FileCreateException
      *
      * @return File
      */
@@ -77,6 +80,7 @@ class FileSystem
      *
      * @throws DirectoryCreateException
      * @throws DirectoryPathException
+     * @throws DirectoryAlreadyExistException
      *
      * @return Directory
      */
