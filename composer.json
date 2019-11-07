@@ -18,6 +18,7 @@
             "MockingMagician\\Organic\\PHPUnitExt\\": "tests/ext/"
         }
     },
+    "minimum-stability": "dev",
     "require": {
         "php": ">=7.1"
     },
