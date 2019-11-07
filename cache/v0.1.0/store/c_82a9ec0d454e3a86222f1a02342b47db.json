@@ -1,0 +1,144 @@
+{
+    "name": "MockingMagician\\Organic\\Collection\\FileCollection",
+    "line": 19,
+    "short_desc": "Class InodeCollection.",
+    "long_desc": "",
+    "hint": null,
+    "tags": {
+        "method": [
+            [
+                "File",
+                "current()"
+            ],
+            [
+                "File",
+                "next()"
+            ]
+        ]
+    },
+    "namespace": "MockingMagician\\Organic\\Collection",
+    "file": "\/mnt\/data\/files\/dev\/wam\/sami\/..\/organic\/src\/Collection\/FileCollection.php",
+    "relative_file": null,
+    "hash": "488a3bc23783f818de434b6430a9557b506599f2",
+    "parent": "MockingMagician\\Organic\\Collection\\Collection",
+    "modifiers": 0,
+    "is_trait": false,
+    "is_interface": false,
+    "aliases": {
+        "File": "MockingMagician\\Organic\\File"
+    },
+    "errors": [],
+    "interfaces": [],
+    "traits": [],
+    "properties": [],
+    "methods": {
+        "__construct": {
+            "name": "__construct",
+            "line": 26,
+            "short_desc": "InodeCollection constructor.",
+            "long_desc": "",
+            "hint": null,
+            "hint_desc": null,
+            "tags": [],
+            "modifiers": 1,
+            "is_by_ref": "",
+            "exceptions": [],
+            "errors": [],
+            "parameters": {
+                "Directories": {
+                    "name": "Directories",
+                    "line": 26,
+                    "short_desc": "",
+                    "long_desc": null,
+                    "hint": [
+                        [
+                            "array",
+                            false
+                        ]
+                    ],
+                    "tags": [],
+                    "modifiers": "array",
+                    "default": "[]",
+                    "variadic": false,
+                    "is_by_ref": false
+                }
+            }
+        },
+        "createFromPaths": {
+            "name": "createFromPaths",
+            "line": 36,
+            "short_desc": "",
+            "long_desc": "",
+            "hint": [
+                [
+                    "\\MockingMagician\\Organic\\Collection\\FileCollection",
+                    false
+                ]
+            ],
+            "hint_desc": "",
+            "tags": [],
+            "modifiers": 9,
+            "is_by_ref": "",
+            "exceptions": [],
+            "errors": [],
+            "parameters": {
+                "paths": {
+                    "name": "paths",
+                    "line": 36,
+                    "short_desc": "",
+                    "long_desc": null,
+                    "hint": [
+                        [
+                            "array",
+                            false
+                        ]
+                    ],
+                    "tags": [],
+                    "modifiers": "array",
+                    "default": null,
+                    "variadic": false,
+                    "is_by_ref": false
+                }
+            }
+        },
+        "current": {
+            "name": "current",
+            "line": 19,
+            "short_desc": "",
+            "long_desc": null,
+            "hint": [
+                [
+                    "File",
+                    null
+                ]
+            ],
+            "hint_desc": null,
+            "tags": [],
+            "modifiers": null,
+            "is_by_ref": null,
+            "exceptions": [],
+            "errors": [],
+            "parameters": []
+        },
+        "next": {
+            "name": "next",
+            "line": 19,
+            "short_desc": "",
+            "long_desc": null,
+            "hint": [
+                [
+                    "File",
+                    null
+                ]
+            ],
+            "hint_desc": null,
+            "tags": [],
+            "modifiers": null,
+            "is_by_ref": null,
+            "exceptions": [],
+            "errors": [],
+            "parameters": []
+        }
+    },
+    "constants": []
+}

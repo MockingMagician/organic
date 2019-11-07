@@ -1,0 +1,105 @@
+{
+    "name": "MockingMagician\\Organic\\Helper\\FSIteratorOnlyDir",
+    "line": 9,
+    "short_desc": "",
+    "long_desc": "",
+    "hint": null,
+    "tags": [],
+    "namespace": "MockingMagician\\Organic\\Helper",
+    "file": "\/mnt\/data\/files\/dev\/wam\/sami\/..\/organic\/src\/Helper\/FSIteratorOnlyDir.php",
+    "relative_file": null,
+    "hash": "91bdcc390c84915ce9d9b3354751f2263906e889",
+    "parent": null,
+    "modifiers": 0,
+    "is_trait": false,
+    "is_interface": false,
+    "aliases": {
+        "DirectoryPathException": "MockingMagician\\Organic\\Exception\\DirectoryPathException",
+        "Traversable": "Traversable"
+    },
+    "errors": [],
+    "interfaces": {
+        "IteratorAggregate": "IteratorAggregate"
+    },
+    "traits": [],
+    "properties": [],
+    "methods": {
+        "__construct": {
+            "name": "__construct",
+            "line": 13,
+            "short_desc": "",
+            "long_desc": "",
+            "hint": null,
+            "hint_desc": null,
+            "tags": [],
+            "modifiers": 1,
+            "is_by_ref": "",
+            "exceptions": [],
+            "errors": [],
+            "parameters": {
+                "path": {
+                    "name": "path",
+                    "line": 13,
+                    "short_desc": null,
+                    "long_desc": null,
+                    "hint": [
+                        [
+                            "string",
+                            false
+                        ]
+                    ],
+                    "tags": [],
+                    "modifiers": "string",
+                    "default": null,
+                    "variadic": false,
+                    "is_by_ref": false
+                }
+            }
+        },
+        "getIterator": {
+            "name": "getIterator",
+            "line": 28,
+            "short_desc": "Retrieve an external iterator",
+            "long_desc": "",
+            "hint": [
+                [
+                    "\\Traversable",
+                    false
+                ]
+            ],
+            "hint_desc": "An instance of an object implementing <b>Iterator<\/b> or\n<b>Traversable<\/b>",
+            "tags": {
+                "link": [
+                    [
+                        "http:\/\/php.net\/manual\/en\/iteratoraggregate.getiterator.php"
+                    ]
+                ],
+                "since": [
+                    [
+                        "5.0.0"
+                    ]
+                ]
+            },
+            "modifiers": 1,
+            "is_by_ref": "",
+            "exceptions": [],
+            "errors": [],
+            "parameters": []
+        },
+        "scanDir": {
+            "name": "scanDir",
+            "line": 41,
+            "short_desc": "",
+            "long_desc": "",
+            "hint": null,
+            "hint_desc": null,
+            "tags": [],
+            "modifiers": 2,
+            "is_by_ref": "",
+            "exceptions": [],
+            "errors": [],
+            "parameters": []
+        }
+    },
+    "constants": []
+}
