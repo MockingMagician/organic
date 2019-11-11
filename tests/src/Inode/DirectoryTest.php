@@ -35,11 +35,11 @@ class DirectoryTest extends TestCase
 
     protected function setUp(): void
     {
+        parent::setUp();
         $this->faker = Factory::create();
         $this->filePath = self::TEMP_DIR.'/'.$this->faker->uuid.'.'.$this->faker->fileExtension;
         $this->filePath2 = self::TEMP_DIR.'/'.$this->faker->uuid.'.'.$this->faker->fileExtension;
         $this->dirPath = self::TEMP_DIR.'/'.$this->faker->uuid;
-        parent::setUp();
         @\file_put_contents($this->filePath, '');
         @\file_put_contents($this->filePath2, '');
         @\mkdir($this->dirPath);
@@ -119,18 +119,30 @@ class DirectoryTest extends TestCase
     }
 
     /**
+     * @throws DirectoryAlreadyExistException
      * @throws DirectoryCreateException
      * @throws DirectoryPathException
-     * @throws DirectoryAlreadyExistException
      */
-    public function testDeleteDirectory(): void
+    public function testCreateDirectoryFailCausePathAlreadyExist(): void
     {
-        static::expectException(DirectoryCreateException::class);
-        Directory::create(
-            static::TEMP_DIR.\DIRECTORY_SEPARATOR.'new-dir'.\DIRECTORY_SEPARATOR.'sub-dir',
-            PermissionFactory::defaultDirectory(),
-            false
-        );
+        Directory::create(static::TEMP_DIR.\DIRECTORY_SEPARATOR.'new-dir');
+        static::expectException(DirectoryAlreadyExistException::class);
+        Directory::create(static::TEMP_DIR.\DIRECTORY_SEPARATOR.'new-dir');
+    }
+
+    /**
+     * @throws DirectoryAlreadyExistException
+     * @throws DirectoryCreateException
+     * @throws DirectoryPathException
+     */
+    public function testDeleteNotExistingDirectoryThrowAnException(): void
+    {
+        $directory = Directory::create(static::TEMP_DIR.\DIRECTORY_SEPARATOR.'new-dir');
+        static::assertFileExists($directory->getObjectPath());
+        \rmdir($directory->getObjectPath());
+        static::assertFileNotExists($directory->getObjectPath());
+        static::expectException(DirectoryDeleteException::class);
+        $directory->delete(true);
     }
 
     /**
@@ -253,5 +265,21 @@ class DirectoryTest extends TestCase
         static::expectException(InodeCreateLinkException::class);
         /* @var Directory $link */
         $directory->createLink($this->dirPath.'/../not-exist/dir-link');
+    }
+
+    /**
+     * @throws CollectionValueException
+     * @throws DirectoryPathException
+     * @throws InodePathException
+     */
+    public function testGetSize(): void
+    {
+        $directory = new Directory($this->dirPath);
+        static::assertEquals(0, $directory->getSize()->bytes());
+        \file_put_contents(
+            $this->dirPath.'/file_with_ten_thousand_bytes',
+            \str_repeat('0123456789', 1000)
+        );
+        static::assertEquals(10000, $directory->getSize()->bytes());
     }
 }

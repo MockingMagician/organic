@@ -38,7 +38,6 @@
         <whitelist processUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">src</directory>
             <exclude>
-                <!-- -->
             </exclude>
         </whitelist>
     </filter>

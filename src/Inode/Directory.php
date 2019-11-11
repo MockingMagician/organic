@@ -25,6 +25,7 @@ use MockingMagician\Organic\Inode\Base\AbstractInode;
 use MockingMagician\Organic\Inode\Base\InodeInterface;
 use MockingMagician\Organic\Permission\Permission;
 use MockingMagician\Organic\Permission\PermissionFactory;
+use MockingMagician\Organic\Size\Size;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 
@@ -162,5 +163,24 @@ class Directory extends AbstractInode
         $fs = new FSIteratorOnlyDir($this->getObjectPath());
 
         return DirectoryCollection::createFromPaths(\iterator_to_array($fs->getIterator()));
+    }
+
+    /**
+     * @throws CollectionValueException
+     * @throws DirectoryPathException
+     * @throws InodePathException
+     */
+    public function getSize(): Size
+    {
+        $size = 0;
+
+        $inodes = $this->getInodes();
+        foreach ($inodes as $inode) {
+            if ($inode instanceof File) {
+                $size += $inode->getSize()->bytes();
+            }
+        }
+
+        return new Size($size);
     }
 }

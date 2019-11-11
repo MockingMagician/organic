@@ -152,4 +152,15 @@ class FileTest extends TestCase
         static::expectException(FileAlreadyExistException::class);
         File::create($this->filePath);
     }
+
+    /**
+     * @throws FileAlreadyExistException
+     * @throws FileCreateException
+     * @throws FilePathException
+     */
+    public function testCreateThrowAnExceptionOnFilePutContentsFail(): void
+    {
+        static::expectException(FileCreateException::class);
+        File::create($this->filePath.'/that/is-not-valid-path');
+    }
 }

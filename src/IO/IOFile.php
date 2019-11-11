@@ -17,6 +17,111 @@ use MockingMagician\Organic\Exception\IOException;
  */
 class IOFile implements IOFileInterface
 {
+    /**
+     * Open for reading only;
+     * place the file pointer at the beginning of the file.
+     */
+    public const MODE_READ_FROM_BEGIN = 'r';
+    public const MODE_R =  'r';
+    public const MODE_RB = 'rb';
+    /**
+     * Open for reading and writing;
+     * place the file pointer at the beginning of the file.
+     */
+    public const MODE_READ_WRITE_FROM_BEGIN = 'r+';
+    public const MODE_R_PLUS = 'r+';
+    public const MODE_R_PLUS_B = 'r+b';
+    /**
+     * Open for writing only;
+     * place the file pointer at the beginning of the file and truncate the file to zero length.
+     * If the file does not exist, attempt to create it.
+     */
+    public const MODE_WRITE_TRUNCATE_FROM_BEGIN = 'w';
+    public const MODE_W =  'w';
+    public const MODE_WB = 'wb';
+    /**
+     * Open for reading and writing;
+     * place the file pointer at the beginning of the file and truncate the file to zero length.
+     * If the file does not exist, attempt to create it.
+     */
+    public const MODE_READ_WRITE_TRUNCATE_FROM_BEGIN = 'w+';
+    public const MODE_W_PLUS = 'w+';
+    public const MODE_W_PLUS_B = 'w+b';
+    /**
+     * Open for writing only;
+     * place the file pointer at the end of the file.
+     * If the file does not exist, attempt to create it.
+     * In this mode, fseek() has no effect, writes are always appended.
+     */
+    public const MODE_WRITE_FROM_END = 'a';
+    public const MODE_A =  'a';
+    public const MODE_AB = 'ab';
+    /**
+     * Open for reading and writing;
+     * place the file pointer at the end of the file.
+     * If the file does not exist, attempt to create it.
+     * In this mode, fseek() only affects the reading position, writes are always appended.
+     */
+    public const MODE_READ_WRITE_FROM_END = 'a+';
+    public const MODE_A_PLUS = 'a+';
+    public const MODE_A_PLUS_B = 'a+b';
+    /**
+     * Create and open for writing only;
+     * place the file pointer at the beginning of the file.
+     * If the file already exists, the fopen() call will fail by returning FALSE and generating an error of level E_WARNING.
+     * If the file does not exist, attempt to create it. This is equivalent to specifying O_EXCL|O_CREAT flags for the underlying open(2) system call.
+     */
+    public const MODE_WRITE_NEW = 'x';
+    public const MODE_X =  'x';
+    public const MODE_XB = 'xb';
+    /**
+     * Create and open for reading and writing; otherwise it has the same behavior as 'x'.
+     */
+    public const MODE_READ_WRITE_NEW = 'x+';
+    public const MODE_X_PLUS = 'x+';
+    public const MODE_X_PLUS_B = 'x+b';
+    /**
+     * Open the file for writing only.
+     * If the file does not exist, it is created.
+     * If it exists, it is neither truncated (as opposed to 'w'), nor the call to this function fails (as is the case with 'x').
+     * The file pointer is positioned on the beginning of the file.
+     * This may be useful if it's desired to get an advisory lock (see flock()) before attempting to modify the file,
+     * as using 'w' could truncate the file before the lock was obtained (if truncation is desired, ftruncate() can be used after the lock is requested).
+     */
+    public const MODE_WRITE_FROM_BEGIN_WITH_CREATE = 'c';
+    public const MODE_C =  'c';
+    public const MODE_CB = 'cb';
+    /**
+     * Open the file for reading and writing; otherwise it has the same behavior as 'c'.
+     */
+    public const MODE_READ_WRITE_FROM_BEGIN_WITH_CREATE = 'c+';
+    public const MODE_C_PLUS = 'c+';
+    public const MODE_C_PLUS_B = 'c+b';
+    /**
+     * Set close-on-exec flag on the opened file descriptor. Only available in PHP compiled on POSIX.1-2008 conform systems.
+     *
+     * A file descriptor has a close-on-exec flag which indicates if the file descriptor will be inherited or not.
+     *
+     * On UNIX, if the close-on-exec flag is set, the file descriptor is not inherited:
+     * it will be closed at the execution of child processes; otherwise the file descriptor is inherited by child processes.
+     *
+     * On Windows, if the close-on-exec flag is set, the file descriptor is not inherited;
+     * the file descriptor is inherited by child processes if the close-on-exec flag is cleared
+     * and if CreateProcess() is called with the bInheritHandles parameter set to TRUE (when subprocess.Popen is created with close_fds=False for example).
+     * Windows does not have "close-on-exec" flag but an inheritance flag which is just the opposite value.
+     * For example, setting close-on-exec flag means clearing the HANDLE_FLAG_INHERIT flag of a handle.
+     */
+    public const MODE_CLOSE_ON_EXEC = 'e';
+
+    public const MODES_VALID = [
+        self::MODE_RB,
+        self::MODE_R_PLUS_B,
+        self::MODE_WB,
+        self::MODE_W_PLUS_B,
+        self::MODE_AB,
+        self::MODE_A_PLUS_B,
+    ];
+
     /** @var resource */
     private $handler;
     private $path;
@@ -25,10 +130,17 @@ class IOFile implements IOFileInterface
     /**
      * ReadWriteFileInterface constructor.
      *
-     * @throws \Exception
+     * @throws IOException
      */
-    public function __construct(string $path, string $openMode = 'r')
+    public function __construct(string $path, string $openMode = self::MODE_RB)
     {
+        if (!in_array($openMode, self::MODES_VALID)) {
+            throw new IOException(sprintf(
+                'open mode `%s` is not valid. Must be one of %s',
+                $openMode,
+                implode(', ', self::MODES_VALID)
+            ));
+        }
         $this->path = $path;
         $this->openMode = $openMode;
         $this->openHandler();
@@ -253,7 +365,7 @@ class IOFile implements IOFileInterface
     }
 
     /**
-     * @throws \Exception
+     * @throws IOException
      */
     protected function openHandler(): void
     {
@@ -264,7 +376,9 @@ class IOFile implements IOFileInterface
             return;
         }
 
-        throw new \Exception();
+        throw new IOException(
+            sprintf('fopen has failed for path `%s` with mode `%s`', $this->path, $this->openMode)
+        );
     }
 
     protected function closeHandler(): void
