@@ -1,8 +1,5 @@
 tests: phpunit phpcs-check phpstan ## Run tests suite
 
-docs-update: ## Update documents from source
-	php bin/sami.phar update sami.config.php
-
 phpunit: ## Launch PHPUnit test suite
 	vendor/bin/phpunit --colors=always --coverage-html .coverage -c phpunit.xml
 

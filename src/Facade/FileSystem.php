@@ -20,18 +20,27 @@ use MockingMagician\Organic\Permission\Permission;
 use MockingMagician\Organic\Permission\PermissionFactory;
 
 /**
- * Class FileSystem.
+ * Class FileSystem provide a shortcut access to all important package functionality.
  *
  * @codeCoverageIgnore
  */
 class FileSystem
 {
+    /**
+     * Return a Permission object that can be easily manipulate and which is used internally by the package.
+     *
+     * @param int $mode
+     *
+     * @return Permission
+     */
     public static function createPermissionFromMode(int $mode): Permission
     {
         return PermissionFactory::createFromMode($mode);
     }
 
     /**
+     * Return the file provided by path.
+     *
      * @param string $path
      *
      * @throws FilePathException
@@ -44,6 +53,8 @@ class FileSystem
     }
 
     /**
+     * Return the created file provided by path.
+     *
      * @param string          $path
      * @param null|Permission $permission
      *
@@ -62,6 +73,8 @@ class FileSystem
     }
 
     /**
+     * Return the directory provided by path.
+     *
      * @param string $path
      *
      * @throws DirectoryPathException
@@ -74,6 +87,8 @@ class FileSystem
     }
 
     /**
+     * Return the created directory provided by path.
+     *
      * @param string          $path
      * @param null|Permission $permission
      * @param bool            $recursive

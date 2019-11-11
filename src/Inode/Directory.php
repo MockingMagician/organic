@@ -85,38 +85,54 @@ class Directory extends AbstractInode
     /**
      * Delete the inode. An inode is a file or a directory.
      *
-     * @param bool $recursive
+     * @param bool $ignoreIsNotEmpty
      *
      * @throws DirectoryDeleteException
      *
      * @return bool in case of success
      */
-    public function delete(bool $recursive = false): bool
+    public function delete(bool $ignoreIsNotEmpty = false): bool
+    {
+        if ($ignoreIsNotEmpty) {
+            $this->clear();
+        }
+
+        try {
+            return \rmdir($this->getObjectPath());
+        } catch (\Throwable $e) {
+            throw new DirectoryDeleteException($this->getObjectPath(), $e);
+        }
+    }
+
+    /**
+     * Delete the directory content.
+     *
+     * @throws DirectoryDeleteException
+     *
+     * @return bool in case of success
+     */
+    public function clear(): bool
     {
         try {
-            if ($recursive) {
-                $inodes = new RecursiveIteratorIterator(
-                    new RecursiveDirectoryIterator($this->getObjectPath(), RecursiveDirectoryIterator::SKIP_DOTS),
-                    RecursiveIteratorIterator::CHILD_FIRST
-                );
+            $inodes = new RecursiveIteratorIterator(
+                new RecursiveDirectoryIterator($this->getObjectPath(), RecursiveDirectoryIterator::SKIP_DOTS),
+                RecursiveIteratorIterator::CHILD_FIRST
+            );
 
-                /** @var \SplFileInfo $fileInfo */
-                foreach ($inodes as $fileInfo) {
-                    if ($fileInfo->isDir()) {
-                        \rmdir($fileInfo->getPathname());
+            /** @var \SplFileInfo $fileInfo */
+            foreach ($inodes as $fileInfo) {
+                if ($fileInfo->isDir()) {
+                    \rmdir($fileInfo->getPathname());
 
-                        continue;
-                    }
-                    \unlink($fileInfo->getPathname());
+                    continue;
                 }
+                \unlink($fileInfo->getPathname());
             }
-
-            $toReturn = \rmdir($this->getObjectPath());
         } catch (\Throwable $e) {
             throw new DirectoryDeleteException($this->getObjectPath(), $e);
         }
 
-        return $toReturn;
+        return true;
     }
 
     /**
