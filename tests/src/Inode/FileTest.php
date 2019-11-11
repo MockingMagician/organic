@@ -70,17 +70,17 @@ class FileTest extends TestCase
     public function testGetSize(): void
     {
         $file = File::create($this->filePath);
-        static::assertEquals(0, $file->getSize());
+        static::assertEquals(0, $file->getSize()->bytes());
         $file->getIO()->addContent('1111');
-        static::assertEquals(4, $file->getSize());
+        static::assertEquals(4, $file->getSize()->bytes());
         $file->getIO()->addContent('1111');
-        static::assertEquals(8, $file->getSize());
+        static::assertEquals(8, $file->getSize()->bytes());
         $file->getIO()->addContent('1111');
-        static::assertEquals(12, $file->getSize());
+        static::assertEquals(12, $file->getSize()->bytes());
         $file->getIO()->addContent('1111');
-        static::assertEquals(16, $file->getSize());
+        static::assertEquals(16, $file->getSize()->bytes());
         $file->getIO()->addContent('1111');
-        static::assertEquals(20, $file->getSize());
+        static::assertEquals(20, $file->getSize()->bytes());
         $file->delete();
     }
 

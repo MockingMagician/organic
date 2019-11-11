@@ -6,7 +6,7 @@
  * @link https://github.com/MockingMagician/organic/blob/master/README.md
  */
 
-namespace MockingMagician\Organic\Tests;
+namespace MockingMagician\Organic\Tests\Inode\Base;
 
 use Faker\Factory;
 use Faker\Generator;
@@ -71,7 +71,7 @@ class FileInfoTest extends TestCase
 
     public function testGetSize(): void
     {
-        static::assertEquals(\filesize($this->filePath), $this->fileInfo->getSize());
+        static::assertEquals(\filesize($this->filePath), $this->fileInfo->getSize()->bytes());
     }
 
     /**

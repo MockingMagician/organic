@@ -12,6 +12,7 @@ use MockingMagician\Organic\Exception\InodePathException;
 use MockingMagician\Organic\Helper\Path;
 use MockingMagician\Organic\Permission\Permission;
 use MockingMagician\Organic\Permission\PermissionFactory;
+use MockingMagician\Organic\Size\Size;
 
 class FileInfo implements \Serializable
 {
@@ -133,11 +134,11 @@ class FileInfo implements \Serializable
         return $this->internalSplFileInfo->isExecutable();
     }
 
-    public function getSize(): int
+    public function getSize(): Size
     {
         \clearstatcache(true, $this->path);
 
-        return $this->internalSplFileInfo->getSize();
+        return new Size($this->internalSplFileInfo->getSize());
     }
 
     public function getAccessTime(): \DateTimeImmutable
