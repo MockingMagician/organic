@@ -1,6 +1,11 @@
 {
     "name": "mocking-magician/organic",
-    "description": "File manager project",
+    "description": "File manager library",
+    "license": "CC-BY-SA-4.0",
+    "homepage": "https://github.com/MockingMagician/organic",
+    "keywords": [
+        "File manager", "file", "directory", "file info"
+    ],
     "authors": [
         {
             "name": "Marc MOREAU",
