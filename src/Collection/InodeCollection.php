@@ -44,8 +44,6 @@ class InodeCollection extends AbstractCollection
      *
      * @throws InodePathException
      * @throws CollectionValueException
-     *
-     * @return self
      */
     public static function createFromPaths(array $paths): self
     {

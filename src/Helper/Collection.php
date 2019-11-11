@@ -25,9 +25,6 @@ abstract class Collection implements CollectionInterface, \Countable, \IteratorA
     /**
      * Collection constructor.
      *
-     * @param array $values
-     * @param array $acceptClasses
-     *
      * @throws CollectionValueException
      */
     public function __construct(array $values, array $acceptClasses)
@@ -56,8 +53,6 @@ abstract class Collection implements CollectionInterface, \Countable, \IteratorA
      * @param mixed $value
      *
      * @throws CollectionValueException
-     *
-     * @return CollectionInterface
      */
     public function add($value): CollectionInterface
     {
@@ -80,8 +75,6 @@ abstract class Collection implements CollectionInterface, \Countable, \IteratorA
      * @param mixed $value
      *
      * @throws CollectionValueException
-     *
-     * @return CollectionInterface
      */
     public function remove($value): CollectionInterface
     {

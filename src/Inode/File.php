@@ -28,8 +28,6 @@ class File extends AbstractInode implements IOFileAwareInterface
     /**
      * File constructor.
      *
-     * @param string $path
-     *
      * @throws FilePathException
      */
     public function __construct(string $path)
@@ -63,9 +61,6 @@ class File extends AbstractInode implements IOFileAwareInterface
     }
 
     /**
-     * @param string          $path
-     * @param null|Permission $permission
-     *
      * @throws FileAlreadyExistException
      * @throws FileCreateException
      * @throws FilePathException
@@ -96,11 +91,7 @@ class File extends AbstractInode implements IOFileAwareInterface
     /**
      * Get an interface for IO on file.
      *
-     * @param string $openMode
-     *
      * @throws \Exception
-     *
-     * @return IOFileInterface
      */
     public function getIO(string $openMode = 'r'): IOFileInterface
     {

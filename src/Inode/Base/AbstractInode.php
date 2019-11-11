@@ -16,8 +16,6 @@ use MockingMagician\Organic\Permission\Permission;
 abstract class AbstractInode extends FileInfo implements InodeInterface
 {
     /**
-     * @param string $path
-     *
      * @throws InodeMoveToException
      * @throws InodePathException
      *
@@ -48,12 +46,8 @@ abstract class AbstractInode extends FileInfo implements InodeInterface
     /**
      * Create a symlink.
      *
-     * @param string $path
-     *
      * @throws InodeCreateLinkException
      * @throws InodePathException
-     *
-     * @return InodeInterface
      */
     public function createLink(string $path): InodeInterface
     {
@@ -76,9 +70,6 @@ abstract class AbstractInode extends FileInfo implements InodeInterface
     }
 
     /**
-     * @param string     $path
-     * @param Permission $permission
-     *
      * @return InodeInterface the created Inode
      */
     abstract public static function create(string $path, Permission $permission): InodeInterface;

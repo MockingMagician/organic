@@ -23,8 +23,6 @@ class FileInfo implements \Serializable
     /**
      * FileInfo constructor.
      *
-     * @param string $path
-     *
      * @throws InodePathException
      */
     public function __construct(string $path)
@@ -62,8 +60,6 @@ class FileInfo implements \Serializable
 
     /**
      * @throws \Exception
-     *
-     * @return string
      */
     public function getRealPath(): string
     {
@@ -156,9 +152,6 @@ class FileInfo implements \Serializable
         return $this->__getTime('getCTime');
     }
 
-    /**
-     * @return Permission
-     */
     public function getPermissions(): Permission
     {
         \clearstatcache(true, $this->path);

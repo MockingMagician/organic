@@ -16,18 +16,10 @@ use MockingMagician\Organic\Permission\Permission;
 interface InodeInterface
 {
     /**
-     * @param string     $path
-     * @param Permission $permission
-     *
      * @return InodeInterface the created Inode
      */
     public static function create(string $path, Permission $permission): InodeInterface;
 
-    /**
-     * @param string $path
-     *
-     * @return InodeInterface
-     */
     public function moveTo(string $path): InodeInterface;
 
     /**
@@ -37,10 +29,5 @@ interface InodeInterface
      */
     public function delete(): bool;
 
-    /**
-     * @param string $path
-     *
-     * @return InodeInterface
-     */
     public function createLink(string $path): InodeInterface;
 }

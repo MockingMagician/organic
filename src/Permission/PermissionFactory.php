@@ -40,8 +40,6 @@ class PermissionFactory
     }
 
     /**
-     * @param int $mode
-     *
      * @throws \RuntimeException
      *
      * @return array

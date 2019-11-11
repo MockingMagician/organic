@@ -12,10 +12,6 @@ interface IOFileAwareInterface
 {
     /**
      * Get an interface for read or write in file.
-     *
-     * @param string $openMode
-     *
-     * @return IOFileInterface
      */
     public function getIO(string $openMode = 'r'): IOFileInterface;
 }

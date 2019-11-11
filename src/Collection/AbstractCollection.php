@@ -17,9 +17,6 @@ abstract class AbstractCollection extends HelperCollection
     /**
      * Collection constructor.
      *
-     * @param array $values
-     * @param array $acceptClasses
-     *
      * @throws CollectionValueException
      */
     public function __construct(array $values, array $acceptClasses)
@@ -30,8 +27,6 @@ abstract class AbstractCollection extends HelperCollection
     /**
      * @param AbstractInode $a
      * @param AbstractInode $b
-     *
-     * @return bool
      */
     public function equals($a, $b): bool
     {

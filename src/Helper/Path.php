@@ -13,10 +13,6 @@ class Path
     /**
      * There is a method that deal with Sven Arduwie proposal https://www.php.net/manual/en/function.realpath.php#84012
      * And runeimp at gmail dot com proposal https://www.php.net/manual/en/function.realpath.php#112367.
-     *
-     * @param string $path
-     *
-     * @return string
      */
     public static function clean(string $path): string
     {

@@ -25,9 +25,6 @@ class IOFile implements IOFileInterface
     /**
      * ReadWriteFileInterface constructor.
      *
-     * @param string $path
-     * @param string $openMode
-     *
      * @throws \Exception
      */
     public function __construct(string $path, string $openMode = 'r')
@@ -44,8 +41,6 @@ class IOFile implements IOFileInterface
 
     /**
      * Determine whether the end of file has been reached.
-     *
-     * @return bool
      */
     public function eof(): bool
     {
@@ -54,8 +49,6 @@ class IOFile implements IOFileInterface
 
     /**
      * Forces a write of all buffered output to the file.
-     *
-     * @return bool
      */
     public function flush(): bool
     {
@@ -66,8 +59,6 @@ class IOFile implements IOFileInterface
      * Gets a character from the file.
      *
      * @throws IOException
-     *
-     * @return string
      */
     public function getChar(): string
     {
@@ -83,8 +74,6 @@ class IOFile implements IOFileInterface
      * Returns a string containing the next line from the file.
      *
      * @throws IOException
-     *
-     * @return string
      */
     public function getCurrentLine(): string
     {
@@ -99,10 +88,7 @@ class IOFile implements IOFileInterface
     /**
      * Locks or unlocks the file in the same portable way as flock().
      *
-     * @param int $operation
      * @param int $wouldBlock takes value `1` if file is locked by another, `0` if not
-     *
-     * @return bool
      */
     public function lock(int $operation, int &$wouldBlock = null): bool
     {
@@ -111,8 +97,6 @@ class IOFile implements IOFileInterface
 
     /**
      * Reads to EOF on the given file pointer from the current position and writes the results to the output buffer.
-     *
-     * @return int
      */
     public function passThrough(): int
     {
@@ -122,11 +106,7 @@ class IOFile implements IOFileInterface
     /**
      * Reads the given number of bytes from the file.
      *
-     * @param int $length
-     *
      * @throws IOException
-     *
-     * @return string
      */
     public function read(int $length): string
     {
@@ -142,8 +122,7 @@ class IOFile implements IOFileInterface
      * Reads a line from the file and interprets it according to the specified format, which is described in the
      * documentation for sprintf().
      *
-     * @param string $format
-     * @param array  $mixed
+     * @param array $mixed
      *
      * @return array|int
      */
@@ -155,11 +134,6 @@ class IOFile implements IOFileInterface
     /**
      * Seek to a position in the file measured in bytes from the beginning of the file, obtained by adding offset to
      * the position specified by whence.
-     *
-     * @param int $offset
-     * @param int $whence
-     *
-     * @return bool
      */
     public function seek(int $offset, int $whence = SEEK_SET): bool
     {
@@ -170,8 +144,6 @@ class IOFile implements IOFileInterface
      * Return current file position.
      *
      * @throws IOException
-     *
-     * @return int
      */
     public function tell(): int
     {
@@ -185,10 +157,6 @@ class IOFile implements IOFileInterface
      * Truncates the file to size bytes.
      * If size is larger than the file it is extended with null bytes.
      * If size is smaller than the file, the extra data will be lost.
-     *
-     * @param int $size
-     *
-     * @return bool
      */
     public function truncate(int $size): bool
     {
@@ -199,9 +167,6 @@ class IOFile implements IOFileInterface
      * Writes the contents of string to the file
      * If the length argument is given, writing will stop after length bytes have been written
      * or the end of string is reached, whichever comes first.
-     *
-     * @param string   $str
-     * @param null|int $length
      *
      * @throws IOException
      *
@@ -227,8 +192,6 @@ class IOFile implements IOFileInterface
      * and after operate reopen a new one with the same parameters.
      *
      * @throws \Exception
-     *
-     * @return string
      */
     public function getContent(): string
     {
@@ -252,8 +215,6 @@ class IOFile implements IOFileInterface
      * @param mixed $data
      *
      * @throws \Exception
-     *
-     * @return int
      */
     public function putContent($data): int
     {
@@ -277,8 +238,6 @@ class IOFile implements IOFileInterface
      * @param mixed $data
      *
      * @throws \Exception
-     *
-     * @return int
      */
     public function addContent($data): int
     {

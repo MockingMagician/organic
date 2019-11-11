@@ -28,10 +28,6 @@ class FileSystem
 {
     /**
      * Return a Permission object that can be easily manipulate and which is used internally by the package.
-     *
-     * @param int $mode
-     *
-     * @return Permission
      */
     public static function createPermissionFromMode(int $mode): Permission
     {
@@ -41,11 +37,7 @@ class FileSystem
     /**
      * Return the file provided by path.
      *
-     * @param string $path
-     *
      * @throws FilePathException
-     *
-     * @return File
      */
     public static function getFile(string $path): File
     {
@@ -55,14 +47,9 @@ class FileSystem
     /**
      * Return the created file provided by path.
      *
-     * @param string          $path
-     * @param null|Permission $permission
-     *
      * @throws FileAlreadyExistException
      * @throws FilePathException
      * @throws FileCreateException
-     *
-     * @return File
      */
     public static function newFile(string $path, Permission $permission = null): File
     {
@@ -75,11 +62,7 @@ class FileSystem
     /**
      * Return the directory provided by path.
      *
-     * @param string $path
-     *
      * @throws DirectoryPathException
-     *
-     * @return Directory
      */
     public static function getDirectory(string $path): Directory
     {
@@ -89,15 +72,9 @@ class FileSystem
     /**
      * Return the created directory provided by path.
      *
-     * @param string          $path
-     * @param null|Permission $permission
-     * @param bool            $recursive
-     *
      * @throws DirectoryCreateException
      * @throws DirectoryPathException
      * @throws DirectoryAlreadyExistException
-     *
-     * @return Directory
      */
     public static function newDirectory(string $path, Permission $permission = null, bool $recursive = true): Directory
     {

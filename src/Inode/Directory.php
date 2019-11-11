@@ -33,8 +33,6 @@ class Directory extends AbstractInode
     /**
      * Directory constructor.
      *
-     * @param string $path
-     *
      * @throws DirectoryPathException
      */
     public function __construct(string $path)
@@ -50,9 +48,7 @@ class Directory extends AbstractInode
     }
 
     /**
-     * @param string     $path
      * @param Permission $permission
-     * @param bool       $recursive
      *
      * @throws DirectoryAlreadyExistException
      * @throws DirectoryCreateException
@@ -84,8 +80,6 @@ class Directory extends AbstractInode
 
     /**
      * Delete the inode. An inode is a file or a directory.
-     *
-     * @param bool $ignoreIsNotEmpty
      *
      * @throws DirectoryDeleteException
      *
@@ -139,8 +133,6 @@ class Directory extends AbstractInode
      * @throws CollectionValueException
      * @throws DirectoryPathException
      * @throws InodePathException
-     *
-     * @return InodeCollection
      */
     public function getInodes(): InodeCollection
     {
@@ -153,8 +145,6 @@ class Directory extends AbstractInode
      * @throws CollectionValueException
      * @throws DirectoryPathException
      * @throws FilePathException
-     *
-     * @return FileCollection
      */
     public function getFiles(): FileCollection
     {
@@ -166,8 +156,6 @@ class Directory extends AbstractInode
     /**
      * @throws CollectionValueException
      * @throws DirectoryPathException
-     *
-     * @return DirectoryCollection
      */
     public function getDirectories(): DirectoryCollection
     {
