@@ -93,10 +93,14 @@ class File extends AbstractInode implements IOFileAwareInterface
      *
      * @throws \Exception
      */
-    public function getIO(string $openMode = 'r'): IOFileInterface
+    public function getIO(string $openMode = null): IOFileInterface
     {
         if (null === $this->IO || $openMode !== $this->IO[0]) {
-            $this->IO = [$openMode, new IOFile($this->getObjectPath(), $openMode)];
+            $args = [$this->getObjectPath()];
+            if (null !== $openMode) {
+                $args[] = $openMode;
+            }
+            $this->IO = [$openMode, new IOFile(...$args)];
         }
 
         return $this->IO[1];
