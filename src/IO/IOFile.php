@@ -22,7 +22,7 @@ class IOFile implements IOFileInterface
      * place the file pointer at the beginning of the file.
      */
     public const MODE_READ_FROM_BEGIN = 'r';
-    public const MODE_R =  'r';
+    public const MODE_R = 'r';
     public const MODE_RB = 'rb';
     /**
      * Open for reading and writing;
@@ -37,7 +37,7 @@ class IOFile implements IOFileInterface
      * If the file does not exist, attempt to create it.
      */
     public const MODE_WRITE_TRUNCATE_FROM_BEGIN = 'w';
-    public const MODE_W =  'w';
+    public const MODE_W = 'w';
     public const MODE_WB = 'wb';
     /**
      * Open for reading and writing;
@@ -54,7 +54,7 @@ class IOFile implements IOFileInterface
      * In this mode, fseek() has no effect, writes are always appended.
      */
     public const MODE_WRITE_FROM_END = 'a';
-    public const MODE_A =  'a';
+    public const MODE_A = 'a';
     public const MODE_AB = 'ab';
     /**
      * Open for reading and writing;
@@ -72,7 +72,7 @@ class IOFile implements IOFileInterface
      * If the file does not exist, attempt to create it. This is equivalent to specifying O_EXCL|O_CREAT flags for the underlying open(2) system call.
      */
     public const MODE_WRITE_NEW = 'x';
-    public const MODE_X =  'x';
+    public const MODE_X = 'x';
     public const MODE_XB = 'xb';
     /**
      * Create and open for reading and writing; otherwise it has the same behavior as 'x'.
@@ -89,7 +89,7 @@ class IOFile implements IOFileInterface
      * as using 'w' could truncate the file before the lock was obtained (if truncation is desired, ftruncate() can be used after the lock is requested).
      */
     public const MODE_WRITE_FROM_BEGIN_WITH_CREATE = 'c';
-    public const MODE_C =  'c';
+    public const MODE_C = 'c';
     public const MODE_CB = 'cb';
     /**
      * Open the file for reading and writing; otherwise it has the same behavior as 'c'.
@@ -134,11 +134,11 @@ class IOFile implements IOFileInterface
      */
     public function __construct(string $path, string $openMode = self::MODE_RB)
     {
-        if (!in_array($openMode, self::MODES_VALID)) {
-            throw new IOException(sprintf(
+        if (!\in_array($openMode, self::MODES_VALID, true)) {
+            throw new IOException(\sprintf(
                 'open mode `%s` is not valid. Must be one of %s',
                 $openMode,
-                implode(', ', self::MODES_VALID)
+                \implode(', ', self::MODES_VALID)
             ));
         }
         $this->path = $path;
@@ -377,7 +377,7 @@ class IOFile implements IOFileInterface
         }
 
         throw new IOException(
-            sprintf('fopen has failed for path `%s` with mode `%s`', $this->path, $this->openMode)
+            \sprintf('fopen has failed for path `%s` with mode `%s`', $this->path, $this->openMode)
         );
     }
 
