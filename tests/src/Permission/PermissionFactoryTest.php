@@ -16,12 +16,20 @@ use PHPUnit\Framework\TestCase;
  */
 class PermissionFactoryTest extends TestCase
 {
-    public function testDefaultDirectoryReturn(): void
+    public function testDefaultDirectoryReturn0755(): void
     {
         $permission = PermissionFactory::defaultDirectory();
         static::assertEquals(7, $permission->getUser()->getP());
-        static::assertEquals(7, $permission->getGroup()->getP());
-        static::assertEquals(7, $permission->getOthers()->getP());
+        static::assertEquals(5, $permission->getGroup()->getP());
+        static::assertEquals(5, $permission->getOthers()->getP());
+    }
+
+    public function testDefaultFileReturn0644(): void
+    {
+        $permission = PermissionFactory::defaultFile();
+        static::assertEquals(6, $permission->getUser()->getP());
+        static::assertEquals(4, $permission->getGroup()->getP());
+        static::assertEquals(4, $permission->getOthers()->getP());
     }
 
     public function testCreateFromMode(): void

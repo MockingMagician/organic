@@ -25,8 +25,8 @@ class PermissionFactory
     {
         return new Permission(
             new PermissionScope(true, true, true),
-            new PermissionScope(true, true, true),
-            new PermissionScope(true, true, true)
+            new PermissionScope(true, false, true),
+            new PermissionScope(true, false, true)
         );
     }
 
@@ -34,7 +34,7 @@ class PermissionFactory
     {
         return new Permission(
             new PermissionScope(true, true, false),
-            new PermissionScope(true, true, false),
+            new PermissionScope(true, false, false),
             new PermissionScope(true, false, false)
         );
     }

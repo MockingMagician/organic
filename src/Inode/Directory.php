@@ -70,7 +70,9 @@ class Directory extends AbstractInode
 
         try {
             \mkdir($path, $permission->getMode(), $recursive);
-            // chmod enforce mode that is not fully qualified through mkdir
+            // chmod enforce mode that is not fully qualified through mkdir cause umask setting
+            // we not want to change umask cause onto multithreaded server umask value is shared across the threads
+            // so changing umask can affect other threads and "vice & versa"
             \chmod($path, $permission->getMode());
         } catch (\Throwable $e) {
             throw new DirectoryCreateException($path, $e);

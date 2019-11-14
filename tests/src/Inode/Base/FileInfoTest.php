@@ -39,6 +39,7 @@ class FileInfoTest extends TestCase
         $this->fileName = $this->faker->uuid.'.txt';
         $this->filePath = static::TEMP_DIR.\DIRECTORY_SEPARATOR.$this->fileName;
         \file_put_contents($this->filePath, $this->faker->paragraph);
+        \chmod($this->filePath, 0644);
         $this->fileInfo = new FileInfo($this->filePath);
     }
 
