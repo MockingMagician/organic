@@ -9,6 +9,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macOS-latest]
+        php_servion: ['7.1', '7.2', '7.3']
 
     steps:
     - uses: actions/checkout@v1
@@ -16,11 +17,11 @@ jobs:
     - name: PHP Version
       run: php -v
 
-    - name: Validate composer.json and composer.lock
-      run: composer validate
-
-    - name: Install dependencies
-      run: composer install --prefer-dist --no-progress --no-suggest
-    
-    - name: Test
-      run: make tests
+#    - name: Validate composer.json and composer.lock
+#      run: composer validate
+#
+#    - name: Install dependencies
+#      run: composer install --prefer-dist --no-progress --no-suggest
+#
+#    - name: Test
+#      run: make tests
