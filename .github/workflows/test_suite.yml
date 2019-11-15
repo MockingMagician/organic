@@ -14,7 +14,7 @@ jobs:
 #        - macOS-latest
         php-versions:
 #        - '7.1'
-#        - '7.2'
+        - '7.2'
         - '7.3'
     name: Test on ${{ matrix.operating-system }} / PHP ${{ matrix.php-versions }}
     steps:
