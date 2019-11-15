@@ -42,5 +42,8 @@ jobs:
       run: vendor/bin/phpunit
 
     - name: PHPCS
-      run:  vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix --dry-run
+      run: vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix --dry-run
+
+    - name: PHPUNIT
+      run: vendor/bin/phpstan --level=max
 
