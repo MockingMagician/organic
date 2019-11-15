@@ -4,7 +4,7 @@ on: [push]
 
 jobs:
   test:
-
+    runs-on: ubuntu-latest
     container: php:7.1.33-cli-alpine
     strategy:
       matrix:
