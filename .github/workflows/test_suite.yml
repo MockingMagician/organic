@@ -10,7 +10,7 @@ jobs:
       matrix:
         operating-system: [ubuntu-latest, windows-latest, macOS-latest]
         php-versions: ['7.1', '7.2', '7.3']
-    name: PHP ${{ matrix.php-versions }} Test on ${{ matrix.operating-system }}
+    name: Test on ${{ matrix.operating-system }} / PHP ${{ matrix.php-versions }}
     steps:
     - name: Checkout
       uses: actions/checkout@master
@@ -18,16 +18,19 @@ jobs:
       uses: shivammathur/setup-php@master
       with:
         php-version: ${{ matrix.php-versions }}
-        extension-csv: mbstring, xdebug #optional, setup extensions
-        ini-values-csv: post_max_size=256M, short_open_tag=On #optional, setup php.ini configuration
-        coverage: xdebug #optional, setup coverage driver
-        pecl: true #optional, setup PECL
+#        extension-csv: mbstring, xdebug #optional, setup extensions
+#        ini-values-csv: post_max_size=256M, short_open_tag=On #optional, setup php.ini configuration
+#        coverage: xdebug #optional, setup coverage driver
+#        pecl: true #optional, setup PECL
     - name: Check PHP Version
       run: php -v
     - name: Check Composer Version
       run: composer -V
     - name: Check PHP Extensions
       run: php -m
+
+    - name: Install Dependencies
+      run: composer install --prefer-dist
 
     - name: Test
       run: make tests
