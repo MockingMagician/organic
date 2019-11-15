@@ -4,6 +4,7 @@ on: [push]
 
 jobs:
   test:
+
     runs-on: ubuntu-latest
     container: php:${{ matrix.php }}
     strategy:
@@ -11,12 +12,11 @@ jobs:
         php: ['7.1.33-cli-alpine', '7.2.24-cli-alpine', '7.3.11-cli-alpine']
 
     steps:
-
     - name: PHP Version
       run: php -v
 
     - name: Checkout
-    - uses: actions/checkout@v1
+      uses: actions/checkout@v1
 
     - name: Validate composer.json and composer.lock
       run: composer validate
