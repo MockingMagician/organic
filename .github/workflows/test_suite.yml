@@ -12,6 +12,9 @@ jobs:
         php: ['7.1.33-cli-alpine', '7.2.24-cli-alpine', '7.3.11-cli-alpine']
 
     steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+
     - name: PHP Version
       run: php -v
 
@@ -35,9 +38,6 @@ jobs:
 
     - name: Install composer
       uses: ./.github/actions/install_composer
-
-    - name: Checkout
-      uses: actions/checkout@v1
 
     - name: Validate composer.json and composer.lock
       run: composer validate
