@@ -38,12 +38,12 @@ jobs:
     - name: Install Dependencies
       run: composer install --prefer-dist --no-interaction --no-suggest --no-ansi
 
-    - name: PHPUNIT
+    - name: phpunit
       run: vendor/bin/phpunit
 
-    - name: PHPCS
+    - name: php-cs-fixer
       run: vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix --dry-run
 
-    - name: PHPUNIT
-      run: vendor/bin/phpstan --level=max
+    - name: phpstan
+      run: "vendor/bin/phpstan --level=max"
 
