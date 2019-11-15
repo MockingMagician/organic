@@ -16,7 +16,7 @@ jobs:
       run: php -v
 
     - name: Install composer
-      uses: ../actions/composer_install.sh
+      uses: ./.github/actions/composer_install.sh
 
     - name: Checkout
       uses: actions/checkout@v1
