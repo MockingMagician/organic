@@ -8,15 +8,17 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macOS-latest]
-        php: ['7.1', '7.2', '7.3']
+        os: [ubuntu-latest]
+        php: ['7.1.33-cli-alpine', '7.2.24-cli-alpine', '7.3.11-cli-alpine']
 
     steps:
-    - uses: actions/setup-php@v1
-      with:
-        php-version: ${{ matrix.php }}
-
-    - uses: actions/checkout@v1
+#    - uses: actions/setup-php@v1
+#      with:
+#        php-version: ${{ matrix.php }}
+#
+#    - uses: actions/checkout@v1
+    - name: Set PHP
+      uses: docker://php:${{ matrix.php }}
 
     - name: PHP Version
       run: php -v
