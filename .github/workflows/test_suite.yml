@@ -5,7 +5,7 @@ on: [push]
 jobs:
   test:
 
-    container: ${{ matrix.os }}
+    container: php:7.1.33-cli-alpine
     strategy:
       matrix:
         php: ['7.1.33-cli-alpine', '7.2.24-cli-alpine', '7.3.11-cli-alpine']
