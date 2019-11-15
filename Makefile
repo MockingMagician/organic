@@ -7,7 +7,7 @@ phpcs: ## Apply PHP CS fixes
 	sh -c 'vendor/bin/php-cs-fixer fix'
 
 phpcs-check: ## Coding style checks
-	sh -c 'vendor/bin/php-cs-fixer fix --dry-run'
+	sh -c 'vendor/bin/php-cs-fixer fix .php_cs.dist --dry-run'
 
 phpstan: ## Static analysis
 	sh -c 'vendor/bin/phpstan analyse --level=max src'
