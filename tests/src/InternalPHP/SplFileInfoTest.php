@@ -316,8 +316,10 @@ class SplFileInfoTest extends TestCase
     }
 
     /**
+     * @retry 3
+     *
      * Get the last access to file
-     * Access time directory never change.
+     * Access time directory never change. (almost)
      */
     public function testGetATime(): void
     {
@@ -326,7 +328,7 @@ class SplFileInfoTest extends TestCase
         $symlinkATime = $this->symlink->getATime();
         $hardlinkATime = $this->hardlink->getATime();
 
-        \usleep(2500000);
+        \usleep(1100000);
 
         \file_get_contents($this->filePath);
 

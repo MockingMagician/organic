@@ -159,8 +159,8 @@ class FileInfoTest extends TestCase
     public function testGetPermissions(): void
     {
         static::assertEquals(
-            PermissionFactory::defaultFile(),
-            $this->fileInfo->getPermissions()
+            decoct(PermissionFactory::defaultFile()->getMode()),
+            decoct($this->fileInfo->getPermissions()->getMode())
         );
     }
 
