@@ -36,7 +36,7 @@ jobs:
       run: php -m
 
     - name: Install Dependencies
-      run: composer install --prefer-dist --no-interaction
+      run: composer install --prefer-dist --no-interaction --no-suggest --no-ansi
 
     - name: Test
       run: make tests
