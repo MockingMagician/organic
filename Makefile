@@ -4,10 +4,10 @@ phpunit: ## Launch PHPUnit test suite
 	sh -c 'vendor/bin/phpunit'
 
 phpcs: ## Apply PHP CS fixes
-	sh -c 'vendor/bin/php-cs-fixer fix'
+	sh -c 'vendor/bin/php-cs-fixer fix .php_cs.dist'
 
 phpcs-check: ## Coding style checks
-	sh -c 'vendor/bin/php-cs-fixer fix .php_cs.dist --dry-run'
+	sh -c 'vendor/bin/php-cs-fixer fix .php_cs.dist --dry-run --using-cache=no  '
 
 phpstan: ## Static analysis
 	sh -c 'vendor/bin/phpstan analyse --level=max src'
