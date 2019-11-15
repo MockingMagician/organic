@@ -3,47 +3,31 @@ name: Test suite
 on: [push]
 
 jobs:
-  test:
-
-    runs-on: ubuntu-latest
-    container: php:${{ matrix.php }}
+  run:
+    runs-on: ${{ matrix.operating-system }}
     strategy:
+      max-parallel: 15
       matrix:
-        php: ['7.1.33-cli-alpine', '7.2.24-cli-alpine', '7.3.11-cli-alpine']
-
+        operating-system: [ubuntu-latest, windows-latest, macOS-latest]
+        php-versions: ['5.6', '7.0', '7.1', '7.2', '7.3']
+    name: PHP ${{ matrix.php-versions }} Test on ${{ matrix.operating-system }}
     steps:
     - name: Checkout
-      uses: actions/checkout@v1
-
-    - name: PHP Version
+      uses: actions/checkout@master
+    - name: Setup PHP
+      uses: shivammathur/setup-php@master
+      with:
+        php-version: ${{ matrix.php-versions }}
+        extension-csv: mbstring, xdebug #optional, setup extensions
+        ini-values-csv: post_max_size=256M, short_open_tag=On #optional, setup php.ini configuration
+        coverage: xdebug #optional, setup coverage driver
+        pecl: true #optional, setup PECL
+    - name: Check PHP Version
       run: php -v
+    - name: Check Composer Version
+      run: composer -V
+    - name: Check PHP Extensions
+      run: php -m
 
-#    - name: Install composer
-#      run: |
-#        EXPECTED_SIGNATURE="$(wget -q -O - https://composer.github.io/installer.sig)"
-#        php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-#        ACTUAL_SIGNATURE="$(php -r "echo hash_file('sha384', 'composer-setup.php');")"
-#
-#        if [ "$EXPECTED_SIGNATURE" != "$ACTUAL_SIGNATURE" ]
-#        then
-#            >&2 echo 'ERROR: Invalid installer signature'
-#            rm composer-setup.php
-#            exit 1
-#        fi
-#
-#        php composer-setup.php --install-dir=/bin --filename=composer
-#        RESULT=$?
-#        rm composer-setup.php
-#        exit $RESULT
-
-    - name: Install composer
-      uses: ./.github/actions/install_composer
-
-    - name: Validate composer.json and composer.lock
-      run: composer validate
-#
-#    - name: Install dependencies
-#      run: composer install --prefer-dist --no-progress --no-suggest
-#
-#    - name: Test
-#      run: make tests
+    - name: Test
+      run: make tests
