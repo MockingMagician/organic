@@ -57,7 +57,7 @@ class SplFileInfoTest extends TestCase
         parent::setUp();
 
         if ('Linux' !== PHP_OS) {
-            $this->markTestSkipped(
+            static::markTestSkipped(
                 'This tests needs OS interaction. For now, they only designed for linux'
             );
         }

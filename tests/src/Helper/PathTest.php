@@ -18,17 +18,48 @@ class PathTest extends TestCase
 {
     public function testGetAbsolute(): void
     {
-        static::assertEquals('/one/two', Path::clean('/one/two/../two/./three/../../two'));
-        static::assertEquals('../one/two', Path::clean('../one/two/../two/./three/../../two'));
-        static::assertEquals('../../../one/two', Path::clean('../.././../one/two/../two/./three/../../two'));
-        static::assertEquals('../../one/two', Path::clean('../././../one/two/../two/./three/../../two'));
-        static::assertEquals('/one/two', Path::clean('/../one/two/../two/./three/../../two'));
-        static::assertEquals('/one/two', Path::clean('/../../one/two/../two/./three/../../two'));
-        static::assertEquals('c:/one/two', Path::clean('c:\.\..\one\two\..\two\.\three\..\..\two'));
-        static::assertEquals(__DIR__, Path::clean(__DIR__));
         static::assertEquals(
-            (new \SplFileInfo((new \SplFileInfo(__DIR__))->getPath()))->getPath().'/one/two',
+            $this->directorySeparator('/one/two'),
+            Path::clean('/one/two/../two/./three/../../two')
+        );
+        static::assertEquals(
+            $this->directorySeparator('../one/two'),
+            Path::clean('../one/two/../two/./three/../../two')
+        );
+        static::assertEquals(
+            $this->directorySeparator('../../../one/two'),
+            Path::clean('../.././../one/two/../two/./three/../../two')
+        );
+        static::assertEquals(
+            $this->directorySeparator('../../one/two'),
+            Path::clean('../././../one/two/../two/./three/../../two')
+        );
+        static::assertEquals(
+            $this->directorySeparator('/one/two'),
+            Path::clean('/../one/two/../two/./three/../../two')
+        );
+        static::assertEquals(
+            $this->directorySeparator('/one/two'),
+            Path::clean('/../../one/two/../two/./three/../../two')
+        );
+        static::assertEquals(
+            $this->directorySeparator('c:/one/two'),
+            Path::clean('c:\.\..\one\two\..\two\.\three\..\..\two')
+        );
+        static::assertEquals(
+            $this->directorySeparator(__DIR__),
+            Path::clean(__DIR__)
+        );
+        static::assertEquals(
+            $this->directorySeparator(
+                (new \SplFileInfo((new \SplFileInfo(__DIR__))->getPath()))->getPath().'/one/two'
+            ),
             Path::clean(__DIR__.'/../../one/two/../two/./three/../../two')
         );
+    }
+
+    protected function directorySeparator(string $path): string
+    {
+        return \mb_ereg_replace('\\\\|/', \DIRECTORY_SEPARATOR, $path, 'msr');
     }
 }
