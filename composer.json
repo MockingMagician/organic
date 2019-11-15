@@ -29,7 +29,7 @@
     "require-dev": {
         "phpunit/phpunit": "^8 || ^7",
         "phpstan/phpstan": "^0.11",
-        "friendsofphp/php-cs-fixer": "^2.13",
+        "friendsofphp/php-cs-fixer": ">=2.0.0 <=2.13",
         "phpbench/phpbench": "@dev",
         "fzaninotto/faker": "^1.8"
     }

@@ -158,13 +158,13 @@ class FileInfoTest extends TestCase
 
     public function testGetPermissions(): void
     {
-        if (0 === mb_strrpos(PHP_OS, 'WIN')) {
+        if (0 === \mb_strrpos(PHP_OS, 'WIN')) {
             static::markTestSkipped('This tests make sense only for POSIX');
         }
 
         static::assertEquals(
-            decoct(PermissionFactory::defaultFile()->getMode()),
-            decoct($this->fileInfo->getPermissions()->getMode())
+            \decoct(PermissionFactory::defaultFile()->getMode()),
+            \decoct($this->fileInfo->getPermissions()->getMode())
         );
     }
 

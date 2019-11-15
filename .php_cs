@@ -13,12 +13,12 @@ $finder = PhpCsFixer\Finder::create()
 $config = PhpCsFixer\Config::create()
     ->setRiskyAllowed(true)
     ->setRules([
-        '@PHP71Migration:risky' => true,
-        '@PHPUnit75Migration:risky' => true,
+//        '@PHP71Migration:risky' => true,
+//        '@PHPUnit75Migration:risky' => true,
         '@Symfony' => true,
-        '@Symfony:risky' => true,
-        '@PhpCsFixer' => true,
-        '@PhpCsFixer:risky' => true,
+//        '@Symfony:risky' => true,
+//        '@PhpCsFixer' => true,
+//        '@PhpCsFixer:risky' => true,
         'php_unit_test_class_requires_covers' => false,
         'self_accessor' => false,
         'php_unit_strict' => false,
