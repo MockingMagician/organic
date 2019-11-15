@@ -1,7 +1,7 @@
 tests: phpunit phpcs-check phpstan ## Run tests suite
 
 phpunit: ## Launch PHPUnit test suite
-	./vendor/bin/phpunit --colors=always --coverage-html .coverage -c phpunit.xml
+	sh -c 'vendor/bin/phpunit --colors=always --coverage-html .coverage -c phpunit.xml'
 
 phpcs: ## Apply PHP CS fixes
 	./vendor/bin/php-cs-fixer fix
