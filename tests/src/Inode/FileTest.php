@@ -95,12 +95,12 @@ class FileTest extends TestCase
     {
         $file = File::create($this->filePath);
         $startTime = $file->getChangeTime()->getTimestamp();
-        \usleep(1000000);
+        \usleep(1200000);
         $file->getIO()->addContent('1111');
         static::assertEquals($startTime + 1, $file->getChangeTime()->getTimestamp());
         static::assertEquals($startTime + 1, $file->getModificationTime()->getTimestamp());
         static::assertEquals($startTime, $file->getAccessTime()->getTimestamp());
-        \usleep(2000000);
+        \usleep(2200000);
         $file->getIO()->getContent();
         static::assertEquals($startTime + 1, $file->getChangeTime()->getTimestamp());
         static::assertEquals($startTime + 1, $file->getModificationTime()->getTimestamp());
