@@ -3,6 +3,7 @@
 /**
  * @author Marc MOREAU <moreau.marc.web@gmail.com>
  * @license https://github.com/MockingMagician/organic/blob/master/LICENSE.md CC-BY-SA-4.0
+ *
  * @link https://github.com/MockingMagician/organic/blob/master/README.md
  */
 
@@ -105,10 +106,10 @@ abstract class Collection implements CollectionInterface, \Countable, \IteratorA
      *
      * @see http://php.net/manual/en/countable.count.php
      *
-     * @return int The custom count as an integer.
+     * @return int the custom count as an integer.
      *             </p>
      *             <p>
-     *             The return value is cast to an integer.
+     *             The return value is cast to an integer
      *
      * @since 5.1.0
      */
