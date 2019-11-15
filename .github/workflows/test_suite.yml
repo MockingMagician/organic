@@ -9,7 +9,7 @@ jobs:
 #      max-parallel: 1
       matrix:
         operating-system:
-#        - ubuntu-latest
+        - ubuntu-latest
         - windows-latest
 #        - macOS-latest
         php-versions:
