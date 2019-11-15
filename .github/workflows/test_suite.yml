@@ -5,7 +5,7 @@ on: [push]
 jobs:
   test:
 
-    runs-on: ${{ matrix.os }}
+    container: php:${{ matrix.os }}
     strategy:
       matrix:
         os: [ubuntu-latest]
@@ -17,8 +17,8 @@ jobs:
 #        php-version: ${{ matrix.php }}
 #
 #    - uses: actions/checkout@v1
-    - name: Set PHP
-      run: docker pull php:${{ matrix.php }}
+#    - name: Set PHP
+#      run: docker pull php:${{ matrix.php }}
 
     - name: PHP Version
       run: php -v
