@@ -141,7 +141,9 @@ class Directory extends AbstractInode
     {
         $fs = new FSIterator($this->getObjectPath());
 
-        return InodeCollection::createFromPaths(\iterator_to_array($fs->getIterator()));
+        var_dump(\iterator_to_array($fs->getIterator()));
+
+        return InodeCollection::createFromPaths();
     }
 
     /**
