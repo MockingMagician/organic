@@ -158,9 +158,8 @@ class FileInfoTest extends TestCase
 
     public function testGetPermissions(): void
     {
-        var_dump(PHP_OS);
-        if ('Windows' !== PHP_OS) {
-            static::markTestSkipped('This tests make sense only for linux');
+        if (0 === mb_strrpos(PHP_OS, 'WIN')) {
+            static::markTestSkipped('This tests make sense only for POSIX');
         }
 
         static::assertEquals(
