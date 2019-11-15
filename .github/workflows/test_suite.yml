@@ -42,5 +42,5 @@ jobs:
       run: vendor/bin/phpunit
 
     - name: PHPCS
-      run: vendor/bin/phpcs fix --dry-run
+      run:  vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix --dry-run
 
