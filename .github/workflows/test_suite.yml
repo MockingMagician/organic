@@ -40,11 +40,3 @@ jobs:
 
     - name: phpunit
       run: vendor/bin/phpunit
-
-    - name: php-cs-fixer
-      run: vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix --dry-run
-
-    - name: phpstan
-      run: make phpunit
-
-
