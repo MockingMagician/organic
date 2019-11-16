@@ -1,3 +1,5 @@
+![](https://github.com/MockingMagician/organic/workflows/phpunit/badge.svg)
+
 # Install
 
 ```bash

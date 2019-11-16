@@ -93,6 +93,10 @@ class DirectoryTest extends TestCase
      */
     public function testCreateDirectory(): void
     {
+        if (0 === \mb_strrpos(PHP_OS, 'WIN')) {
+            static::markTestSkipped('This tests make sense only for POSIX');
+        }
+
         $directory = Directory::create(static::TEMP_DIR.\DIRECTORY_SEPARATOR.'new-dir');
         static::assertEquals(PermissionFactory::defaultDirectory(), $directory->getPermissions());
         @\rmdir(static::TEMP_DIR.\DIRECTORY_SEPARATOR.'new-dir');
