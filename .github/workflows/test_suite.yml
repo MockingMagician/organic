@@ -11,7 +11,7 @@ jobs:
         operating-system:
         - ubuntu-latest
         - windows-latest
-#        - macOS-latest
+        - macOS-latest
         php-versions:
 #        - '7.1'
 #        - '7.2'
