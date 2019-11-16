@@ -45,6 +45,6 @@ jobs:
       run: vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix --dry-run
 
     - name: phpstan
-      run: make phpstan
+      run: make phpunit
 
 
