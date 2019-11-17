@@ -10,8 +10,8 @@ jobs:
       matrix:
         operating-system:
         - ubuntu-latest
-        - windows-latest
-        - macOS-latest
+#        - windows-latest
+#        - macOS-latest
         php-versions:
 #        - '7.1'
 #        - '7.2'
@@ -36,7 +36,7 @@ jobs:
       run: php -m
 
     - name: Install Dependencies
-      run: composer install --prefer-dist --no-interaction --no-suggest --no-ansi
+      run: composer install --prefer-dist --no-interaction --no-suggest --no-progress
 
     - name: phpunit
       run: vendor/bin/phpunit

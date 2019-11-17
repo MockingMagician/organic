@@ -8,10 +8,21 @@
 
 namespace MockingMagician\Organic\Permission;
 
+use MockingMagician\Organic\Exception\PermissionModeException;
+
 class PermissionFactory
 {
+    /**
+     * @param int $mode
+     *
+     * @return Permission
+     *
+     * @throws PermissionModeException
+     */
     public static function createFromMode(int $mode): Permission
     {
+        PermissionModeException::throwOnInvalidMode($mode);
+
         list($u, $g, $o) = static::getUGOFromMode($mode);
 
         return new Permission(

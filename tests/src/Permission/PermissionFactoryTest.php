@@ -8,6 +8,7 @@
 
 namespace MockingMagician\Organic\Tests\Permission;
 
+use MockingMagician\Organic\Exception\PermissionModeException;
 use MockingMagician\Organic\Permission\PermissionFactory;
 use PHPUnit\Framework\TestCase;
 
@@ -69,13 +70,13 @@ class PermissionFactoryTest extends TestCase
         static::assertEquals(4, $permission->getGroup()->getP());
         static::assertEquals(1, $permission->getOthers()->getP());
 
-        static::expectException(\RuntimeException::class);
+        static::expectException(PermissionModeException::class);
         PermissionFactory::createFromMode(9999);
     }
 
     public function testCreatePermissionScopeFromInt(): void
     {
-        static::expectException(\RuntimeException::class);
+        static::expectException(PermissionModeException::class);
         PermissionFactory::createFromMode(789);
     }
 }
