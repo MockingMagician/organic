@@ -15,6 +15,7 @@ use MockingMagician\Organic\PHPUnitExt\TestCase;
 
 /**
  * @internal
+ * @coversDefaultClass \MockingMagician\Organic\FS\FSIterator
  */
 class FSIteratorTest extends TestCase
 {
@@ -36,7 +37,7 @@ class FSIteratorTest extends TestCase
     }
 
     /**
-     * @throws \MockingMagician\Organic\Exception\DirectoryPathException
+     * @throws DirectoryPathException
      */
     public function testGetIterator(): void
     {
@@ -45,7 +46,7 @@ class FSIteratorTest extends TestCase
     }
 
     /**
-     * @throws \MockingMagician\Organic\Exception\DirectoryPathException
+     * @throws DirectoryPathException
      */
     public function testNewFSIteratorFailCauseNotDirectoryPath(): void
     {

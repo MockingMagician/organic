@@ -42,6 +42,8 @@ class InodeCollection extends AbstractCollection
     /**
      * @param string[] $paths
      *
+     * @return InodeCollection
+     *
      * @throws InodePathException
      * @throws CollectionValueException
      */

@@ -25,6 +25,7 @@ use MockingMagician\Organic\PHPUnitExt\TestCase;
 
 /**
  * @internal
+ * @coversDefaultClass \MockingMagician\Organic\Inode\Directory
  */
 class DirectoryTest extends TestCase
 {

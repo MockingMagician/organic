@@ -17,6 +17,7 @@ use MockingMagician\Organic\PHPUnitExt\TestCase;
 
 /**
  * @internal
+ * @coversDefaultClass \MockingMagician\Organic\Inode\Base\FileInfo
  */
 class FileInfoTest extends TestCase
 {

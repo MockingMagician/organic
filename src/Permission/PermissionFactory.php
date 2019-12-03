@@ -9,6 +9,7 @@
 namespace MockingMagician\Organic\Permission;
 
 use MockingMagician\Organic\Exception\PermissionModeException;
+use RuntimeException;
 
 class PermissionFactory
 {
@@ -51,9 +52,11 @@ class PermissionFactory
     }
 
     /**
-     * @throws \RuntimeException
+     * @param int $mode
      *
      * @return array
+     *
+     * @throws RuntimeException
      */
     private static function getUGOFromMode(int $mode)
     {
@@ -71,7 +74,9 @@ class PermissionFactory
             return [(int) $octal[0], (int) $octal[1], (int) $octal[2]];
         }
 
-        throw new \RuntimeException('$mode is not valid');
+        // @codeCoverageIgnoreStart
+        throw new RuntimeException('$mode is not valid');
+        // @codeCoverageIgnoreEnd
     }
 
     private static function createPermissionScopeFromInt(int $p)

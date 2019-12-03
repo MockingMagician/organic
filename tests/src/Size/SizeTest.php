@@ -13,6 +13,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @internal
+ * @coversDefaultClass \MockingMagician\Organic\Size\Size
  */
 class SizeTest extends TestCase
 {

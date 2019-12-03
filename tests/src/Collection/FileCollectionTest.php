@@ -14,6 +14,7 @@ use MockingMagician\Organic\PHPUnitExt\TestCase;
 
 /**
  * @internal
+ * @coversDefaultClass \MockingMagician\Organic\Collection\FileCollection
  */
 class FileCollectionTest extends TestCase
 {

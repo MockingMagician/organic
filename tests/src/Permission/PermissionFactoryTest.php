@@ -14,6 +14,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @internal
+ * @coversDefaultClass \MockingMagician\Organic\Permission\PermissionFactory
  */
 class PermissionFactoryTest extends TestCase
 {

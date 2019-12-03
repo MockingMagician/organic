@@ -8,15 +8,17 @@
 
 namespace MockingMagician\Organic\Tests\FS;
 
+use MockingMagician\Organic\Exception\DirectoryPathException;
 use MockingMagician\Organic\FS\FSIteratorOnlyFiles;
 
 /**
  * @internal
+ * @coversDefaultClass \MockingMagician\Organic\FS\FSIteratorOnlyFiles
  */
 class FSIteratorOnlyFileTest extends FSIteratorTest
 {
     /**
-     * @throws \MockingMagician\Organic\Exception\DirectoryPathException
+     * @throws DirectoryPathException
      */
     public function testGetIterator(): void
     {

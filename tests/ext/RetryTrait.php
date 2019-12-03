@@ -8,10 +8,12 @@
 
 namespace MockingMagician\Organic\PHPUnitExt;
 
+use Throwable;
+
 trait RetryTrait
 {
     /**
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function runBare(): void
     {

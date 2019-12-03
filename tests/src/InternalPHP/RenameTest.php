@@ -14,6 +14,7 @@ use MockingMagician\Organic\PHPUnitExt\TestCase;
  * This class test is only provided for explicitly describe rename function.
  *
  * @internal
+ * @coversNothing
  */
 class RenameTest extends TestCase
 {

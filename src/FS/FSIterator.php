@@ -18,6 +18,8 @@ class FSIterator implements \IteratorAggregate
     /**
      * FSIterator constructor.
      *
+     * @param string $path
+     *
      * @throws DirectoryPathException
      */
     public function __construct(string $path)

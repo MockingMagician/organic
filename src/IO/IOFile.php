@@ -8,6 +8,7 @@
 
 namespace MockingMagician\Organic\IO;
 
+use Exception;
 use MockingMagician\Organic\Exception\IOException;
 
 /**
@@ -136,7 +137,7 @@ class IOFile implements IOFileInterface
     {
         if (!\in_array($openMode, self::MODES_VALID, true)) {
             throw new IOException(\sprintf(
-                'open mode `%s` is not valid. Must be one of %s',
+                'open mode `%s` is not valid. Must be one of [%s]',
                 $openMode,
                 \implode(', ', self::MODES_VALID)
             ));
@@ -200,7 +201,15 @@ class IOFile implements IOFileInterface
     /**
      * Locks or unlocks the file in the same portable way as flock().
      *
+     * @param int $operation  is one of the following:
+     *                        - LOCK_SH to acquire a shared lock (reader).
+     *                        - LOCK_EX to acquire an exclusive lock (writer).
+     *                        - LOCK_UN to release a lock (shared or exclusive).
+     *                        It is also possible to add LOCK_NB as a bitmask to one of the above operations
+     *                        if you don't want flock() to block while locking.
      * @param int $wouldBlock takes value `1` if file is locked by another, `0` if not
+     *
+     * @return bool
      */
     public function lock(int $operation, int &$wouldBlock = null): bool
     {
@@ -263,12 +272,18 @@ class IOFile implements IOFileInterface
         if (false === $tell) {
             throw new IOException('tell has failed');
         }
+
+        return $tell;
     }
 
     /**
      * Truncates the file to size bytes.
-     * If size is larger than the file it is extended with null bytes.
-     * If size is smaller than the file, the extra data will be lost.
+     *
+     * @param int $size
+     *                  If size is larger than the file it is extended with null bytes.
+     *                  If size is smaller than the file, the extra data will be lost.
+     *
+     * @return bool
      */
     public function truncate(int $size): bool
     {
@@ -326,7 +341,9 @@ class IOFile implements IOFileInterface
      *
      * @param mixed $data
      *
-     * @throws \Exception
+     * @return int
+     *
+     * @throws Exception
      */
     public function putContent($data): int
     {
@@ -335,7 +352,7 @@ class IOFile implements IOFileInterface
         $this->openHandler();
 
         if (\is_bool($bytes)) {
-            throw new \Exception();
+            throw new Exception();
         }
 
         return $bytes;
@@ -349,7 +366,9 @@ class IOFile implements IOFileInterface
      *
      * @param mixed $data
      *
-     * @throws \Exception
+     * @return int
+     *
+     * @throws Exception
      */
     public function addContent($data): int
     {
@@ -358,7 +377,7 @@ class IOFile implements IOFileInterface
         $this->openHandler();
 
         if (\is_bool($bytes)) {
-            throw new \Exception();
+            throw new Exception();
         }
 
         return $bytes;

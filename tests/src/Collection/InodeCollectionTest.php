@@ -18,6 +18,7 @@ use MockingMagician\Organic\PHPUnitExt\TestCase;
 
 /**
  * @internal
+ * @coversDefaultClass \MockingMagician\Organic\Collection\InodeCollection
  */
 class InodeCollectionTest extends TestCase
 {

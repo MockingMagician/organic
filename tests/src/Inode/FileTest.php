@@ -15,10 +15,12 @@ use MockingMagician\Organic\Exception\FileCreateException;
 use MockingMagician\Organic\Exception\FileDeleteException;
 use MockingMagician\Organic\Exception\FilePathException;
 use MockingMagician\Organic\Inode\File;
+use MockingMagician\Organic\IO\IOFile;
 use MockingMagician\Organic\PHPUnitExt\TestCase;
 
 /**
  * @internal
+ * @coversDefaultClass \MockingMagician\Organic\Inode\File
  */
 class FileTest extends TestCase
 {
@@ -166,5 +168,12 @@ class FileTest extends TestCase
     {
         static::expectException(FileCreateException::class);
         File::create($this->filePath.'/that/is-not-valid-path');
+    }
+
+    public function testGetIOWithOpenMode()
+    {
+        $file = File::create($this->filePath);
+        $io = $file->getIO(IOFile::MODE_RB);
+        static::assertInstanceOf(IOFile::class, $io);
     }
 }

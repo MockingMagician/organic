@@ -1,6 +1,8 @@
 /composer.lock
 /vendor/
 /.*
+/tests/var/tmp/*
+!/tests/var/tmp/.gitignore
 !/.gitignore
-!/.php_cs
+!/.php_cs.dist
 !/.github

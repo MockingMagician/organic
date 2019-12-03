@@ -16,6 +16,7 @@ use MockingMagician\Organic\PHPUnitExt\TestCase;
 
 /**
  * @internal
+ * @coversDefaultClass \MockingMagician\Organic\Permission\Permission
  */
 class PermissionTest extends TestCase
 {

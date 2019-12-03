@@ -13,6 +13,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @internal
+ * @coversDefaultClass \MockingMagician\Organic\Helper\Path
  */
 class PathTest extends TestCase
 {

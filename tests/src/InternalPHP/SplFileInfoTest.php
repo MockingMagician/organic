@@ -27,6 +27,7 @@ use SplFileInfo;
  * Class SplFileInfoTest
  *
  * @internal
+ * @coversNothing
  */
 class SplFileInfoTest extends TestCase
 {
